@@ -32,6 +32,13 @@ div.card-img-top {
 
 #header_navbar {
   padding: 0.5rem 0;
+  background-color: #e4ad09 !important;
+
+  h1 {
+    margin-bottom: 0;
+    font-size: 22px;
+    font-weight: 600;
+  }
 }
 
 .nav-link.active {
