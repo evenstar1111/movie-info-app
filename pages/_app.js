@@ -1,9 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/no_gutter.scss';
-import '../styles/globals.css';
+import '../styles/globals.scss';
+import Layout from '../components/layout';
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+  return (
+    <Layout>
+      <Component {...pageProps} />
+    </Layout>
+  );
 }
 
 export default MyApp;
