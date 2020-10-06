@@ -52,12 +52,12 @@ export function removeCookie(key) {
   if (process.browser) cookies.remove(key);
 }
 
-export const storeMovies = (key, value) => {
+export const storeInLocalStorage = (key, value) => {
   if (process.browser)
     localStorage.setItem(key, JSON.stringify(value));
 };
 
-export const getLocalMovies = (key) => {
+export const getFromLocalStorage = (key) => {
   if (process.browser) {
     return JSON.parse(localStorage.getItem(key));
   }

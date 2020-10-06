@@ -14,22 +14,32 @@ import {
 import styles from '../styles/search_bar.module.scss';
 import {
   searchMovies,
-  storeMovies,
-  getLocalMovies,
+  storeInLocalStorage,
+  getFromLocalStorage,
 } from '../actions/search';
 
 export default function Search() {
-  const [movies, setMovies] = useState(getLocalMovies('movies'));
+  const [movies, setMovies] = useState('');
   const [input, setInput] = useState('');
   const [isOpen, setIsOpen] = useState(true);
 
   const toggle = () => setIsOpen(!isOpen);
 
+  const storedResult = getFromLocalStorage('movies_sch');
+  const searchedTerm = getFromLocalStorage('sch_term');
+
+  if (!movies && storedResult) {
+    setMovies(storedResult);
+  }
+  if (!input && searchedTerm) {
+    setInput(searchedTerm);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = await searchMovies(input);
-    storeMovies('movies', data);
     setMovies(data);
+    storeInLocalStorage('movies_sch', data);
   };
 
   const searchBar = (
@@ -46,7 +56,10 @@ export default function Search() {
                 className="form-control"
                 value={input}
                 placeholder="search movies by title"
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  storeInLocalStorage('sch_term', e.target.value);
+                }}
               />
             </FormGroup>
             <Button className="btn-warning">Search Movies</Button>
@@ -76,15 +89,4 @@ export default function Search() {
       </Container>
     </Fragment>
   );
-}
-
-export async function getServerSideProps() {
-  const data = await searchMovies('spiderman');
-  console.log(data);
-
-  return {
-    props: {
-      data,
-    },
-  };
 }

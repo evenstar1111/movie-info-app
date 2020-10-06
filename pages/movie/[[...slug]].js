@@ -40,7 +40,6 @@ export default function MovieInfo() {
       if (slug[0]) {
         const data = await findMovieDetail(slug[0]);
         setMovie(data);
-        console.log(data);
       } else {
         return;
       }

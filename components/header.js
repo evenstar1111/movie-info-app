@@ -8,14 +8,14 @@ import {
   NavLink,
 } from 'reactstrap';
 
-const Example = (props) => {
+const Example = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
 
   return (
     <div>
-      <Navbar color="light" light expand="md">
+      <Navbar id="header_navbar" color="light" light expand="md">
         <Link href="/" passHref>
           <NavLink className="font-weight-bold">Home</NavLink>
         </Link>
@@ -23,7 +23,7 @@ const Example = (props) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <Link href="/search" passHref>
-              <NavLink>Search</NavLink>
+              <NavLink className="active">Search</NavLink>
             </Link>
           </Nav>
         </Collapse>

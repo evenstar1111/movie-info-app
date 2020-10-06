@@ -30,6 +30,26 @@ div.card-img-top {
   height: 330px;
 }
 
+#header_navbar {
+  padding: 0.5rem 0;
+}
+
+.nav-link.active {
+  background-color: #555;
+  color: #ddd !important;
+}
+
+.navbar-nav .nav-link {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+@media (min-width: 768px) {
+  .navbar-nav .nav-link {
+    padding: 8px;
+  }
+}
+
 @media (max-width: 450px) {
   img {
     width: 100%;

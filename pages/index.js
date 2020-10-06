@@ -1,28 +1,40 @@
-import { useRouter } from 'next/router';
-import { Container, Row } from 'reactstrap';
 import MovieCard from '../components/movie_card';
-import { discoverMovies } from '../actions/search';
 import Loading from '../components/loadingMsg';
 import Pagination from '../components/pagination';
+import {
+  discoverMovies,
+  getFromLocalStorage,
+  storeInLocalStorage,
+} from '../actions/search';
 import { useEffect, useState } from 'react';
+import { Container, Row } from 'reactstrap';
 
 export default function Home() {
-  const router = useRouter();
   const [movies, setMovies] = useState();
+
+  const discoveredMovies = getFromLocalStorage('movies_dis');
 
   useEffect(() => {
     async function loadMovies() {
       const data = await discoverMovies();
       setMovies(data);
+      storeInLocalStorage('movies_dis', data);
     }
-
-    loadMovies();
-    router.prefetch('/search');
+    if (!discoveredMovies) {
+      loadMovies();
+    } else {
+      setMovies(discoveredMovies);
+    }
   }, []);
 
   const changePage = async (page) => {
-    const data = await discoverMovies(page);
-    setMovies(data);
+    if (!getFromLocalStorage(`movies_p${page}`)) {
+      const data = await discoverMovies(page);
+      setMovies(data);
+      storeInLocalStorage(`movies_p${page}`, data);
+    } else {
+      setMovies(getFromLocalStorage(`movies_p${page}`));
+    }
   };
 
   return (
