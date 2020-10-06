@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState } from 'react';
 import MovieCard from '../components/movie_card';
 import {
   Container,
@@ -9,14 +9,11 @@ import {
   Label,
   Button,
   Collapse,
-  ButtonToggle,
 } from 'reactstrap';
 
 import styles from '../styles/search_bar.module.scss';
 import {
   searchMovies,
-  setCookie,
-  getCookie,
   storeMovies,
   getLocalMovies,
 } from '../actions/search';
@@ -24,7 +21,7 @@ import {
 export default function Search() {
   const [movies, setMovies] = useState(getLocalMovies('movies'));
   const [input, setInput] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const toggle = () => setIsOpen(!isOpen);
 

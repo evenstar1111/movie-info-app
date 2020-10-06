@@ -37,9 +37,13 @@ export default function MovieInfo() {
 
   useEffect(() => {
     async function callLocalApi() {
-      const data = await findMovieDetail(slug[0]);
-      setMovie(data);
-      console.log(data);
+      if (slug[0]) {
+        const data = await findMovieDetail(slug[0]);
+        setMovie(data);
+        console.log(data);
+      } else {
+        return;
+      }
     }
 
     callLocalApi();
