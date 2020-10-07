@@ -38,27 +38,22 @@ export const findMovieDetail = async (movie_id) => {
   }
 };
 
-export function setCookie(key, value) {
-  if (process.browser) cookies.set(key, value, { expires: 7 });
-}
+//post request handlers
+export const fetchPostReq = async (url, objData) => {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(objData),
+  });
 
-export function getCookie(key) {
-  if (process.browser) {
-    return cookies.get(key);
+  if (!response.ok) {
+    return {
+      error: response.statusText,
+    };
   }
-}
 
-export function removeCookie(key) {
-  if (process.browser) cookies.remove(key);
-}
-
-export const storeInLocalStorage = (key, value) => {
-  if (process.browser)
-    localStorage.setItem(key, JSON.stringify(value));
-};
-
-export const getFromLocalStorage = (key) => {
-  if (process.browser) {
-    return JSON.parse(localStorage.getItem(key));
-  }
+  const data = await response.json();
+  return data;
 };

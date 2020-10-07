@@ -51,5 +51,6 @@ export default function Header() {
 
 const pages = [
   { name: 'Movies', path: '/movies' },
+  { name: 'Tvs', path: '/tvs' },
   { name: 'Search', path: '/search' },
 ];

@@ -2,26 +2,35 @@ import MovieCard from '../components/movie_card';
 import Loading from '../components/loadingMsg';
 import Pagination from '../components/pagination';
 import {
-  discoverMovies,
   getFromLocalStorage,
   storeInLocalStorage,
-} from '../actions/search';
+} from '../actions/localStorageHelpers';
+import { fetchPostReq } from '../actions/search';
 import { useEffect, useState } from 'react';
 import { Container, Row } from 'reactstrap';
 
-export default function Home() {
+export default function Movies() {
   const [movies, setMovies] = useState();
-
   const discoveredMovies = getFromLocalStorage('movies_dis');
 
-  useEffect(() => {
-    async function loadMovies() {
-      const data = await discoverMovies();
-      setMovies(data);
-      storeInLocalStorage('movies_dis', data);
+  const loadMovies = async (url, objData, locName) => {
+    const data = await fetchPostReq(url, objData);
+    if (data.error) {
+      return console.error(data, 'this is coming from the movies');
     }
+    setMovies(data);
+    locName.map((lname) => storeInLocalStorage(lname, data));
+  };
+
+  useEffect(() => {
     if (!discoveredMovies) {
-      loadMovies();
+      loadMovies(
+        '/api/discover/movies',
+        {
+          type: 'movie',
+        },
+        ['movies_dis']
+      );
     } else {
       setMovies(discoveredMovies);
     }
@@ -29,11 +38,13 @@ export default function Home() {
 
   const changePage = async (page) => {
     if (!getFromLocalStorage(`movies_p${page}`)) {
-      const data = await discoverMovies(page);
-      setMovies(data);
-      storeInLocalStorage(`movies_p${page}`, data);
+      loadMovies(
+        '/api/discover/movies',
+        { type: 'movie', pg: `${page}` },
+        ['movies_dis', `movies_dis${page}`]
+      );
     } else {
-      setMovies(getFromLocalStorage(`movies_p${page}`));
+      setMovies(getFromLocalStorage(`movies_dis${page}`));
     }
   };
 
