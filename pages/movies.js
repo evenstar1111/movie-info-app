@@ -1,6 +1,7 @@
 import MovieCard from '../components/movie_card';
 import Loading from '../components/loadingMsg';
 import Pagination from '../components/pagination';
+import Layout from '../components/layout';
 import {
   getFromLocalStorage,
   storeInLocalStorage,
@@ -49,15 +50,17 @@ export default function Movies() {
   };
 
   return (
-    <Container className="mt-2" fluid>
-      <Row className="justify-content-center" noGutters>
-        {movies ? (
-          movies.results && <MovieCard movies={movies.results} />
-        ) : (
-          <Loading />
-        )}
-      </Row>
-      <Pagination movies={movies} handleClick={changePage} />
-    </Container>
+    <Layout>
+      <Container className="mt-2" fluid>
+        <Row className="justify-content-center" noGutters>
+          {movies ? (
+            movies.results && <MovieCard movies={movies.results} />
+          ) : (
+            <Loading />
+          )}
+        </Row>
+        <Pagination movies={movies} handleClick={changePage} />
+      </Container>
+    </Layout>
   );
 }

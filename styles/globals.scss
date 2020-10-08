@@ -31,7 +31,10 @@ div.card-img-top {
 
 #header_navbar {
   padding: 0.5rem 0;
-  background-color: #e4ad09 !important;
+
+  .navbar-brand {
+    cursor: pointer;
+  }
 
   h1 {
     margin-bottom: 0;
@@ -40,19 +43,34 @@ div.card-img-top {
   }
 }
 
-.nav-link.active {
-  background-color: #555;
-  color: #ddd !important;
+.nav-link {
+  transition: 0.3s;
+
+  &:hover {
+    background: #ddd;
+  }
+  &.active {
+    background: rgb(36, 137, 212);
+    background: linear-gradient(
+      0deg,
+      rgba(36, 137, 212, 1) 24%,
+      rgba(76, 158, 205, 1) 79%,
+      rgba(108, 175, 200, 1) 100%
+    );
+    color: #eee !important;
+  }
+
+  @media screen and(min-width: 768px) {
+    border-radius: 5px;
+    margin-right: 10px;
+  }
 }
 
 .navbar-nav .nav-link {
   padding-right: 16px;
   padding-left: 16px;
-}
-
-@media (min-width: 768px) {
-  .navbar-nav .nav-link {
-    padding: 8px;
+  @media (min-width: 768px) {
+    padding: 8px 16px !important;
   }
 }
 

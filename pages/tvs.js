@@ -2,6 +2,7 @@ import MovieCard from '../components/movie_card';
 import Loading from '../components/loadingMsg';
 import Error from '../components/error';
 import Pagination from '../components/pagination';
+import Layout from '../components/layout';
 import {
   getFromLocalStorage,
   storeInLocalStorage,
@@ -19,6 +20,7 @@ export default class Tvs extends React.Component {
     };
 
     this.loadTvs = this.loadTvs.bind(this);
+    this.changePage = this.changePage.bind(this);
   }
 
   async loadTvs(url, objData, locName) {
@@ -39,7 +41,9 @@ export default class Tvs extends React.Component {
         `tvs_dis${page}`,
       ]);
     } else {
-      this.setState({ tvs: getFromLocalStorage(`tvs_dis${page}`) });
+      this.setState((state) => ({
+        tvs: getFromLocalStorage(`tvs_dis${page}`),
+      }));
     }
   }
 
@@ -66,7 +70,7 @@ export default class Tvs extends React.Component {
     );
 
     return (
-      <>
+      <Layout>
         <Container className="mt-2" fluid>
           <Row className="justify-content-center" noGutters>
             {loadingMsg}
@@ -75,7 +79,7 @@ export default class Tvs extends React.Component {
           </Row>
           {dynamicPages}
         </Container>
-      </>
+      </Layout>
     );
   }
 }

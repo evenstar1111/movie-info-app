@@ -3,7 +3,7 @@ export default function Pagination({ movies, handleClick }) {
     ? movies.total_pages && (
         <nav aria-label="Page navigation example" className="py-4">
           <ul className="pagination justify-content-center flex-wrap">
-            {Array(20)
+            {Array(movies.total_pages > 20 ? 20 : movies.total_pages)
               .fill(0)
               .map((item, index) => (
                 <li

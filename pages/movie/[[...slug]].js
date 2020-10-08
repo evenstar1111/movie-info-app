@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { findMovieDetail } from '../../actions/search';
+import { fetchPostReq } from '../../actions/search';
 import Loading from '../../components/loadingMsg';
 import { Container, Col, Row } from 'reactstrap';
 import { image_base } from '../../config_file';
 
 export default function MovieInfo() {
+  const router = useRouter();
   const [movie, setMovie] = useState();
   const { query } = useRouter();
   const { slug } = query;
@@ -25,6 +26,13 @@ export default function MovieInfo() {
         </p>
         <p className="small">Release :&nbsp; {movie.release_date}</p>
         <p className="small">Rating :&nbsp; {movie.vote_average}/10</p>
+        <button className="btn btn-sm btn-warning mr-4">imdb</button>
+        <button
+          className="btn btn-sm btn-secondary"
+          onClick={() => router.back()}
+        >
+          back
+        </button>
       </Col>
     </Row>
   );
@@ -34,7 +42,11 @@ export default function MovieInfo() {
   useEffect(() => {
     async function callLocalApi() {
       if (slug) {
-        const data = await findMovieDetail(slug[0]);
+        const data = await fetchPostReq('/api/movie', { m_id: slug[0] });
+        if (data.error) {
+          return console.error(data.error);
+        }
+        console.log(data);
         setMovie(data);
       } else {
         return;

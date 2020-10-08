@@ -1,6 +1,7 @@
 import { Fragment, useState, useEffect } from 'react';
 import MovieCard from '../components/movie_card';
 import Loading from '../components/loadingMsg';
+import Layout from '../components/layout';
 import {
   storeInLocalStorage,
   getFromLocalStorage,
@@ -151,7 +152,7 @@ export default function Search() {
   );
 
   return (
-    <Fragment>
+    <Layout>
       {searchBar}
       {!loading && (
         <Container className="mt-2" fluid>
@@ -164,7 +165,7 @@ export default function Search() {
           </Row>
         </Container>
       )}
-    </Fragment>
+    </Layout>
   );
 }
 

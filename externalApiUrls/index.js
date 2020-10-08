@@ -21,3 +21,7 @@ export const searchUrl = (type, kw, key) => {
     kw ? kw : ''
   }&page=1&include_adult=false`;
 };
+
+export const movieDetUrl = (m_id, key) => {
+  return `https://api.themoviedb.org/3/movie/${m_id ? m_id : ''}?${key}`;
+};
