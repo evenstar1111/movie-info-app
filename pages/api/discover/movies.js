@@ -13,7 +13,6 @@ export default async (req, res) => {
       });
     }
     const data = await response.json();
-    console.log(data);
     res.json(JSON.stringify(data));
   } else {
     return res.status(403).json({ error: 'only POST req accepted' });

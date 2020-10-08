@@ -1,13 +1,11 @@
-import { Fragment, useState, useEffect } from 'react';
 import MovieCard from '../components/movie_card';
 import Loading from '../components/loadingMsg';
 import Layout from '../components/layout';
 import {
-  storeInLocalStorage,
-  getFromLocalStorage,
+  storeInsSessionStorage,
+  getFromSessionStorage,
 } from '../actions/localStorageHelpers';
 import { fetchPostReq } from '../actions/search';
-import fetch from 'isomorphic-fetch';
 import {
   Container,
   Row,
@@ -19,154 +17,177 @@ import {
 } from 'reactstrap';
 import styles from '../styles/search_bar.module.scss';
 
-export default function Search() {
-  const [isOpen, setIsOpen] = useState(true);
-  const [values, setValues] = useState({
-    type: '',
-    kw: '',
-    movies: '',
-    loading: false,
-    error: false,
-    message: '',
-  });
-
-  const { type, kw, movies, loading, error, message } = values;
-
-  const setFormValue = (name, e) => {
-    setValues({ ...values, error: false, [name]: e.target.value });
-    storeInLocalStorage(`${name}`, e.target.value);
+export default class Search extends React.Component {
+  state = {
+    isOpen: true,
+    values: {
+      type: '',
+      kw: '',
+      movies: '',
+      loading: false,
+      error: false,
+      message: '',
+    },
   };
 
-  // useEffect(() => {
-  //   let storedResult, searchedTerm, searchedType;
-  //   function useDataFromLocalStorage() {
-  //     const storedResult = getFromLocalStorage('movies_sch');
-  //     const searchedTerm = getFromLocalStorage('kw');
-  //     const searchedType = getFromLocalStorage('type');
-  //     return { storedResult, searchedTerm, searchedType } && true;
-  //   }
-  //   if (useDataFromLocalStorage()) {
-  //     setValues({
-  //       ...values,
-  //       movies: storedResult,
-  //       type: searchedType,
-  //       kw: searchedTerm,
-  //     });
-  //   }
-  //   // if (!kw && searchedTerm) {
-  //   //   setValues({ ...values, kw: searchedTerm });
-  //   // }
-  //   // if (!type && searchedType) {
-  //   //   setValues({ ...values, type: searchedType });
-  //   // }
-  // }, []);
+  setFormInputValue = (name, e) => {
+    this.setState({
+      values: {
+        ...this.state.values,
+        error: false,
+        [name]: e.target.value,
+      },
+    });
+  };
 
-  const handleSubmit = async (e) => {
+  closeErrorMsg = () => {
+    this.setState({ values: { ...this.state.values, error: false } });
+  };
+
+  handleSubmit = async (e) => {
+    this.setState({ values: { ...this.state.values, loading: true } });
+    e.target.onSubmit = () => false;
+    const { type, kw } = this.state.values;
     try {
       e.preventDefault();
-      setValues({ ...values, loading: true });
       const objData = { type: type, kw: kw };
       const data = await fetchPostReq('/api/search', objData);
       if (data.error) {
-        return setValues({
-          ...values,
-          error: true,
-          message: data.error,
-          loading: false,
+        return this.setState({
+          values: {
+            ...this.state.values,
+            error: true,
+            message: data.error,
+            loading: false,
+          },
         });
       }
-      setValues({ ...values, loading: false, movies: data });
-      storeInLocalStorage('movies_sch', data);
+      this.setState({
+        values: { ...this.state.values, loading: false, movies: data },
+      });
+      storeInsSessionStorage('search_result', data);
+      storeInsSessionStorage('type', type);
+      storeInsSessionStorage('kw', kw);
     } catch (e) {
       return console.log(e.message);
     }
   };
 
-  const searchBar = (
-    <Container className={`${styles.srch_wpr} py-2`} fluid>
-      <div
-        id="search_page_collapse"
-        className={`${styles._collapse} collapse show`}
-      >
-        <div className="container-sm">
-          <Form onSubmit={handleSubmit}>
-            <FormGroup>
-              <Label htmlFor="search_fld" className="sr-only">
-                Search Movies
-              </Label>
-              <Input
-                id="search_fld"
-                className="form-control"
-                value={kw}
-                placeholder="search movies by title"
-                onChange={(e) => setFormValue('kw', e)}
-              />
-            </FormGroup>
-            <div className="form-row">
-              <div className="form-group col-5 col-sm-3">
-                <label htmlFor="type_select" className="sr-only">
-                  Select a Scope
-                </label>
-                <select
-                  className="custom-select custom-select-sm"
-                  id="type_select"
-                  value={type}
-                  onChange={(e) => setFormValue('type', e)}
-                >
-                  <option value="movie">movie</option>
-                  <option value="tv">tv</option>
-                  <option value="person">person</option>
-                  <option value="collection">collection</option>
-                  <option value="multi">multi</option>
-                </select>
+  componentDidMount() {
+    const storedResult = getFromSessionStorage('search_result');
+    const searchedTerm = getFromSessionStorage('kw');
+    const searchedType = getFromSessionStorage('type');
+
+    if (storedResult) {
+      this.setState({
+        values: {
+          ...this.state.values,
+          movies: storedResult,
+          type: searchedType,
+          kw: searchedTerm,
+        },
+      });
+    }
+  }
+
+  render() {
+    const {
+      movies,
+      loading,
+      error,
+      message,
+      kw,
+      type,
+    } = this.state.values;
+
+    const formDisabled = loading ? true : false;
+    const searchBar = (
+      <Container className={`${styles.srch_wpr} py-2`} fluid>
+        <div
+          id="search_page_collapse"
+          className={`${styles._collapse} collapse show`}
+        >
+          <div className="container-sm">
+            <Form onSubmit={this.handleSubmit} disabled={formDisabled}>
+              <FormGroup>
+                <Label htmlFor="search_fld" className="sr-only">
+                  Search Movies
+                </Label>
+                <Input
+                  id="search_fld"
+                  className="form-control"
+                  value={kw}
+                  placeholder="search movies by title"
+                  onChange={(e) => this.setFormInputValue('kw', e)}
+                />
+              </FormGroup>
+              <div className="form-row">
+                <div className="form-group col-5 col-sm-3">
+                  <label htmlFor="type_select" className="sr-only">
+                    Select a Scope
+                  </label>
+                  <select
+                    className="custom-select custom-select-sm"
+                    id="type_select"
+                    value={type}
+                    onChange={(e) => this.setFormInputValue('type', e)}
+                  >
+                    <option value="movie">movie</option>
+                    <option value="tv">tv</option>
+                    <option value="person">person</option>
+                    <option value="collection">collection</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            <Button className="btn-warning">Search Movies</Button>
-          </Form>
+              <Button className="btn-warning">SEARCH</Button>
+            </Form>
+          </div>
         </div>
+        <Button
+          block
+          className={`${styles._button} btn-sm`}
+          color="secondary"
+          onClick={() => collapse_searchbar(this.state.isOpen)}
+        >
+          {this.state.isOpen ? <span>&#9651;</span> : <span>&#9661;</span>}
+        </Button>
+      </Container>
+    );
+
+    const loadingComp = loading && <Loading />;
+    const errorComp = error && (
+      <div className="alert alert-danger" role="alert">
+        {message}
+        <button
+          type="button"
+          className="close mb-3"
+          aria-label="Close"
+          onClick={this.closeErrorMsg}
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      <Button
-        block
-        className={`${styles._button} btn-sm`}
-        color="secondary"
-        onClick={() => collapse_searchbar(isOpen, setIsOpen)}
-      >
-        {isOpen ? <span>&#9651;</span> : <span>&#9661;</span>}
-      </Button>
-    </Container>
-  );
+    );
 
-  const loadingComp = loading && <Loading />;
-  const errorComp = error && (
-    <div className="alert alert-danger" role="alert">
-      {message}
-      <button
-        type="button"
-        className="close mb-3"
-        aria-label="Close"
-        onClick={() => setValues({ ...values, error: false })}
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-  );
-
-  return (
-    <Layout>
-      {searchBar}
-      {!loading && (
-        <Container className="mt-2" fluid>
-          {loadingComp}
-          {errorComp}
-          <Row className="justify-content-center" noGutters>
-            {movies
-              ? movies.results && <MovieCard movies={movies.results} />
-              : ''}
-          </Row>
-        </Container>
-      )}
-    </Layout>
-  );
+    return (
+      <Layout>
+        {searchBar}
+        {!loading && (
+          <Container className="mt-2" fluid>
+            {loadingComp}
+            {errorComp}
+            <Row className="justify-content-center" noGutters>
+              {movies
+                ? movies.results && (
+                    <MovieCard movies={movies.results} type={type} />
+                  )
+                : ''}
+            </Row>
+          </Container>
+        )}
+      </Layout>
+    );
+  }
 }
 
 function collapse_searchbar(isOpen, setIsOpen) {
@@ -174,5 +195,5 @@ function collapse_searchbar(isOpen, setIsOpen) {
   if (collapse.style.height === '0px') {
     collapse.style.height = '14rem';
   } else collapse.style.height = 0;
-  setIsOpen(!isOpen);
+  isOpen = !isOpen;
 }

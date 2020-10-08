@@ -1,10 +1,17 @@
 import { Fragment } from 'react';
-import { Jumbotron, Col, Card, CardImg, CardBody } from 'reactstrap';
-import { image_base } from '../config_file';
+import {
+  Jumbotron,
+  Col,
+  Card,
+  CardImg,
+  CardBody,
+  Button,
+} from 'reactstrap';
+import { image_base } from '../config';
 import DummyPoster from '../components/dummyPoster';
 import { useRouter } from 'next/router';
 
-export default function MovieCard({ movies }) {
+export default function MovieCard({ movies, type }) {
   const { push } = useRouter();
   const cards =
     movies &&
@@ -21,11 +28,10 @@ export default function MovieCard({ movies }) {
 
       const vote = movie.vote_count ? `vote : ${movie.vote_count}` : null;
 
-      const known_for = movie.known_for
-        ? movie.known_for[0].title
-          ? `known-for : ${movie.known_for[0].title}`
-          : null
-        : null;
+      const known_for =
+        movie.known_for &&
+        movie.known_for[0] &&
+        `Known_for: ${movie.known_for[0].title}`;
 
       const rating = movie.vote_average
         ? `rating : ${movie.vote_average}`
@@ -33,15 +39,32 @@ export default function MovieCard({ movies }) {
 
       return (
         <Col key={movie.id} className="col-auto col-sm-auto mb-2">
-          <Card onClick={() => push(`/movie/${movie.id}`)}>
+          <Card>
             {poster ? <CardImg top src={`${poster}`} /> : <DummyPoster />}
             <CardBody>
               {title && <p className="text-muted small mb-0">{title}</p>}
-              {known_for && (
-                <p className="text-muted small mb-0">{known_for}</p>
-              )}
+
               {vote && <p className="small mb-0">{vote}</p>}
               {rating && <p className="small mb-0">{rating}/10</p>}
+              {known_for && <p className="small mb-0">{known_for}</p>}
+              {type === 'movie' && (
+                <GotoDetails
+                  handleClick={() => push(`/movie/${movie.id}`)}
+                />
+              )}
+              {type === 'tv' && (
+                <GotoDetails handleClick={() => push(`/tv/${movie.id}`)} />
+              )}
+              {type === 'person' && (
+                <GotoDetails
+                  handleClick={() => push(`/person/${movie.id}`)}
+                />
+              )}
+              {type === 'collection' && (
+                <GotoDetails
+                  handleClick={() => push(`/collection/${movie.id}`)}
+                />
+              )}
             </CardBody>
           </Card>
         </Col>
@@ -58,5 +81,19 @@ export default function MovieCard({ movies }) {
       {cards}
       {notFound}
     </Fragment>
+  );
+}
+
+function GotoDetails({ handleClick }) {
+  return (
+    <>
+      <Button
+        color="primary"
+        className="btn btn-sm btn-block mt-2"
+        onClick={handleClick}
+      >
+        VIEW DETAILS
+      </Button>
+    </>
   );
 }

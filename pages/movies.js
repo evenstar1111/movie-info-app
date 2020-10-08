@@ -3,8 +3,8 @@ import Loading from '../components/loadingMsg';
 import Pagination from '../components/pagination';
 import Layout from '../components/layout';
 import {
-  getFromLocalStorage,
-  storeInLocalStorage,
+  getFromSessionStorage,
+  storeInsSessionStorage,
 } from '../actions/localStorageHelpers';
 import { fetchPostReq } from '../actions/search';
 import { useEffect, useState } from 'react';
@@ -12,7 +12,8 @@ import { Container, Row } from 'reactstrap';
 
 export default function Movies() {
   const [movies, setMovies] = useState();
-  const discoveredMovies = getFromLocalStorage('movies_dis');
+  const discoveredMovies = getFromSessionStorage('movies_dis');
+  const type = 'movie';
 
   const loadMovies = async (url, objData, locName) => {
     const data = await fetchPostReq(url, objData);
@@ -20,7 +21,7 @@ export default function Movies() {
       return console.error(data, 'this is coming from the movies');
     }
     setMovies(data);
-    locName.map((lname) => storeInLocalStorage(lname, data));
+    locName.map((lname) => storeInsSessionStorage(lname, data));
   };
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export default function Movies() {
       loadMovies(
         '/api/discover/movies',
         {
-          type: 'movie',
+          type: type,
         },
         ['movies_dis']
       );
@@ -38,14 +39,13 @@ export default function Movies() {
   }, []);
 
   const changePage = async (page) => {
-    if (!getFromLocalStorage(`movies_p${page}`)) {
-      loadMovies(
-        '/api/discover/movies',
-        { type: 'movie', pg: `${page}` },
-        ['movies_dis', `movies_dis${page}`]
-      );
+    if (!getFromSessionStorage(`movies_p${page}`)) {
+      loadMovies('/api/discover/movies', { type: type, pg: `${page}` }, [
+        'movies_dis',
+        `movies_dis${page}`,
+      ]);
     } else {
-      setMovies(getFromLocalStorage(`movies_dis${page}`));
+      setMovies(getFromSessionStorage(`movies_dis${page}`));
     }
   };
 
@@ -54,7 +54,9 @@ export default function Movies() {
       <Container className="mt-2" fluid>
         <Row className="justify-content-center" noGutters>
           {movies ? (
-            movies.results && <MovieCard movies={movies.results} />
+            movies.results && (
+              <MovieCard movies={movies.results} type="movie" />
+            )
           ) : (
             <Loading />
           )}

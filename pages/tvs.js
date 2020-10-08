@@ -4,8 +4,8 @@ import Error from '../components/error';
 import Pagination from '../components/pagination';
 import Layout from '../components/layout';
 import {
-  getFromLocalStorage,
-  storeInLocalStorage,
+  getFromSessionStorage,
+  storeInsSessionStorage,
 } from '../actions/localStorageHelpers';
 import { fetchPostReq } from '../actions/search';
 import { Container, Row } from 'reactstrap';
@@ -26,34 +26,34 @@ export default class Tvs extends React.Component {
   async loadTvs(url, objData, locName) {
     const data = await fetchPostReq(url, objData);
     if (data.error) {
-      return this.setState(() => ({ error: data.error }));
+      return this.setState({ error: data.error });
     }
-    this.setState((state) => ({
+    this.setState({
       tvs: data,
-    }));
-    locName.map((lname) => storeInLocalStorage(lname, data));
+    });
+    locName.map((lname) => storeInsSessionStorage(lname, data));
   }
 
   changePage(page) {
-    if (!getFromLocalStorage(`tvs_dis${page}`)) {
+    if (!getFromSessionStorage(`tvs_dis${page}`)) {
       this.loadTvs('/api/discover/tvs', { type: 'tv', pg: page }, [
         'tvs_dis',
         `tvs_dis${page}`,
       ]);
     } else {
-      this.setState((state) => ({
-        tvs: getFromLocalStorage(`tvs_dis${page}`),
-      }));
+      this.setState({
+        tvs: getFromSessionStorage(`tvs_dis${page}`),
+      });
     }
   }
 
   componentDidMount() {
-    if (!discoveredTvs) {
+    if (!getFromSessionStorage('tvs_dis')) {
       this.loadTvs('/api/discover/tvs', { type: 'tv' }, ['tvs_dis']);
     } else {
-      this.setState({ tvs: discoveredTvs });
+      this.setState({ tvs: getFromSessionStorage('tvs_dis') });
     }
-    this.setState(() => ({ loading: false }));
+    this.setState({ loading: false });
   }
 
   render() {
@@ -62,7 +62,7 @@ export default class Tvs extends React.Component {
     const loadingMsg = loading && <Loading />;
     const ErrorMsg = error && <Error error={error} />;
     const tvsRender = tvs && tvs.results && (
-      <MovieCard movies={tvs.results} />
+      <MovieCard movies={tvs.results} type="tv" />
     );
 
     const dynamicPages = tvs && (
@@ -84,4 +84,4 @@ export default class Tvs extends React.Component {
   }
 }
 
-const discoveredTvs = getFromLocalStorage('tvs_dis');
+const discoveredTvs = getFromSessionStorage('tvs_dis');
