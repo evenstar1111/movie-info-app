@@ -53,4 +53,5 @@ const pages = [
   { name: 'Movies', path: '/movies' },
   { name: 'Tvs', path: '/tvs' },
   { name: 'Search', path: '/search' },
+  { name: 'About', path: '/about' },
 ];
