@@ -15,7 +15,9 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
-  const toggle = () => setIsOpen(!isOpen);
+  const toggle = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <nav className="sticky-top">
