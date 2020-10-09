@@ -5,7 +5,7 @@ import { tvDetUrl } from '../../externalApiUrls/index';
 import { KEY } from '../../config';
 import Loading from '../../components/loadingMsg';
 import { Container, Jumbotron, Col, Row } from 'reactstrap';
-import { image_base } from '../../config';
+import { image_base_lg } from '../../config';
 
 export default function PersonInfo({ details }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -17,7 +17,11 @@ export default function PersonInfo({ details }) {
   const overview =
     details.overview.length > 300 ? (
       <>
-        {isExpanded ? details.overview : details.overview.substr(0, 300)}
+        {isExpanded ? (
+          details.overview
+        ) : (
+          <span>{details.overview.substr(0, 300)}...</span>
+        )}
 
         <a
           role="button"
@@ -33,10 +37,14 @@ export default function PersonInfo({ details }) {
 
   const info = (
     <Jumbotron className="text-dark bg-light">
-      <Row className="flex-column flex-sm-row align-items-center align-items-sm-start">
-        <Col className="col-auto mb-3  mb-sm-0">
+      <Row className="flex-column flex-md-row align-items-center align-items-md-start">
+        <Col className="col-9 col-md-auto mb-3  mb-md-0">
           {details.poster_path && (
-            <img src={`${image_base}${details.poster_path}`} alt="" />
+            <img
+              src={`${image_base_lg}${details.poster_path}`}
+              alt=""
+              className="w-100"
+            />
           )}
         </Col>
         <Col>

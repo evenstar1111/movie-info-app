@@ -9,6 +9,7 @@ import {
 import { fetchPostReq } from '../actions/search';
 import { useEffect, useState } from 'react';
 import { Container, Row } from 'reactstrap';
+import Head from 'next/head';
 
 export default function Movies() {
   const [movies, setMovies] = useState();
@@ -51,6 +52,14 @@ export default function Movies() {
 
   return (
     <Layout>
+      <Head>
+        <title>Explore Movies</title>
+        <meta
+          name="description"
+          content="Browse movie details and find more on imdb."
+          key="movie-page"
+        />
+      </Head>
       <Container className="mt-2" fluid>
         <Row className="justify-content-center" noGutters>
           {movies ? (

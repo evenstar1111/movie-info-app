@@ -12,13 +12,13 @@ import {
 } from 'reactstrap';
 
 export default function Header() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <div>
+    <nav className="sticky-top">
       <Navbar id="header_navbar" color="light" light expand="md">
         <NavbarBrand
           style={{ marginLeft: 16 }}
@@ -45,7 +45,7 @@ export default function Header() {
           </Nav>
         </Collapse>
       </Navbar>
-    </div>
+    </nav>
   );
 }
 

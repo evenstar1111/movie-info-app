@@ -9,13 +9,14 @@ import {
 } from '../actions/localStorageHelpers';
 import { fetchPostReq } from '../actions/search';
 import { Container, Row } from 'reactstrap';
+import Head from 'next/head';
 
 export default class Tvs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       tvs: {},
-      loading: true,
+      loading: false,
       error: '',
     };
 
@@ -35,6 +36,7 @@ export default class Tvs extends React.Component {
   }
 
   changePage(page) {
+    this.setState({ loading: true });
     if (!getFromSessionStorage(`tvs_dis${page}`)) {
       this.loadTvs('/api/discover/tvs', { type: 'tv', pg: page }, [
         'tvs_dis',
@@ -45,6 +47,7 @@ export default class Tvs extends React.Component {
         tvs: getFromSessionStorage(`tvs_dis${page}`),
       });
     }
+    this.setState({ loading: false });
   }
 
   componentDidMount() {
@@ -53,7 +56,6 @@ export default class Tvs extends React.Component {
     } else {
       this.setState({ tvs: getFromSessionStorage('tvs_dis') });
     }
-    this.setState({ loading: false });
   }
 
   render() {
@@ -65,19 +67,27 @@ export default class Tvs extends React.Component {
       <MovieCard movies={tvs.results} type="tv" />
     );
 
-    const dynamicPages = tvs && (
+    const pageNumbers = tvs && (
       <Pagination movies={tvs} handleClick={this.changePage} />
     );
 
     return (
       <Layout>
+        <Head>
+          <title>Explore TV Shows</title>
+          <meta
+            name="description"
+            content="browse popular tv shows and get details about them"
+            key="tvs-page"
+          />
+        </Head>
         <Container className="mt-2" fluid>
           <Row className="justify-content-center" noGutters>
             {loadingMsg}
             {ErrorMsg}
             {tvsRender}
           </Row>
-          {dynamicPages}
+          {pageNumbers}
         </Container>
       </Layout>
     );

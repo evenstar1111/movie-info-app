@@ -16,6 +16,7 @@ import {
   Button,
 } from 'reactstrap';
 import styles from '../styles/search_bar.module.scss';
+import Head from 'next/head';
 
 export default class Search extends React.Component {
   state = {
@@ -38,6 +39,10 @@ export default class Search extends React.Component {
         [name]: e.target.value,
       },
     });
+  };
+
+  toggleSearchCollapse = () => {
+    this.setState({ isOpen: !this.state.isOpen });
   };
 
   closeErrorMsg = () => {
@@ -99,13 +104,16 @@ export default class Search extends React.Component {
       kw,
       type,
     } = this.state.values;
+    const { isOpen } = this.state;
 
     const formDisabled = loading ? true : false;
     const searchBar = (
       <Container className={`${styles.srch_wpr} py-2`} fluid>
         <div
           id="search_page_collapse"
-          className={`${styles._collapse} collapse show`}
+          className={`${styles._collapse} collapse ${
+            isOpen ? 'show' : 'hide'
+          }`}
         >
           <div className="container-sm">
             <Form onSubmit={this.handleSubmit} disabled={formDisabled}>
@@ -119,6 +127,7 @@ export default class Search extends React.Component {
                   value={kw}
                   placeholder="search movies by title"
                   onChange={(e) => this.setFormInputValue('kw', e)}
+                  required
                 />
               </FormGroup>
               <div className="form-row">
@@ -139,7 +148,7 @@ export default class Search extends React.Component {
                   </select>
                 </div>
               </div>
-              <Button className="btn-warning">SEARCH</Button>
+              <Button className="btn-warning btn-sm">SEARCH</Button>
             </Form>
           </div>
         </div>
@@ -147,9 +156,9 @@ export default class Search extends React.Component {
           block
           className={`${styles._button} btn-sm`}
           color="secondary"
-          onClick={() => collapse_searchbar(this.state.isOpen)}
+          onClick={() => this.toggleSearchCollapse()}
         >
-          {this.state.isOpen ? <span>&#9651;</span> : <span>&#9661;</span>}
+          {isOpen ? <span>&#9651;</span> : <span>&#9661;</span>}
         </Button>
       </Container>
     );
@@ -171,6 +180,14 @@ export default class Search extends React.Component {
 
     return (
       <Layout>
+        <Head>
+          <title>Search Movies, TVs, Persons & Collections</title>
+          <meta
+            name="description"
+            content="Search your favorite movies, tv shows, people and collection, view overview, biography & more."
+            key="search-page"
+          />
+        </Head>
         {searchBar}
         {!loading && (
           <Container className="mt-2" fluid>
@@ -188,12 +205,4 @@ export default class Search extends React.Component {
       </Layout>
     );
   }
-}
-
-function collapse_searchbar(isOpen) {
-  const collapse = document.getElementById('search_page_collapse');
-  if (collapse.style.height === '0px') {
-    collapse.style.height = '14rem';
-  } else collapse.style.height = 0;
-  isOpen = !isOpen;
 }

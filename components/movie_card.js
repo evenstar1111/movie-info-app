@@ -40,7 +40,19 @@ export default function MovieCard({ movies, type }) {
       return (
         <Col key={movie.id} className="col-auto col-sm-auto mb-2">
           <Card>
-            {poster ? <CardImg top src={`${poster}`} /> : <DummyPoster />}
+            {poster ? (
+              <CardImg
+                top
+                src={`${poster}`}
+                alt={`${
+                  movie.poster_path
+                    ? movie.poster_path.slice(1)
+                    : movie.profile_path.slice(1)
+                } `}
+              />
+            ) : (
+              <DummyPoster />
+            )}
             <CardBody>
               {title && <p className="text-muted small mb-0">{title}</p>}
 

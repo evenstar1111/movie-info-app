@@ -5,7 +5,7 @@ import { personDetUrl } from '../../externalApiUrls/index';
 import { KEY } from '../../config';
 import Loading from '../../components/loadingMsg';
 import { Container, Jumbotron, Col, Row } from 'reactstrap';
-import { image_base, imdb_link_psn } from '../../config';
+import { image_base_lg, imdb_link_psn } from '../../config';
 
 export default function PersonInfo({ details }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -17,7 +17,11 @@ export default function PersonInfo({ details }) {
   const biography =
     details.biography.length > 300 ? (
       <>
-        {isExpanded ? details.biography : details.biography.substr(0, 300)}
+        {isExpanded ? (
+          details.biography
+        ) : (
+          <span>{details.biography.substr(0, 300)}...</span>
+        )}
         <a
           role="button"
           className="text-primary"
@@ -32,9 +36,13 @@ export default function PersonInfo({ details }) {
 
   const info = (
     <Jumbotron className="text-dark bg-light">
-      <Row className="flex-column flex-sm-row align-items-center align-items-sm-start">
-        <Col className="col-auto mb-3  mb-sm-0">
-          <img src={`${image_base}${details.profile_path}`} alt="" />
+      <Row className="flex-column flex-md-row align-items-center align-items-md-start">
+        <Col className="col-9 col-md-auto mb-3  mb-md-0">
+          <img
+            src={`${image_base_lg}${details.profile_path}`}
+            alt=""
+            className="w-100"
+          />
         </Col>
         <Col>
           <Row className="mb-3">
