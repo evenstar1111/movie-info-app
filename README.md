@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Info
 
-This app uses THE MOVIE DATABASE (TMDB) to show movies, tv shows and also enables searching for tvs, movies, persons & collections.
+This app uses THE MOVIE DATABASE API (TMDB API) to show movies, tv shows and also enables searching for tvs, movies, persons & collections.
 
 I just learned basics of next js, and wanted to try out its feature. So, I decided to build this. And the code is not very optimized , well structured and might have mistakes. But I will try to make it better eventually. If suggest any modification that would be great.
 
