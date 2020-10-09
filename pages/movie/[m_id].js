@@ -13,7 +13,11 @@ export default function MovieInfo({ details }) {
   const overview =
     details.overview.length > 300 ? (
       <>
-        {isExpanded ? details.overview : details.overview.substr(0, 300)}
+        {isExpanded ? (
+          details.overview
+        ) : (
+          <span>{details.overview.substr(0, 300)}...</span>
+        )}
         <a
           role="button"
           className="text-primary"
