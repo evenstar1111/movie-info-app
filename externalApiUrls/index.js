@@ -5,7 +5,7 @@ export const discoverUrl = (query_str, key) => {
     type ? type : 'movie'
   }?${key}&language=${lan ? lan : 'en-US'}&page=${pg ? pg : 1}&sort_by=${
     srt ? srt : 'popularity.desc'
-  }&include_adult=true&include_video=&with_cast=${
+  }&include_adult=false&include_video=&with_cast=${
     wcst ? wcst : ''
   }&with_crew=${wcrw ? wcrw : ''}&with_people=${
     wppl ? wppl : ''
@@ -17,7 +17,9 @@ export const discoverUrl = (query_str, key) => {
 export const searchUrl = (type, kw, key) => {
   return `https://api.themoviedb.org/3/search/${
     type ? type : 'movie'
-  }?${key}&language=en-US&query=${kw ? kw : ''}&page=1&include_adult=true`;
+  }?${key}&language=en-US&query=${
+    kw ? kw : ''
+  }&page=1&include_adult=false`;
 };
 
 export const movieDetUrl = (m_id, key) => {

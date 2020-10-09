@@ -1,30 +1,19 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## Info
 
-First, run the development server:
+This app uses THE MOVIE DATABASE (TMDB) to show movies, tv shows and also enables searching for tvs, movies, persons & collections.
 
-```bash
-npm run dev
-# or
-yarn dev
+I just learned basics of next js, and wanted to try out its feature. So, I decided to build this. And the code is not very optimized , well structured and might have mistakes. But I will try to make it better eventually. If suggest any modification that would be great.
+
+#### If you want to use this code, clone it and add '.env.local' file to project root directory and set the 'KEY' Eenvironment Variable. Which should look like -
+
+```
+KEY='api_key=<YOUR API KEY HERE>'
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To get an api key visit [`TMDB`](https://www.themoviedb.org/) and create an acount. For api documentation visit [`TMDB API`](https://developers.themoviedb.org/3/getting-started/introduction)
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Deployment
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This project is deployed to vercel. [`VISIT THE APP`](https://movie-info-app.vercel.app)
