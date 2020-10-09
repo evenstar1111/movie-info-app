@@ -18,7 +18,6 @@ export default function PersonInfo({ details }) {
     details.biography.length > 300 ? (
       <>
         {isExpanded ? details.biography : details.biography.substr(0, 300)}
-        ...
         <a
           role="button"
           className="text-primary"

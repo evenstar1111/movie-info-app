@@ -1,30 +1,30 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { fetchPostReq } from '../../actions/search';
+import { useState } from 'react';
+import fetch from 'isomorphic-fetch';
 import Loading from '../../components/loadingMsg';
 import { Container, Col, Row, Jumbotron } from 'reactstrap';
-import { image_base, imdb_link_tmov } from '../../config';
+import { image_base, imdb_link_tmov, KEY } from '../../config';
+import { movieDetUrl } from '../../externalApiUrls';
 
-export default function MovieInfo() {
+export default function MovieInfo({ details }) {
   const router = useRouter();
-  const { m_id } = router.query;
-  const [details, setDetails] = useState();
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  useEffect(() => {
-    async function callLocalApi() {
-      if (m_id) {
-        const data = await fetchPostReq('/api/movie', { m_id });
-        if (data.error) {
-          return console.error(data.error);
-        }
-        setDetails(data);
-      } else {
-        return;
-      }
-    }
-
-    callLocalApi();
-  }, []);
+  const overview =
+    details.overview.length > 300 ? (
+      <>
+        {isExpanded ? details.overview : details.overview.substr(0, 300)}
+        <a
+          role="button"
+          className="text-primary"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          {isExpanded ? 'less' : 'more'}
+        </a>
+      </>
+    ) : (
+      details.overview
+    );
 
   const info = details && (
     <Jumbotron className="text-dark bg-light">
@@ -37,7 +37,7 @@ export default function MovieInfo() {
             <Col>
               <h2>{details.title}</h2>
               <p>
-                <b>Overview:</b> {details.overview}
+                <b>Overview:</b> {overview}
               </p>
               <p>
                 <b>In Genres:</b>{' '}
@@ -86,4 +86,21 @@ export default function MovieInfo() {
       {loadingCom}
     </Container>
   );
+}
+
+export async function getServerSideProps({ params }) {
+  const { m_id } = params;
+  const response = await fetch(movieDetUrl(m_id, KEY));
+  if (!response.ok) {
+    return res
+      .status(response.status)
+      .json({ error: JSON.stringify(response.url) });
+  }
+  const data = await response.json();
+
+  return {
+    props: {
+      details: data,
+    },
+  };
 }

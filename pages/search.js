@@ -21,7 +21,7 @@ export default class Search extends React.Component {
   state = {
     isOpen: true,
     values: {
-      type: '',
+      type: 'movie',
       kw: '',
       movies: '',
       loading: false,
@@ -46,7 +46,7 @@ export default class Search extends React.Component {
 
   handleSubmit = async (e) => {
     this.setState({ values: { ...this.state.values, loading: true } });
-    e.target.onSubmit = () => false;
+
     const { type, kw } = this.state.values;
     try {
       e.preventDefault();
@@ -82,9 +82,9 @@ export default class Search extends React.Component {
       this.setState({
         values: {
           ...this.state.values,
-          movies: storedResult,
           type: searchedType,
           kw: searchedTerm,
+          movies: storedResult,
         },
       });
     }
@@ -190,7 +190,7 @@ export default class Search extends React.Component {
   }
 }
 
-function collapse_searchbar(isOpen, setIsOpen) {
+function collapse_searchbar(isOpen) {
   const collapse = document.getElementById('search_page_collapse');
   if (collapse.style.height === '0px') {
     collapse.style.height = '14rem';
