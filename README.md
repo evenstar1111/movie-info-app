@@ -12,7 +12,7 @@ If you want to use this code, clone it and add '.env.local' file to project root
 KEY='api_key=<YOUR API KEY HERE>'
 ```
 
-<br /><br /> To get an api key visit [`TMDB`](https://www.themoviedb.org/) and create an acount. For api documentation visit [`TMDB API`](https://developers.themoviedb.org/3/getting-started/introduction)
+<br /> To get an api key visit [`TMDB`](https://www.themoviedb.org/) and create an acount. For api documentation visit [`TMDB API`](https://developers.themoviedb.org/3/getting-started/introduction)
 
 ## Deployment
 
