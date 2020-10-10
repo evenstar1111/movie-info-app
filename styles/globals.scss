@@ -17,6 +17,9 @@ a {
 
 .card {
   width: 250px;
+  box-shadow: 0 2px 5px 0 rgba($color: #000000, $alpha: 0.1),
+    0 3px 8px 0 rgba($color: #000000, $alpha: 0.07),
+    0 5px 12px 0 rgba($color: #000000, $alpha: 0.03);
 }
 
 .card-img,

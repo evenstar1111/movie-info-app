@@ -39,7 +39,7 @@ export default function MovieCard({ movies, type }) {
 
       return (
         <Col key={movie.id} className="col-auto col-sm-auto mb-2">
-          <Card>
+          <Card className="bg-light text-dark">
             {poster ? (
               <CardImg
                 top

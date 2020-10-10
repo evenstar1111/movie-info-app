@@ -1,5 +1,4 @@
 import MovieCard from '../components/movie_card';
-import Loading from '../components/loadingMsg';
 import Layout from '../components/layout';
 import {
   storeInsSessionStorage,
@@ -17,6 +16,7 @@ import {
 } from 'reactstrap';
 import styles from '../styles/search_bar.module.scss';
 import Head from 'next/head';
+import Loading from '../components/loadingMsg';
 
 export default class Search extends React.Component {
   state = {
@@ -25,12 +25,11 @@ export default class Search extends React.Component {
       type: 'movie',
       kw: '',
       movies: '',
-      loading: false,
-      error: false,
+      loading: '',
+      error: '',
       message: '',
     },
   };
-
   setFormInputValue = (name, e) => {
     this.setState({
       values: {
@@ -41,44 +40,48 @@ export default class Search extends React.Component {
     });
   };
 
-  toggleSearchCollapse = () => {
-    this.setState({ isOpen: !this.state.isOpen });
-  };
+  componentDidMount() {
+    this.toggleSearchCollapse = () => {
+      this.setState({ isOpen: !this.state.isOpen });
+    };
 
-  closeErrorMsg = () => {
-    this.setState({ values: { ...this.state.values, error: false } });
-  };
+    this.closeErrorMsg = () => {
+      this.setState({ values: { ...this.state.values, error: false } });
+    };
 
-  handleSubmit = async (e) => {
-    this.setState({ values: { ...this.state.values, loading: true } });
+    this.handleSubmit = async (e) => {
+      this.setState({ values: { ...this.state.values, loading: true } });
 
-    const { type, kw } = this.state.values;
-    try {
-      e.preventDefault();
-      const objData = { type: type, kw: kw };
-      const data = await fetchPostReq('/api/search', objData);
-      if (data.error) {
-        return this.setState({
-          values: {
-            ...this.state.values,
-            error: true,
-            message: data.error,
-            loading: false,
-          },
+      const { type, kw } = this.state.values;
+      try {
+        e.preventDefault();
+        const objData = { type: type, kw: kw };
+        const data = await fetchPostReq('/api/search', objData);
+        if (data.error) {
+          return this.setState({
+            values: {
+              ...this.state.values,
+              error: true,
+              message: data.error,
+              loading: false,
+            },
+          });
+        }
+        this.setState({
+          values: { ...this.state.values, movies: data },
         });
+        storeInsSessionStorage('search_result', data);
+        storeInsSessionStorage('type', type);
+        storeInsSessionStorage('kw', kw);
+      } catch (e) {
+        return console.log(e.message);
       }
       this.setState({
-        values: { ...this.state.values, loading: false, movies: data },
+        values: { ...this.state.values, loading: false },
       });
-      storeInsSessionStorage('search_result', data);
-      storeInsSessionStorage('type', type);
-      storeInsSessionStorage('kw', kw);
-    } catch (e) {
-      return console.log(e.message);
-    }
-  };
+    };
 
-  componentDidMount() {
+    //check from local storage
     const storedResult = getFromSessionStorage('search_result');
     const searchedTerm = getFromSessionStorage('kw');
     const searchedType = getFromSessionStorage('type');
@@ -128,6 +131,7 @@ export default class Search extends React.Component {
                   placeholder="search movies by title"
                   onChange={(e) => this.setFormInputValue('kw', e)}
                   required
+                  autoFocus
                 />
               </FormGroup>
               <div className="form-row">
@@ -189,10 +193,10 @@ export default class Search extends React.Component {
           />
         </Head>
         {searchBar}
+        {loadingComp}
+        {errorComp}
         {!loading && (
           <Container className="mt-2" fluid>
-            {loadingComp}
-            {errorComp}
             <Row className="justify-content-center" noGutters>
               {movies
                 ? movies.results && (

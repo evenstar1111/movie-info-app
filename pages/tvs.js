@@ -16,7 +16,7 @@ export default class Tvs extends React.Component {
     super(props);
     this.state = {
       tvs: {},
-      loading: false,
+      loading: '',
       error: '',
     };
 
@@ -25,6 +25,7 @@ export default class Tvs extends React.Component {
   }
 
   async loadTvs(url, objData, locName) {
+    this.setState({ loading: true });
     const data = await fetchPostReq(url, objData);
     if (data.error) {
       return this.setState({ error: data.error });
@@ -33,10 +34,10 @@ export default class Tvs extends React.Component {
       tvs: data,
     });
     locName.map((lname) => storeInsSessionStorage(lname, data));
+    this.setState({ loading: false });
   }
 
   changePage(page) {
-    this.setState({ loading: true });
     if (!getFromSessionStorage(`tvs_dis${page}`)) {
       this.loadTvs('/api/discover/tvs', { type: 'tv', pg: page }, [
         'tvs_dis',
@@ -47,7 +48,6 @@ export default class Tvs extends React.Component {
         tvs: getFromSessionStorage(`tvs_dis${page}`),
       });
     }
-    this.setState({ loading: false });
   }
 
   componentDidMount() {
