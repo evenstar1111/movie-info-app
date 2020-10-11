@@ -9,9 +9,16 @@ export const discoverUrl = (query_str, key) => {
     wcst ? wcst : ''
   }&with_crew=${wcrw ? wcrw : ''}&with_people=${
     wppl ? wppl : ''
-  }&with_genres=${wgnr ? wgnr : '12'}&without_genres=&with_keywords=${
+  }&with_genres=${wgnr ? wgnr : ''}&without_genres=&with_keywords=${
     wkw ? wkw : ''
   }&without_keywords=`;
+};
+
+export const discoverTvsUrl = (query_str, key) => {
+  const { pg } = query_str;
+  return `https://api.themoviedb.org/3/discover/tv?${key}&language=en-US&sort_by=popularity.desc&page=${
+    pg ? pg : '1'
+  }&timezone=America%2FNew_York&include_null_first_air_dates=false`;
 };
 
 export const searchUrl = (type, kw, key) => {

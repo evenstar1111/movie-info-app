@@ -39,7 +39,7 @@ export default class Tvs extends React.Component {
 
   changePage(page) {
     if (!getFromSessionStorage(`tvs_dis${page}`)) {
-      this.loadTvs('/api/discover/tvs', { type: 'tv', pg: page }, [
+      this.loadTvs('/api/discover/tvs', { pg: page }, [
         'tvs_dis',
         `tvs_dis${page}`,
       ]);
@@ -52,7 +52,7 @@ export default class Tvs extends React.Component {
 
   componentDidMount() {
     if (!getFromSessionStorage('tvs_dis')) {
-      this.loadTvs('/api/discover/tvs', { type: 'tv' }, ['tvs_dis']);
+      this.loadTvs('/api/discover/tvs', { pg: '' }, ['tvs_dis']);
     } else {
       this.setState({ tvs: getFromSessionStorage('tvs_dis') });
     }
