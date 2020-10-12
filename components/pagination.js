@@ -5,16 +5,16 @@ export default function Pagination({ movies, handleClick }) {
   const totalPages = movies && movies.total_pages;
   const currentPage = movies && movies.page;
 
-  const goClickHandler = () => {
-    const page = inputValue;
-    if (page < 1 && page > totalPages) {
+  const goClickHandler = (page) => {
+    if (
+      parseInt(page) < 1 &&
+      parseInt(page) > parseInt(page) &&
+      parseInt(page) === parseInt(currentPage)
+    ) {
       return;
+    } else {
+      handleClick(page);
     }
-    if (page === currentPage) {
-      return;
-    }
-    console.log('accessed');
-    handleClick(page);
   };
 
   const altPagination = movies
@@ -22,9 +22,14 @@ export default function Pagination({ movies, handleClick }) {
         <div className="d-flex justify-content-center mt-2">
           <div className="input-group mb-3" style={{ maxWidth: 300 }}>
             <div className="input-group-prepend">
-              {/* <button className="btn btn-outline-secondary btn-sm">
-                prev
-              </button> */}
+              {currentPage > 1 && (
+                <button
+                  className="btn btn-outline-secondary btn-sm"
+                  onClick={() => goClickHandler(currentPage - 1)}
+                >
+                  prev
+                </button>
+              )}
             </div>
             <input
               type="text"
@@ -39,16 +44,19 @@ export default function Pagination({ movies, handleClick }) {
               <button
                 className="btn btn-outline-secondary btn-sm"
                 type="button"
-                onClick={goClickHandler}
+                onClick={() => goClickHandler(inputValue)}
               >
                 go
               </button>
-              {/* <button
-                className="btn btn-outline-secondary btn-sm"
-                type="button"
-              >
-                next
-              </button> */}
+              {currentPage < totalPages && (
+                <button
+                  className="btn btn-outline-secondary btn-sm"
+                  type="button"
+                  onClick={() => goClickHandler(currentPage + 1)}
+                >
+                  next
+                </button>
+              )}
             </div>
           </div>
         </div>

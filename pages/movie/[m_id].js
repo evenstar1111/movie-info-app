@@ -49,9 +49,7 @@ export default function MovieInfo({ details }) {
               </p>
               <p>
                 <b>In Genres:</b>{' '}
-                {details.genres.map((g) => (
-                  <span key={g.id}>{g.name},&nbsp;</span>
-                ))}
+                {details.genres.map((g) => `${g.name}, `)}
               </p>
               <p>
                 <b>Release Date:</b> {details.release_date}
