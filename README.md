@@ -6,8 +6,6 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 This app uses THE MOVIE DATABASE API (TMDB API) to show movies, tv shows and also enables searching for tvs, movies, persons & collections.
 
-I just learned basics of next js, and wanted to try out it's features. So, I decided to build this simple app. And the code is not very optimized , well structured and might have plenty mistakes. But I will try to make it better eventually.
-
 To use this code, clone it and add '.env.local' file to project root directory and set the 'KEY' Eenvironment Variable. Which should look like - <br /><br />
 
 ```
