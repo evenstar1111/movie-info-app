@@ -24,7 +24,7 @@
       font-size: 35px;
     }
 
-    @media screen and (min-width: 556px) and(max-width: 930px) {
+    @media screen and (min-width: 556px) and (max-width: 930px) {
       font-size: 8vw;
     }
     @media screen and (min-width: 931px) {
@@ -44,13 +44,13 @@
       color: rgb(75, 75, 75);
       text-transform: uppercase;
     }
-    @media screen and(min-width: 615px) {
+    @media screen and (min-width: 615px) {
       button {
         margin-right: 15px;
         padding: 6px 25px;
       }
     }
-    @media screen and(min-width: 899px) {
+    @media screen and (min-width: 899px) {
       margin-top: 50px;
       button {
         margin-right: 20px;

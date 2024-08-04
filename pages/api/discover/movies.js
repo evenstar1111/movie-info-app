@@ -4,6 +4,7 @@ import { KEY } from '../../../config';
 
 export default async (req, res) => {
   if (req.method === 'POST') {
+    console.log('we have the key', KEY)
     const { type, srt, wgnr, pg } = req.body;
     const url = discoverUrl({ type, srt, wgnr, pg }, KEY);
     const response = await fetch(url);
