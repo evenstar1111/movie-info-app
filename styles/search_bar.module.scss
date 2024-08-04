@@ -1,0 +1,31 @@
+.srch_wpr {
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   background: #555;
+}
+
+._collapse {
+   display: flex;
+   width: 100%;
+   overflow: hidden;
+   justify-content: center;
+   align-items: center;
+   transition: all 0.3s ease;
+}
+
+._button {
+   background-color: transparent;
+   border: none;
+   box-shadow: none;
+
+   &:active {
+      box-shadow: none;
+   }
+
+   &:focus {
+      box-shadow: none;
+   }
+}
