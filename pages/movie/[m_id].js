@@ -1,8 +1,9 @@
+import fetch from 'isomorphic-fetch';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import fetch from 'isomorphic-fetch';
+import { Col, Container, Jumbotron, Row } from 'reactstrap';
 import Loading from '../../components/loadingMsg';
-import { Container, Col, Row, Jumbotron } from 'reactstrap';
 import { image_base_lg, imdb_link_tmov, KEY } from '../../config';
 import { movieDetUrl } from '../../externalApiUrls';
 
@@ -26,7 +27,7 @@ export default function MovieInfo({ details }) {
       <Jumbotron className="text-dark bg-light">
          <Row className="flex-column flex-md-row align-items-center align-items-md-start">
             <Col className="col-9 col-md-auto mb-3  mb-md-0">
-               <img src={`${image_base_lg}${details.poster_path}`} alt="" className="w-100" />
+               <Image src={`${image_base_lg}${details.poster_path}`} alt="" className="w-100" />
             </Col>
             <Col>
                <Row className="mb-3">

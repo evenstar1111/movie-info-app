@@ -1,10 +1,11 @@
 import fetch from 'isomorphic-fetch';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { collecDetUrl } from '../../externalApiUrls/index';
-import { KEY, image_base_lg } from '../../config';
+import { Col, Container, Jumbotron, Row } from 'reactstrap';
 import Loading from '../../components/loadingMsg';
-import { Container, Jumbotron, Col, Row } from 'reactstrap';
+import { KEY, image_base_lg } from '../../config';
+import { collecDetUrl } from '../../externalApiUrls/index';
 
 export default function PersonInfo({ details }) {
    const [isExpanded, setIsExpanded] = useState(false);
@@ -30,7 +31,9 @@ export default function PersonInfo({ details }) {
       <Jumbotron className="text-dark bg-light">
          <Row className="flex-column flex-md-row align-items-center align-items-md-start">
             <Col className="col-9 col-md-auto mb-3  mb-md-0">
-               {details.poster_path && <img src={`${image_base_lg}${details.poster_path}`} alt="" className="w-100" />}
+               {details.poster_path && (
+                  <Image src={`${image_base_lg}${details.poster_path}`} alt="" className="w-100" />
+               )}
             </Col>
             <Col>
                <Row className="mb-3">
