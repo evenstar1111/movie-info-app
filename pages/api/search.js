@@ -1,8 +1,8 @@
 import fetch from 'isomorphic-fetch';
-import { searchUrl } from '../../externalApiUrls';
 import { KEY } from '../../config';
+import { searchUrl } from '../../externalApiUrls';
 
-export default async (req, res) => {
+export default async function handler(req, res) {
    if (req.method === 'POST') {
       const { type, kw } = req.body;
       const response = await fetch(searchUrl(type, kw, KEY));
@@ -10,8 +10,8 @@ export default async (req, res) => {
          return res.status(response.status).json({ error: JSON.stringify(response.url) });
       }
       const data = await response.json();
-      res.json(JSON.stringify(data));
+      res.json(data);
    } else {
       return res.status(403).json({ error: 'invalid request, valid: POST' });
    }
-};
+}

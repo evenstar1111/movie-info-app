@@ -1,8 +1,8 @@
 import fetch from 'isomorphic-fetch';
-import { discoverUrl } from '../../../externalApiUrls';
 import { KEY } from '../../../config';
+import { discoverUrl } from '../../../externalApiUrls';
 
-export default async (req, res) => {
+export default async function handler(req, res) {
    if (req.method === 'POST') {
       const { type, srt, wgnr, pg } = req.body;
       const url = discoverUrl({ type, srt, wgnr, pg }, KEY);
@@ -13,8 +13,8 @@ export default async (req, res) => {
          });
       }
       const data = await response.json();
-      res.json(JSON.stringify(data));
+      res.json(data);
    } else {
       return res.status(403).json({ error: 'only POST req accepted' });
    }
-};
+}

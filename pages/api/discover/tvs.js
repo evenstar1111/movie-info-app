@@ -1,8 +1,8 @@
 import fetch from 'isomorphic-fetch';
-import { discoverTvsUrl } from '../../../externalApiUrls';
 import { KEY } from '../../../config';
+import { discoverTvsUrl } from '../../../externalApiUrls';
 
-export default async (req, res) => {
+export default async function handler(req, res) {
    if (req.method === 'POST') {
       const { pg } = req.body;
       const url = discoverTvsUrl({ pg }, KEY);
@@ -13,8 +13,8 @@ export default async (req, res) => {
          });
       }
       const data = await response.json();
-      res.json(JSON.stringify(data));
+      res.json(data);
    } else {
       return res.status(400).json({ error: 'bad request, only post requests are accepted' });
    }
-};
+}
