@@ -1,14 +1,15 @@
-import MovieCard from '../components/movie_card';
-import Loading from '../components/loadingMsg';
-import Error from '../components/error';
-import Pagination from '../components/pagination';
-import Layout from '../components/layout';
+import Head from 'next/head';
+import { Component } from 'react';
+import { Container, Row } from 'reactstrap';
 import { getFromSessionStorage, storeInsSessionStorage } from '../actions/localStorageHelpers';
 import { fetchPostReq } from '../actions/search';
-import { Container, Row } from 'reactstrap';
-import Head from 'next/head';
+import Error from '../components/error';
+import Layout from '../components/layout';
+import Loading from '../components/loadingMsg';
+import MovieCard from '../components/movie_card';
+import Pagination from '../components/pagination';
 
-export default class Tvs extends React.Component {
+export default class Tvs extends Component {
    constructor(props) {
       super(props);
       this.state = {

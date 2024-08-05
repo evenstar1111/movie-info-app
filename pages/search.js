@@ -1,13 +1,14 @@
-import MovieCard from '../components/movie_card';
-import Layout from '../components/layout';
-import { storeInsSessionStorage, getFromSessionStorage } from '../actions/localStorageHelpers';
-import { fetchPostReq } from '../actions/search';
-import { Container, Row, Form, FormGroup, Input, Label, Button } from 'reactstrap';
-import styles from '../styles/search_bar.module.scss';
 import Head from 'next/head';
+import { Component } from 'react';
+import { Button, Container, Form, FormGroup, Input, Label, Row } from 'reactstrap';
+import { getFromSessionStorage, storeInsSessionStorage } from '../actions/localStorageHelpers';
+import { fetchPostReq } from '../actions/search';
+import Layout from '../components/layout';
 import Loading from '../components/loadingMsg';
+import MovieCard from '../components/movie_card';
+import styles from '../styles/search_bar.module.scss';
 
-export default class Search extends React.Component {
+export default class Search extends Component {
    state = {
       isOpen: true,
       values: {

@@ -1,5 +1,6 @@
-import { useRouter } from 'next/router';
 import Head from 'next/head';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 export default function About() {
    const router = useRouter();
@@ -14,7 +15,7 @@ export default function About() {
             <div className="card-body">
                <div className="row">
                   <div className="col-md-4">
-                     <img
+                     <Image
                         src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg"
                         className="card-img"
                         alt="..."

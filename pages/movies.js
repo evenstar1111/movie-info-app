@@ -1,12 +1,12 @@
-import MovieCard from '../components/movie_card';
-import Loading from '../components/loadingMsg';
-import Pagination from '../components/pagination';
-import Layout from '../components/layout';
-import { getFromSessionStorage, storeInsSessionStorage } from '../actions/localStorageHelpers';
-import { fetchPostReq } from '../actions/search';
+import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { Container, Row } from 'reactstrap';
-import Head from 'next/head';
+import { getFromSessionStorage } from '../actions/localStorageHelpers';
+import { fetchPostReq } from '../actions/search';
+import Layout from '../components/layout';
+import Loading from '../components/loadingMsg';
+import MovieCard from '../components/movie_card';
+import Pagination from '../components/pagination';
 
 export default function Movies() {
    const [movies, setMovies] = useState();
@@ -34,6 +34,8 @@ export default function Movies() {
       } else {
          setMovies(discoveredMovies);
       }
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
 
    const changePage = async (page) => {
