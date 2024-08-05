@@ -1,4 +1,3 @@
-import { Container } from 'reactstrap';
 import Header from './header';
 
 export default function Layout({ children }) {

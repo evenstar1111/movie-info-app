@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { Container, Row } from 'reactstrap';
-import { getFromSessionStorage } from '../actions/localStorageHelpers';
+import { getFromSessionStorage, storeInsSessionStorage } from '../actions/localStorageHelpers';
 import { fetchPostReq } from '../actions/search';
 import Layout from '../components/layout';
 import Loading from '../components/loadingMsg';

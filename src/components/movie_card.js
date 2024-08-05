@@ -1,8 +1,8 @@
-import { Fragment } from 'react';
-import { Jumbotron, Col, Card, CardImg, CardBody, Button } from 'reactstrap';
-import { image_base } from '../config';
-import DummyPoster from '../components/dummyPoster';
 import { useRouter } from 'next/router';
+import { Fragment } from 'react';
+import { Button, Card, CardBody, CardImg, Col, Jumbotron } from 'reactstrap';
+import DummyPoster from '../components/dummyPoster';
+import { image_base } from '../config';
 
 export default function MovieCard({ movies, type }) {
    const { push } = useRouter();

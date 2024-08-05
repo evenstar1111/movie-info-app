@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Collapse, Navbar, NavbarToggler, Nav, NavLink, NavbarBrand, NavItem } from 'reactstrap';
+import { useState } from 'react';
+import { Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem } from 'reactstrap';
 
 export default function Header() {
    const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +23,7 @@ export default function Header() {
                   {pages.map((page) => (
                      <NavItem key={page.name}>
                         <Link className={page.path === router.pathname ? 'active' : ''} href={page.path} passHref>
-                        {page.name}
+                           {page.name}
                         </Link>
                      </NavItem>
                   ))}
