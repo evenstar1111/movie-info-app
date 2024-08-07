@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import { Component } from 'react';
 import { Button, Container, Form, FormGroup, Input, Label, Row } from 'reactstrap';
-import { getFromSessionStorage, storeInsSessionStorage } from '../actions/localStorageHelpers';
 import { fetchPostReq } from '../actions/search';
 import Layout from '../components/layout';
 import Loading from '../components/loadingMsg';
@@ -60,9 +59,6 @@ export default class Search extends Component {
             this.setState({
                values: { ...this.state.values, movies: data },
             });
-            storeInsSessionStorage('search_result', data);
-            storeInsSessionStorage('type', type);
-            storeInsSessionStorage('kw', kw);
          } catch (e) {
             return console.log(e.message);
          }
@@ -70,22 +66,6 @@ export default class Search extends Component {
             values: { ...this.state.values, loading: false },
          });
       };
-
-      //check from local storage
-      const storedResult = getFromSessionStorage('search_result');
-      const searchedTerm = getFromSessionStorage('kw');
-      const searchedType = getFromSessionStorage('type');
-
-      if (storedResult) {
-         this.setState({
-            values: {
-               ...this.state.values,
-               type: searchedType,
-               kw: searchedTerm,
-               movies: storedResult,
-            },
-         });
-      }
    }
 
    render() {

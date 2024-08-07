@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { Container, Row } from 'reactstrap';
-import { getFromSessionStorage, storeInsSessionStorage } from '../actions/localStorageHelpers';
 import { fetchPostReq } from '../actions/search';
 import Layout from '../components/layout';
 import Loading from '../components/loadingMsg';
@@ -10,7 +9,6 @@ import Pagination from '../components/pagination';
 
 export default function Movies() {
    const [movies, setMovies] = useState();
-   const discoveredMovies = getFromSessionStorage('movies_dis');
    const type = 'movie';
 
    const loadMovies = async (url, objData, locName) => {
@@ -19,31 +17,20 @@ export default function Movies() {
          return console.error(data, 'this is coming from the movies');
       }
       setMovies(data);
-      locName.map((lname) => storeInsSessionStorage(lname, data));
    };
 
    useEffect(() => {
-      if (!discoveredMovies) {
-         loadMovies(
-            '/api/discover/movies',
-            {
-               type: type,
-            },
-            ['movies_dis']
-         );
-      } else {
-         setMovies(discoveredMovies);
-      }
-
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+      loadMovies(
+         '/api/discover/movies',
+         {
+            type: type,
+         },
+         ['movies_dis']
+      );
    }, []);
 
    const changePage = async (page) => {
-      if (!getFromSessionStorage(`movies_p${page}`)) {
-         loadMovies('/api/discover/movies', { type: type, pg: `${page}` }, ['movies_dis', `movies_dis${page}`]);
-      } else {
-         setMovies(getFromSessionStorage(`movies_dis${page}`));
-      }
+      loadMovies('/api/discover/movies', { type: type, pg: `${page}` }, ['movies_dis', `movies_dis${page}`]);
    };
 
    return (

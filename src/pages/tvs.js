@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import { Component } from 'react';
 import { Container, Row } from 'reactstrap';
-import { getFromSessionStorage, storeInsSessionStorage } from '../actions/localStorageHelpers';
 import { fetchPostReq } from '../actions/search';
 import Error from '../components/error';
 import Layout from '../components/layout';
@@ -22,7 +21,7 @@ export default class Tvs extends Component {
       this.changePage = this.changePage.bind(this);
    }
 
-   async loadTvs(url, objData, locName) {
+   async loadTvs(url, objData) {
       this.setState({ loading: true });
       const data = await fetchPostReq(url, objData);
       if (data.error) {
@@ -31,26 +30,15 @@ export default class Tvs extends Component {
       this.setState({
          tvs: data,
       });
-      locName.map((lname) => storeInsSessionStorage(lname, data));
       this.setState({ loading: false });
    }
 
    changePage(page) {
-      if (!getFromSessionStorage(`tvs_dis${page}`)) {
-         this.loadTvs('/api/discover/tvs', { pg: page }, ['tvs_dis', `tvs_dis${page}`]);
-      } else {
-         this.setState({
-            tvs: getFromSessionStorage(`tvs_dis${page}`),
-         });
-      }
+      this.loadTvs('/api/discover/tvs', { pg: page });
    }
 
    componentDidMount() {
-      if (!getFromSessionStorage('tvs_dis')) {
-         this.loadTvs('/api/discover/tvs', { pg: '' }, ['tvs_dis']);
-      } else {
-         this.setState({ tvs: getFromSessionStorage('tvs_dis') });
-      }
+      this.loadTvs('/api/discover/tvs', { pg: '' });
    }
 
    render() {
@@ -80,5 +68,3 @@ export default class Tvs extends Component {
       );
    }
 }
-
-const discoveredTvs = getFromSessionStorage('tvs_dis');
