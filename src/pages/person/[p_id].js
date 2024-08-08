@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Col, Container, Jumbotron, Row } from 'reactstrap';
 import Loading from '../../components/loadingMsg';
-import { image_base_lg, imdb_link_psn, KEY } from '../../config';
+import { image_base_lg, imdb_link_psn, tmdbConfig } from '../../config';
 import { personDetUrl } from '../../externalApiUrls/index';
 
 export default function PersonInfo({ details }) {
@@ -85,7 +85,7 @@ export default function PersonInfo({ details }) {
 
 export async function getServerSideProps({ params }) {
    const { p_id } = params;
-   const response = await fetch(personDetUrl(p_id, KEY));
+   const response = await fetch(personDetUrl(p_id, tmdbConfig.apiKey));
    if (!response.ok) {
       return res.status(response.status).json({ error: JSON.stringify(response.url) });
    }

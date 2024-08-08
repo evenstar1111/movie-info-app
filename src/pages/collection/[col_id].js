@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Col, Container, Jumbotron, Row } from 'reactstrap';
 import Loading from '../../components/loadingMsg';
-import { KEY, image_base_lg } from '../../config';
+import { image_base_lg, tmdbConfig } from '../../config';
 import { collecDetUrl } from '../../externalApiUrls/index';
 
 export default function PersonInfo({ details }) {
@@ -73,7 +73,7 @@ export default function PersonInfo({ details }) {
 
 export async function getServerSideProps({ params }) {
    const { col_id } = params;
-   const response = await fetch(collecDetUrl(col_id, KEY));
+   const response = await fetch(collecDetUrl(col_id, tmdbConfig.apiKey));
    if (!response.ok) {
       return res.status(response.status).json({ error: JSON.stringify(response.url) });
    }
