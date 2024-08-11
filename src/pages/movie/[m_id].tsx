@@ -1,8 +1,8 @@
 import { getMovieDetails } from '@/interfaces/api';
+import { Container } from '@mui/material';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { Col, Container, Jumbotron, Row } from 'reactstrap';
 import Loading from '../../components/loadingMsg';
 import { imdb_link_tmov } from '../../config';
 
@@ -39,14 +39,14 @@ export default function MovieInfo({ details }: InferGetServerSidePropsType<typeo
       );
 
    const info = details && (
-      <Jumbotron className="text-dark bg-light">
-         <Row className="flex-column flex-md-row align-items-center align-items-md-start">
-            <Col className="col-9 col-md-auto mb-3  mb-md-0">
+      <div className="text-dark bg-light">
+         <div className="flex-column flex-md-row align-items-center align-items-md-start">
+            <div className="col-9 col-md-auto mb-3  mb-md-0">
                {/* <Image src={`${image_base_lg}${details.poster_path}`} alt="" className="w-100" /> */}
-            </Col>
-            <Col>
-               <Row className="mb-3">
-                  <Col>
+            </div>
+            <div>
+               <div className="mb-3">
+                  <div>
                      <h2>{details.title}</h2>
                      <p>
                         <b>Overview:</b> {overview}
@@ -63,27 +63,27 @@ export default function MovieInfo({ details }: InferGetServerSidePropsType<typeo
                      <p>
                         <b>Total Votes:</b> {details.vote_count}
                      </p>
-                  </Col>
-               </Row>
-               <Row>
-                  <Col className="col-auto">
+                  </div>
+               </div>
+               <div>
+                  <div className="col-auto">
                      <a href={`${imdb_link_tmov}${details.imdb_id}`} className="btn btn-primary mr-2" target="_blank">
                         VIEW ON IMDB
                      </a>
                      <button className="btn btn-secondary" onClick={() => router.back()}>
                         BACK
                      </button>
-                  </Col>
-               </Row>
-            </Col>
-         </Row>
-      </Jumbotron>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
    );
 
    const loadingCom = !details && <Loading />;
 
    return (
-      <Container fluid className="mt-3">
+      <Container className="mt-3">
          {info}
          {loadingCom}
       </Container>

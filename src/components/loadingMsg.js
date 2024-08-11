@@ -1,9 +1,8 @@
-import { Container } from 'reactstrap';
+import { Container } from '@mui/material';
 
 export default function Loading() {
    return (
       <Container
-         className="mt-5 pt-5 d-flex justify-content-center align-items-center"
          style={{
             width: '100%',
             top: 0,

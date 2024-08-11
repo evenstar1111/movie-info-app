@@ -2,13 +2,11 @@ import { SearchFiltersForm, SearchFiltersFormProps } from '@/components/forms';
 import MovieCard from '@/components/movie_card';
 import Pagination from '@/components/pagination';
 import { searchCl, SearchContentType, SearchTvOrMovieQParams } from '@/interfaces/api';
-import { Container } from '@mui/material';
+import { Button, Container } from '@mui/material';
 import Head from 'next/head';
 import { useState } from 'react';
-import { Button, Row } from 'reactstrap';
 import Layout from '../components/layout';
 import Loading from '../components/loadingMsg';
-import styles from '../styles/search_bar.module.scss';
 
 export default function Search() {
    const [result, setResult] = useState<any>();
@@ -51,11 +49,11 @@ export default function Search() {
    };
 
    const searchBar = (
-      <Container className={`${styles.srch_wpr} py-2`}>
-         <div id="search_page_collapse" className={`${styles._collapse} collapse ${searchBarOpen ? 'show' : 'hide'}`}>
+      <Container>
+         <div id="search_page_collapse">
             <SearchFiltersForm onSubmit={onSearchFrmSubmit} defaultValues={filters} />
          </div>
-         <Button block className={`${styles._button} btn-sm`} color="secondary" onClick={() => toggleSearchCollapse()}>
+         <Button onClick={() => toggleSearchCollapse()}>
             {searchBarOpen ? <span>&#9651;</span> : <span>&#9661;</span>}
          </Button>
       </Container>
@@ -77,10 +75,8 @@ export default function Search() {
          {searchBar}
          {loadingComp}
          {!loading && (
-            <Container className="mt-2">
-               <Row className="justify-content-center" noGutters>
-                  {result?.results ? <MovieCard movies={result.results} type={filters.type} /> : ''}
-               </Row>
+            <Container>
+               <div>{result?.results ? <MovieCard movies={result.results} type={filters.type} /> : ''}</div>
                <Pagination movies={result} handleClick={changePage} />
             </Container>
          )}

@@ -1,8 +1,8 @@
 import { MoviesFiltersForm } from '@/components/forms';
 import { discoverMoviesCl, DiscoverMoviesQParams } from '@/interfaces/api';
+import { Container } from '@mui/material';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { Container, Row } from 'reactstrap';
 import Layout from '../components/layout';
 import Loading from '../components/loadingMsg';
 import MovieCard from '../components/movie_card';
@@ -41,14 +41,14 @@ export default function Movies() {
             <meta name="description" content="Browse movie details and find more on imdb." key="movie-page" />
          </Head>
          <MoviesFiltersForm updateFilters={setFilters} />
-         <Container className="mt-2" fluid>
-            <Row className="justify-content-center" noGutters>
+         <Container className="mt-2">
+            <div className="justify-content-center">
                {movies ? (
                   (movies as any).results && <MovieCard movies={(movies as any)?.results} type="movie" />
                ) : (
                   <Loading />
                )}
-            </Row>
+            </div>
             <Pagination movies={movies} handleClick={changePage} />
          </Container>
       </Layout>

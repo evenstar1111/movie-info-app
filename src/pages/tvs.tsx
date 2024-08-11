@@ -1,7 +1,7 @@
 import { discoverTvsCl, DiscoverTvsQParams } from '@/interfaces/api';
+import { Container } from '@mui/material';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { Container, Row } from 'reactstrap';
 import Error from '../components/error';
 import Layout from '../components/layout';
 import Loading from '../components/loadingMsg';
@@ -71,12 +71,12 @@ export default function Tvs() {
             <title>Explore TV Shows</title>
             <meta name="description" content="browse popular tv shows and get details about them" key="tvs-page" />
          </Head>
-         <Container className="mt-2" fluid>
-            <Row className="justify-content-center" noGutters>
+         <Container className="mt-2">
+            <div className="justify-content-center">
                {loadingMsg}
                {ErrorMsg}
                {tvsRender}
-            </Row>
+            </div>
             {pageNumbers}
          </Container>
       </Layout>

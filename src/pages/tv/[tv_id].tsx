@@ -1,9 +1,9 @@
 import { getTvDetails } from '@/interfaces/api';
+import { Container } from '@mui/material';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Key, useState } from 'react';
-import { Col, Container, Jumbotron, Row } from 'reactstrap';
 import Loading from '../../components/loadingMsg';
 import { image_base_lg } from '../../config';
 
@@ -44,9 +44,9 @@ export default function PersonInfo({ details }: InferGetServerSidePropsType<type
       );
 
    const info = (
-      <Jumbotron className="text-dark bg-light">
-         <Row className="flex-column flex-md-row align-items-center align-items-md-start">
-            <Col className="col-9 col-md-auto mb-3  mb-md-0">
+      <div className="text-dark bg-light">
+         <div className="flex-column flex-md-row align-items-center align-items-md-start">
+            <div className="col-9 col-md-auto mb-3  mb-md-0">
                {details.poster_path && (
                   <Image
                      src={`${image_base_lg}${details.poster_path}`}
@@ -56,10 +56,10 @@ export default function PersonInfo({ details }: InferGetServerSidePropsType<type
                      height={100}
                   />
                )}
-            </Col>
-            <Col>
-               <Row className="mb-3">
-                  <Col>
+            </div>
+            <div>
+               <div className="mb-3">
+                  <div>
                      <h2>{details.name}</h2>
                      {details.overview && (
                         <p>
@@ -90,10 +90,10 @@ export default function PersonInfo({ details }: InferGetServerSidePropsType<type
                      <p>
                         <b>Total Episodes:</b> {details.number_of_episodes}
                      </p>
-                  </Col>
-               </Row>
-               <Row>
-                  <Col className="col-auto">
+                  </div>
+               </div>
+               <div>
+                  <div className="col-auto">
                      {details.homepage && (
                         <a href={details.homepage} className="btn btn-info mr-2" target="_blank">
                            OFFICIAL HOMEPAGE
@@ -102,15 +102,15 @@ export default function PersonInfo({ details }: InferGetServerSidePropsType<type
                      <a role="button" className="btn btn-secondary" onClick={() => back()}>
                         BACK
                      </a>
-                  </Col>
-               </Row>
-            </Col>
-         </Row>
-      </Jumbotron>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
    );
 
    return (
-      <Container fluid className="mt-3">
+      <Container className="mt-3">
          {info}
          {loadingComponent}
       </Container>

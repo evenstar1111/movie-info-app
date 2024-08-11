@@ -1,8 +1,8 @@
+import { Container } from '@mui/material';
 import fetch from 'isomorphic-fetch';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { Col, Container, Jumbotron, Row } from 'reactstrap';
 import Loading from '../../components/loadingMsg';
 import { image_base_lg, imdb_link_psn, tmdbConfig } from '../../config';
 import { personDetUrl } from '../../externalApiUrls/index';
@@ -27,14 +27,14 @@ export default function PersonInfo({ details }) {
       );
 
    const info = (
-      <Jumbotron className="text-dark bg-light">
-         <Row className="flex-column flex-md-row align-items-center align-items-md-start">
-            <Col className="col-9 col-md-auto mb-3  mb-md-0">
+      <div className="text-dark bg-light">
+         <div className="flex-column flex-md-row align-items-center align-items-md-start">
+            <div className="col-9 col-md-auto mb-3  mb-md-0">
                <Image src={`${image_base_lg}${details.profile_path}`} alt="" className="w-100" />
-            </Col>
-            <Col>
-               <Row className="mb-3">
-                  <Col>
+            </div>
+            <div>
+               <div className="mb-3">
+                  <div>
                      <h2>{details.name}</h2>
                      <p>
                         <b>Biography:</b> {biography}
@@ -53,10 +53,10 @@ export default function PersonInfo({ details }) {
                            <b>Died on:</b> {details.deathday}
                         </p>
                      )}
-                  </Col>
-               </Row>
-               <Row>
-                  <Col className="col-auto">
+                  </div>
+               </div>
+               <div>
+                  <div className="col-auto">
                      <a href={`${imdb_link_psn}${details.imdb_id}`} className="btn btn-primary mr-2" target="_blank">
                         VIEW ON IMDB
                      </a>
@@ -68,15 +68,15 @@ export default function PersonInfo({ details }) {
                      <button className="btn btn-secondary" onClick={() => back()}>
                         BACK
                      </button>
-                  </Col>
-               </Row>
-            </Col>
-         </Row>
-      </Jumbotron>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
    );
 
    return (
-      <Container fluid className="mt-3">
+      <Container className="mt-3">
          {info}
          {loadingComponent}
       </Container>

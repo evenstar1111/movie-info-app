@@ -1,7 +1,8 @@
 import DummyPoster from '@/components/dummyPoster';
+import { Button, Card, CardContent } from '@mui/material';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
-import { Button, Card, CardBody, CardImg, Col, Jumbotron } from 'reactstrap';
 import { image_base } from '../config';
 
 export default function MovieCard({ movies, type }) {
@@ -26,10 +27,12 @@ export default function MovieCard({ movies, type }) {
          const rating = movie.vote_average ? `rating : ${movie.vote_average}` : null;
 
          return (
-            <Col key={movie.id} className="col-auto col-sm-auto mb-2">
+            <div key={movie.id} className="col-auto col-sm-auto mb-2">
                <Card className="bg-light text-dark">
                   {poster ? (
-                     <CardImg
+                     <Image
+                        width={100}
+                        height={100}
                         top
                         src={`${poster}`}
                         alt={`${movie.poster_path ? movie.poster_path.slice(1) : movie.profile_path.slice(1)} `}
@@ -37,7 +40,7 @@ export default function MovieCard({ movies, type }) {
                   ) : (
                      <DummyPoster />
                   )}
-                  <CardBody>
+                  <CardContent>
                      {title && <p className="text-muted small mb-0">{title}</p>}
 
                      <p className="small mb-0">{movie.release_date}</p>
@@ -48,16 +51,16 @@ export default function MovieCard({ movies, type }) {
                      {type === 'tv' && <GotoDetails handleClick={() => push(`/tv/${movie.id}`)} />}
                      {type === 'person' && <GotoDetails handleClick={() => push(`/person/${movie.id}`)} />}
                      {type === 'collection' && <GotoDetails handleClick={() => push(`/collection/${movie.id}`)} />}
-                  </CardBody>
+                  </CardContent>
                </Card>
-            </Col>
+            </div>
          );
       });
 
    const notFound = !movies && (
-      <Jumbotron>
+      <div>
          <h1 className="display-2">could not find anything</h1>
-      </Jumbotron>
+      </div>
    );
    return (
       <Fragment>
