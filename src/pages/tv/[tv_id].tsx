@@ -1,13 +1,29 @@
-import fetch from 'isomorphic-fetch';
+import { getTvDetails } from '@/interfaces/api';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { Key, useState } from 'react';
 import { Col, Container, Jumbotron, Row } from 'reactstrap';
 import Loading from '../../components/loadingMsg';
-import { image_base_lg, tmdbConfig } from '../../config';
-import { tvDetUrl } from '../../externalApiUrls/index';
+import { image_base_lg } from '../../config';
 
-export default function PersonInfo({ details }) {
+export const getServerSideProps = async function ({ params, res }) {
+   const tv_id = (params?.tv_id ?? '') as string;
+   const response = await getTvDetails(tv_id);
+
+   if (response.status !== 200) {
+      res.writeHead(response.status, 'Could not load tv');
+      res.end();
+   }
+
+   return {
+      props: {
+         details: response.data,
+      },
+   };
+} satisfies GetServerSideProps<{ details: any }>;
+
+export default function PersonInfo({ details }: InferGetServerSidePropsType<typeof getServerSideProps>) {
    const [isExpanded, setIsExpanded] = useState(false);
    const router = useRouter();
    const { back } = router;
@@ -32,7 +48,13 @@ export default function PersonInfo({ details }) {
          <Row className="flex-column flex-md-row align-items-center align-items-md-start">
             <Col className="col-9 col-md-auto mb-3  mb-md-0">
                {details.poster_path && (
-                  <Image src={`${image_base_lg}${details.poster_path}`} alt="" className="w-100" />
+                  <Image
+                     src={`${image_base_lg}${details.poster_path}`}
+                     alt=""
+                     className="w-100"
+                     width={100}
+                     height={100}
+                  />
                )}
             </Col>
             <Col>
@@ -46,13 +68,13 @@ export default function PersonInfo({ details }) {
                      )}
                      <p>
                         <b>In Genres:</b>{' '}
-                        {details.genres.map((g) => (
+                        {details.genres.map((g: { id: Key; name: string }) => (
                            <span key={g.id}>{g.name},&nbsp;</span>
                         ))}
                      </p>
                      <p>
                         <b>Created By:</b>{' '}
-                        {details.created_by.map((g) => (
+                        {details.created_by.map((g: { id: Key; name: string }) => (
                            <span key={g.id}>{g.name},&nbsp;</span>
                         ))}
                      </p>
@@ -93,19 +115,4 @@ export default function PersonInfo({ details }) {
          {loadingComponent}
       </Container>
    );
-}
-
-export async function getServerSideProps({ params }) {
-   const { tv_id } = params;
-   const response = await fetch(tvDetUrl(tv_id, tmdbConfig.apiKey));
-   if (!response.ok) {
-      return res.status(response.status).json({ error: JSON.stringify(response.url) });
-   }
-   const data = await response.json();
-
-   return {
-      props: {
-         details: data,
-      },
-   };
 }

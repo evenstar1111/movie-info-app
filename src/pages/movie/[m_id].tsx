@@ -1,12 +1,28 @@
-import fetch from 'isomorphic-fetch';
+import { getMovieDetails } from '@/interfaces/api';
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Col, Container, Jumbotron, Row } from 'reactstrap';
 import Loading from '../../components/loadingMsg';
-import { imdb_link_tmov, tmdbConfig } from '../../config';
-import { movieDetUrl } from '../../externalApiUrls';
+import { imdb_link_tmov } from '../../config';
 
-export default function MovieInfo({ details }) {
+export const getServerSideProps = async function ({ params, res }) {
+   const m_id = (params?.m_id ?? '') as string;
+   const response = await getMovieDetails(m_id);
+
+   if (response.status !== 200) {
+      res.writeHead(response.status, 'Could not load movie');
+      res.end();
+   }
+
+   return {
+      props: {
+         details: response.data,
+      },
+   };
+} satisfies GetServerSideProps<{ details: any }>;
+
+export default function MovieInfo({ details }: InferGetServerSidePropsType<typeof getServerSideProps>) {
    const router = useRouter();
    const [isExpanded, setIsExpanded] = useState(false);
 
@@ -36,7 +52,7 @@ export default function MovieInfo({ details }) {
                         <b>Overview:</b> {overview}
                      </p>
                      <p>
-                        <b>In Genres:</b> {details.genres.map((g) => `${g.name}, `)}
+                        <b>In Genres:</b> {details.genres.map((g: { name: any }) => `${g.name}, `)}
                      </p>
                      <p>
                         <b>Release Date:</b> {details.release_date}
@@ -72,19 +88,4 @@ export default function MovieInfo({ details }) {
          {loadingCom}
       </Container>
    );
-}
-
-export async function getServerSideProps({ params }) {
-   const { m_id } = params;
-   const response = await fetch(movieDetUrl(m_id, tmdbConfig.apiKey));
-   if (!response.ok) {
-      return res.status(response.status).json({ error: JSON.stringify(response.url) });
-   }
-   const data = await response.json();
-
-   return {
-      props: {
-         details: data,
-      },
-   };
 }

@@ -1,7 +1,7 @@
+import DummyPoster from '@/components/dummyPoster';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 import { Button, Card, CardBody, CardImg, Col, Jumbotron } from 'reactstrap';
-import DummyPoster from '../components/dummyPoster';
 import { image_base } from '../config';
 
 export default function MovieCard({ movies, type }) {
@@ -40,6 +40,7 @@ export default function MovieCard({ movies, type }) {
                   <CardBody>
                      {title && <p className="text-muted small mb-0">{title}</p>}
 
+                     <p className="small mb-0">{movie.release_date}</p>
                      {vote && <p className="small mb-0">{vote}</p>}
                      {rating && <p className="small mb-0">{rating}/10</p>}
                      {known_for && <p className="small mb-0">{known_for}</p>}

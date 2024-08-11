@@ -1,7 +1,8 @@
+import { MoviesFiltersForm } from '@/components/forms';
+import { discoverMoviesCl, DiscoverMoviesQParams } from '@/interfaces/api';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { Container, Row } from 'reactstrap';
-import { fetchPostReq } from '../actions/search';
 import Layout from '../components/layout';
 import Loading from '../components/loadingMsg';
 import MovieCard from '../components/movie_card';
@@ -10,27 +11,27 @@ import Pagination from '../components/pagination';
 export default function Movies() {
    const [movies, setMovies] = useState();
    const type = 'movie';
-
-   const loadMovies = async (url, objData, locName) => {
-      const data = await fetchPostReq(url, objData);
-      if (data.error) {
-         return console.error(data, 'this is coming from the movies');
-      }
-      setMovies(data);
-   };
+   const [filters, setFilters] = useState<DiscoverMoviesQParams>({});
 
    useEffect(() => {
-      loadMovies(
-         '/api/discover/movies',
-         {
-            type: type,
-         },
-         ['movies_dis']
-      );
-   }, []);
+      getMovies();
 
-   const changePage = async (page) => {
-      loadMovies('/api/discover/movies', { type: type, pg: `${page}` }, ['movies_dis', `movies_dis${page}`]);
+      async function getMovies() {
+         const res = await discoverMoviesCl({
+            ...filters,
+         });
+
+         if (res.status === 200) {
+            setMovies(res.data);
+         }
+      }
+   }, [filters]);
+
+   const changePage = async (page: any) => {
+      setFilters((prevState) => ({
+         ...prevState,
+         page,
+      }));
    };
 
    return (
@@ -39,9 +40,14 @@ export default function Movies() {
             <title>Explore Movies</title>
             <meta name="description" content="Browse movie details and find more on imdb." key="movie-page" />
          </Head>
+         <MoviesFiltersForm updateFilters={setFilters} />
          <Container className="mt-2" fluid>
             <Row className="justify-content-center" noGutters>
-               {movies ? movies.results && <MovieCard movies={movies.results} type="movie" /> : <Loading />}
+               {movies ? (
+                  (movies as any).results && <MovieCard movies={(movies as any)?.results} type="movie" />
+               ) : (
+                  <Loading />
+               )}
             </Row>
             <Pagination movies={movies} handleClick={changePage} />
          </Container>

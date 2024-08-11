@@ -3,7 +3,7 @@ export const discoverUrl = (query_str, key) => {
 
    return `https://api.themoviedb.org/3/discover/${
       type ? type : 'movie'
-   }?${key}&language=${lan ? lan : 'en-US'}&page=${pg ? pg : 1}&sort_by=${
+   }?api_key=${key}&language=${lan ? lan : 'en-US'}&page=${pg ? pg : 1}&sort_by=${
       srt ? srt : 'popularity.desc'
    }&include_adult=false&include_video=&with_cast=${wcst ? wcst : ''}&with_crew=${wcrw ? wcrw : ''}&with_people=${
       wppl ? wppl : ''
