@@ -10,6 +10,15 @@ const nextConfig = {
    experimental: {
       optimizePackageImports: ['@mui/material', '@mui/icons-material', 'recharts'],
    },
+   images: {
+      remotePatterns: [
+         {
+            protocol: 'https',
+            hostname: 'image.tmdb.org',
+            pathname: '/**',
+         },
+      ],
+   },
 };
 
 module.exports = nextConfig;
