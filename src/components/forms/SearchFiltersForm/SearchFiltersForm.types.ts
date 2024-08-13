@@ -1,4 +1,5 @@
-import { SearchContentType, SearchTvOrMovieQParams } from '@/interfaces/api';
+import { TContentTypeKey, TContentTypeVal } from '@/constants';
+import { SearchTvOrMovieQParams } from '@/interfaces/api';
 
 export type Props = {
    defaultValues: Partial<SearchTvOrMovieQParams>;
@@ -6,6 +7,6 @@ export type Props = {
 };
 
 export type ContentTypeOption = {
-   label: keyof typeof SearchContentType;
-   value: SearchContentType;
+   label: TContentTypeKey;
+   value: TContentTypeVal;
 };

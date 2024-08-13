@@ -1,16 +1,14 @@
-import { MoviesFiltersForm } from '@/components/forms';
-import { discoverMoviesCl, DiscoverMoviesQParams } from '@/interfaces/api';
+import { PublicLayout } from '@/components/layouts';
+import { ContentList } from '@/components/shared';
+import { discoverMoviesCl, DiscoverMoviesQParams, MovieListsResponse } from '@/interfaces/api';
 import { Container } from '@mui/material';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
-import Layout from '../components/layout';
-import Loading from '../components/loadingMsg';
-import MovieCard from '../components/movie_card';
+import { ReactElement, useEffect, useState } from 'react';
 import Pagination from '../components/pagination';
+import { NextPageWithLayout } from './_app';
 
-export default function Movies() {
-   const [movies, setMovies] = useState();
-   const type = 'movie';
+const Movies: NextPageWithLayout = () => {
+   const [moviesRes, setMoviesRes] = useState<MovieListsResponse>();
    const [filters, setFilters] = useState<DiscoverMoviesQParams>({});
 
    useEffect(() => {
@@ -22,7 +20,7 @@ export default function Movies() {
          });
 
          if (res.status === 200) {
-            setMovies(res.data);
+            setMoviesRes(res.data);
          }
       }
    }, [filters]);
@@ -35,22 +33,22 @@ export default function Movies() {
    };
 
    return (
-      <Layout>
+      <>
          <Head>
             <title>Explore Movies</title>
             <meta name="description" content="Browse movie details and find more on imdb." key="movie-page" />
          </Head>
-         <MoviesFiltersForm updateFilters={setFilters} />
-         <Container className="mt-2">
-            <div className="justify-content-center">
-               {movies ? (
-                  (movies as any).results && <MovieCard movies={(movies as any)?.results} type="movie" />
-               ) : (
-                  <Loading />
-               )}
-            </div>
-            <Pagination movies={movies} handleClick={changePage} />
+         {/* <MoviesFiltersForm updateFilters={setFilters} /> */}
+         <Container maxWidth={false}>
+            <ContentList contents={moviesRes?.results} />
+            <Pagination movies={moviesRes} handleClick={changePage} />
          </Container>
-      </Layout>
+      </>
    );
-}
+};
+
+Movies.getLayout = (page: ReactElement) => {
+   return <PublicLayout>{page}</PublicLayout>;
+};
+
+export default Movies;

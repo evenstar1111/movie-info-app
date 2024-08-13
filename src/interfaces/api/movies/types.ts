@@ -1,5 +1,6 @@
+import { Movie } from '@/types';
 import { TMoviesSortByOptionValue } from '../constants';
-import { CommonDiscoverQParams } from '../shared.types';
+import { CommonDiscoverQParams, ListsApiResponse } from '../shared.types';
 
 export type DiscoverMoviesQParams = CommonDiscoverQParams<TMoviesSortByOptionValue> & {
    year?: number;
@@ -30,3 +31,5 @@ export enum MoviesGenres {
    War = 'War',
    Western = 'Western',
 }
+
+export type MovieListsResponse = ListsApiResponse<Movie>;

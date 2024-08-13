@@ -1,17 +1,19 @@
 import { SearchFiltersForm, SearchFiltersFormProps } from '@/components/forms';
-import MovieCard from '@/components/movie_card';
+import { PublicLayout } from '@/components/layouts';
 import Pagination from '@/components/pagination';
-import { searchCl, SearchContentType, SearchTvOrMovieQParams } from '@/interfaces/api';
+import { ContentList } from '@/components/shared';
+import { ContentTypes } from '@/constants';
+import { searchCl, SearchResponse, SearchTvOrMovieQParams } from '@/interfaces/api';
 import { Button, Container } from '@mui/material';
 import Head from 'next/head';
-import { useState } from 'react';
-import Layout from '../components/layout';
+import { ReactElement, useState } from 'react';
 import Loading from '../components/loadingMsg';
+import { NextPageWithLayout } from './_app';
 
-export default function Search() {
-   const [result, setResult] = useState<any>();
+const Search: NextPageWithLayout = () => {
+   const [searchRes, setSearchRes] = useState<SearchResponse>();
    const [filters, setFilters] = useState<SearchTvOrMovieQParams>({
-      type: SearchContentType.Movie,
+      type: ContentTypes.Movie,
       query: '',
    });
    const [searchBarOpen, setSearchBarOpen] = useState<boolean>(true);
@@ -31,7 +33,7 @@ export default function Search() {
       });
 
       if (res.status === 200) {
-         setResult(res.data);
+         setSearchRes(res.data);
       }
       setLoading(false);
    };
@@ -62,7 +64,7 @@ export default function Search() {
    const loadingComp = loading && <Loading />;
 
    return (
-      <Layout>
+      <>
          <Head>
             <title>Search Movies, TVs, Persons & Collections</title>
             <meta
@@ -75,11 +77,17 @@ export default function Search() {
          {searchBar}
          {loadingComp}
          {!loading && (
-            <Container>
-               <div>{result?.results ? <MovieCard movies={result.results} type={filters.type} /> : ''}</div>
-               <Pagination movies={result} handleClick={changePage} />
+            <Container maxWidth={false}>
+               <ContentList contents={searchRes?.results} type={filters.type} />
+               <Pagination movies={searchRes} handleClick={changePage} />
             </Container>
          )}
-      </Layout>
+      </>
    );
-}
+};
+
+Search.getLayout = (page: ReactElement) => {
+   return <PublicLayout>{page}</PublicLayout>;
+};
+
+export default Search;

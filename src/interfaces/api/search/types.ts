@@ -1,13 +1,9 @@
-import { CommonSearchQParams } from '../shared.types';
+import { type TContentTypeVal } from '@/constants';
+import { CommonSearchQParams, ListsApiResponse } from '../shared.types';
 
 export type SearchTvOrMovieQParams = CommonSearchQParams & {
-   type: SearchContentType;
+   type: TContentTypeVal;
    year?: number;
 };
 
-export enum SearchContentType {
-   Movie = 'movie',
-   Tv = 'tv',
-   Person = 'person',
-   Collection = 'collection',
-}
+export type SearchResponse = ListsApiResponse;

@@ -1,4 +1,5 @@
-import { SearchContentType, SearchTvOrMovieQParams } from '@/interfaces/api';
+import { ContentTypes, TContentTypeVal } from '@/constants';
+import { SearchTvOrMovieQParams } from '@/interfaces/api';
 import {
    Button,
    FormControl,
@@ -13,26 +14,8 @@ import {
 } from '@mui/material';
 import { useEffect, useMemo } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { ContentTypeOption, Props } from './SearchFiltersForm.types';
-
-const contentTypeOptions: ContentTypeOption[] = [
-   {
-      value: SearchContentType.Movie,
-      label: 'Movie',
-   },
-   {
-      value: SearchContentType.Tv,
-      label: 'Tv',
-   },
-   {
-      value: SearchContentType.Person,
-      label: 'Person',
-   },
-   {
-      value: SearchContentType.Collection,
-      label: 'Collection',
-   },
-];
+import { Props } from './SearchFiltersForm.types';
+import { contentTypeOptions } from './constants';
 
 export default function SearchFiltersForm({ defaultValues, onSubmit }: Props) {
    const {
@@ -44,7 +27,7 @@ export default function SearchFiltersForm({ defaultValues, onSubmit }: Props) {
       control,
    } = useForm<SearchTvOrMovieQParams>({
       defaultValues: {
-         type: SearchContentType.Movie,
+         type: ContentTypes.Movie,
          query: '',
          include_adult: false,
       },
@@ -55,7 +38,7 @@ export default function SearchFiltersForm({ defaultValues, onSubmit }: Props) {
    const cntntTypeValue = useMemo(() => cntntTypeWatched, [cntntTypeWatched]);
 
    const handleTypeSelectChange: SelectProps['onChange'] = (event) => {
-      const value = event.target.value as SearchContentType;
+      const value = event.target.value as TContentTypeVal;
       setValue('type', value, {
          shouldValidate: isSubmitted,
       });

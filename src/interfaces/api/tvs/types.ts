@@ -1,4 +1,5 @@
-import { CommonDiscoverQParams } from '../shared.types';
+import { Tv } from '@/types';
+import { CommonDiscoverQParams, ListsApiResponse } from '../shared.types';
 
 export type DiscoverTvsQParams = CommonDiscoverQParams<TvsSortByOption> & {
    year?: number;
@@ -41,3 +42,5 @@ export enum TvsGenres {
    WarPolitics = 'War & Politics',
    Western = 'Western',
 }
+
+export type TvListsResponse = ListsApiResponse<Tv>;

@@ -1,6 +1,6 @@
 import { axiosInstForClient } from '@/interfaces/http-client';
-import { DiscoverMoviesQParams } from './types';
+import { DiscoverMoviesQParams, MovieListsResponse } from './types';
 
 export async function discoverMoviesCl(data: DiscoverMoviesQParams) {
-   return axiosInstForClient.post('discover/movies', { ...data });
+   return axiosInstForClient.post<MovieListsResponse>('discover/movies', { ...data });
 }
