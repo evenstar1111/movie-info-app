@@ -10,26 +10,4 @@ export type DiscoverMoviesQParams = CommonDiscoverQParams<TMoviesSortByOptionVal
    include_video?: boolean;
 };
 
-export enum MoviesGenres {
-   Action = 'Action',
-   Adventure = 'Adventure',
-   Animation = 'Animation',
-   Comedy = 'Comedy',
-   Crime = 'Crime',
-   Documentary = 'Documentary',
-   Drama = 'Drama',
-   Family = 'Family',
-   Fantasy = 'Fantasy',
-   History = 'History',
-   Horror = 'Horror',
-   Music = 'Music',
-   Mystery = 'Mystery',
-   Romance = 'Romance',
-   ScienceFiction = 'Science Fiction',
-   TVMovie = 'TV Movie',
-   Thriller = 'Thriller',
-   War = 'War',
-   Western = 'Western',
-}
-
 export type MovieListsResponse = ListsApiResponse<Movie>;

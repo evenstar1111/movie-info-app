@@ -2,7 +2,7 @@ import { SearchFiltersForm, SearchFiltersFormProps } from '@/components/forms';
 import { PublicLayout } from '@/components/layouts';
 import Pagination from '@/components/pagination';
 import { ContentList } from '@/components/shared';
-import { ContentTypes } from '@/constants';
+import { ContentTypes, TContentTypeWPageVal } from '@/constants';
 import { searchCl, SearchResponse, SearchTvOrMovieQParams } from '@/interfaces/api';
 import { Button, Container } from '@mui/material';
 import Head from 'next/head';
@@ -78,7 +78,7 @@ const Search: NextPageWithLayout = () => {
          {loadingComp}
          {!loading && (
             <Container maxWidth={false}>
-               <ContentList contents={searchRes?.results} type={filters.type} />
+               <ContentList contents={searchRes?.results} type={filters.type as TContentTypeWPageVal} />
                <Pagination movies={searchRes} handleClick={changePage} />
             </Container>
          )}

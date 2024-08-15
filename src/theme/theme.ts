@@ -11,7 +11,16 @@ let theme = createTheme({
    typography: {
       fontFamily: roboto.style.fontFamily,
    },
+   components: {
+      MuiButton: {
+         defaultProps: {
+            variant: 'outlined',
+            color: 'info',
+         },
+      },
+   },
 });
+
 theme = responsiveFontSizes(theme);
 
 export default theme;

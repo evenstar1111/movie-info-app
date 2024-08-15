@@ -1,7 +1,7 @@
 export type CommonContentProps = {
    backdrop_path: string;
    genre_ids: number[];
-   genres?: Genre[];
+   genres?: ContentMetaWName[];
    id: number;
    original_language: string;
    overview: string;
@@ -14,7 +14,7 @@ export type CommonContentProps = {
    tagline?: string;
 };
 
-type Genre = {
+export type ContentMetaWName = {
    id: number;
    name: string;
 };

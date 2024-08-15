@@ -1,11 +1,11 @@
-import { TContentTypeVal } from '@/constants';
+import { TContentTypeWPageVal } from '@/constants';
 import { Props as ContentItemProps } from '../ContentItem/ContentItem.types';
 
 export type Props = {
    contents?: Array<ContentItemProps['content']>;
-   type?: TContentTypeVal;
+   type?: TContentTypeWPageVal;
 };
 
 export type RoutePrefixMap = {
-   [key in TContentTypeVal]: string;
+   [key in TContentTypeWPageVal]: string;
 };

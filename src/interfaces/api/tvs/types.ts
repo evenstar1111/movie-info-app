@@ -24,23 +24,4 @@ export enum TvsSortByOption {
    VoteCountDesc = 'vote_count.desc',
 }
 
-export enum TvsGenres {
-   ActionAdventure = 'Action & Adventure',
-   Animation = 'Animation',
-   Komödie = 'Komödie',
-   Krimi = 'Krimi',
-   Dokumentarfilm = 'Dokumentarfilm',
-   Drama = 'Drama',
-   Familie = 'Familie',
-   Kids = 'Kids',
-   Mystery = 'Mystery',
-   News = 'News',
-   Reality = 'Reality',
-   SciFiFantasy = 'Sci-Fi & Fantasy',
-   Soap = 'Soap',
-   Talk = 'Talk',
-   WarPolitics = 'War & Politics',
-   Western = 'Western',
-}
-
 export type TvListsResponse = ListsApiResponse<Tv>;

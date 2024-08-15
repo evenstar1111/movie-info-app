@@ -61,13 +61,13 @@ export default function ContentItem({
    return (
       <Card classes={{ root: classes.cardRoot }} raised={false}>
          <CardActionArea LinkComponent={Link} href={`${detlUrlPrefix}/${id}`}>
-            {Math.random() === 10 && (
-               <div className={classes.imageContainer}>
-                  <Image height={140} width={100} src={`${tmdbConfig.imageBaseUrl}/${poster_path}`} alt="" />
-               </div>
-            )}
             <div className={classes.imageContainer}>
-               <Image height={140} width={100} src="/images/no-image.jpg" alt="" />
+               <Image
+                  height={140}
+                  width={100}
+                  src={!!poster_path ? `${tmdbConfig.imageBaseUrl}/${poster_path}` : '/images/no-image.jpg'}
+                  alt=""
+               />
             </div>
             <CardContent>
                <Typography variant="body2">
