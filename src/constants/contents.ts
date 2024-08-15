@@ -1,3 +1,4 @@
+/* FIXME: ContentTypes */
 export const ContentTypes = {
    Movie: 'movie',
    Tv: 'tv',
