@@ -4,7 +4,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import { Props } from './ContentItem.types';
 import { useStyles } from './styles';
@@ -33,6 +33,7 @@ export default function ContentItem({
    },
    detlUrlPrefix,
 }: Props) {
+   const router = useRouter();
    const { classes } = useStyles();
 
    const releaseYear = useMemo(() => {
@@ -58,9 +59,18 @@ export default function ContentItem({
       return titleToUse;
    }, [title, name]);
 
+   const handleActionClick = () => {
+      if (!title) return;
+      navigator.clipboard.writeText(title);
+   };
+
+   const handleActionDoubleClick = () => {
+      router.push(`${detlUrlPrefix}/${id}`);
+   };
+
    return (
       <Card className={classes.cardRoot} raised={false}>
-         <CardActionArea LinkComponent={Link} href={`${detlUrlPrefix}/${id}`}>
+         <CardActionArea onClick={handleActionClick} onDoubleClick={handleActionDoubleClick}>
             <div className={classes.imageContainer}>
                <Image
                   height={140}
