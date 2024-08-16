@@ -16,73 +16,73 @@ export const MoviesGenres = {
       id: 28,
       name: 'Action',
    },
-   Abenteuer: {
+   Adventure: {
       id: 12,
-      name: 'Abenteuer',
+      name: 'Adventure',
    },
    Animation: {
       id: 16,
       name: 'Animation',
    },
-   Komödie: {
+   Comedy: {
       id: 35,
-      name: 'Komödie',
+      name: 'Comedy',
    },
-   Krimi: {
+   Crime: {
       id: 80,
-      name: 'Krimi',
+      name: 'Crime',
    },
-   Dokumentarfilm: {
+   Documentary: {
       id: 99,
-      name: 'Dokumentarfilm',
+      name: 'Documentary',
    },
    Drama: {
       id: 18,
       name: 'Drama',
    },
-   Familie: {
+   Family: {
       id: 10751,
-      name: 'Familie',
+      name: 'Family',
    },
    Fantasy: {
       id: 14,
       name: 'Fantasy',
    },
-   Historie: {
+   History: {
       id: 36,
-      name: 'Historie',
+      name: 'History',
    },
    Horror: {
       id: 27,
       name: 'Horror',
    },
-   Musik: {
+   Music: {
       id: 10402,
-      name: 'Musik',
+      name: 'Music',
    },
    Mystery: {
       id: 9648,
       name: 'Mystery',
    },
-   Liebesfilm: {
+   Romance: {
       id: 10749,
-      name: 'Liebesfilm',
+      name: 'Romance',
    },
    'Science Fiction': {
       id: 878,
       name: 'Science Fiction',
    },
-   'TV-Film': {
+   'TV Movie': {
       id: 10770,
-      name: 'TV-Film',
+      name: 'TV Movie',
    },
    Thriller: {
       id: 53,
       name: 'Thriller',
    },
-   Kriegsfilm: {
+   War: {
       id: 10752,
-      name: 'Kriegsfilm',
+      name: 'War',
    },
    Western: {
       id: 37,
@@ -100,25 +100,25 @@ export const TvsGenres = {
       id: 16,
       name: 'Animation',
    },
-   Komödie: {
+   Comedy: {
       id: 35,
-      name: 'Komödie',
+      name: 'Comedy',
    },
-   Krimi: {
+   Crime: {
       id: 80,
-      name: 'Krimi',
+      name: 'Crime',
    },
-   Dokumentarfilm: {
+   Documentary: {
       id: 99,
-      name: 'Dokumentarfilm',
+      name: 'Documentary',
    },
    Drama: {
       id: 18,
       name: 'Drama',
    },
-   Familie: {
+   Family: {
       id: 10751,
-      name: 'Familie',
+      name: 'Family',
    },
    Kids: {
       id: 10762,

@@ -7,5 +7,5 @@ export type Props = {
    label?: string;
    placeholder?: string;
    onValueUpdate: (value: ContentMetaWName[]) => void;
-   handleInputChange: (event: SyntheticEvent<Element, Event>, value: string) => void;
+   handleInputChange?: (event: SyntheticEvent<Element, Event>, value: string) => void;
 };

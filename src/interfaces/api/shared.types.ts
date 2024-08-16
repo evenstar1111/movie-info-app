@@ -7,6 +7,8 @@ export type CommonDiscoverQParams<SortBy extends string> = {
    with_keywords?: string;
    without_keywords?: string;
    include_adult?: boolean;
+   with_origin_country?: string;
+   with_original_language?: string;
 };
 
 export type CommonSearchQParams = {
