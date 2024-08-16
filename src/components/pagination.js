@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Styles from './Pagination.module.css';
 
 export default function Pagination({ movies, handleClick }) {
    const [inputValue, setInputValue] = useState('');
@@ -15,45 +16,31 @@ export default function Pagination({ movies, handleClick }) {
 
    const altPagination = movies
       ? movies.total_pages && (
-           <div className="d-flex justify-content-center mt-2">
-              <div className="input-group mb-3" style={{ maxWidth: 300 }}>
-                 <div className="input-group-prepend">
+           <div className={Styles.rootContainer}>
+              <div className={Styles.elemsWrapper}>
+                 <div>
                     {currentPage > 1 && (
-                       <button
-                          className="btn btn-outline-secondary btn-sm"
-                          onClick={() => goClickHandler(currentPage - 1)}
-                       >
+                       <button className={Styles.button} onClick={() => goClickHandler(currentPage - 1)}>
                           prev
                        </button>
                     )}
                  </div>
                  <input
                     type="text"
-                    className="form-control"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder={`${currentPage}/${totalPages}`}
                     aria-label="Example text with two button addons"
                     aria-describedby="button-addon3"
                  />
-                 <div className="input-group-append" id="button-addon3">
-                    <button
-                       className="btn btn-outline-secondary btn-sm"
-                       type="button"
-                       onClick={() => goClickHandler(inputValue)}
-                    >
-                       go
+                 <button className={Styles.button} type="button" onClick={() => goClickHandler(inputValue)}>
+                    go
+                 </button>
+                 {currentPage < totalPages && (
+                    <button className={Styles.button} type="button" onClick={() => goClickHandler(currentPage + 1)}>
+                       next
                     </button>
-                    {currentPage < totalPages && (
-                       <button
-                          className="btn btn-outline-secondary btn-sm"
-                          type="button"
-                          onClick={() => goClickHandler(currentPage + 1)}
-                       >
-                          next
-                       </button>
-                    )}
-                 </div>
+                 )}
               </div>
            </div>
         )
