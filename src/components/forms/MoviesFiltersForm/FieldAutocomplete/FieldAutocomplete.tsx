@@ -21,6 +21,7 @@ export default function FieldAutocomplete({
       <Autocomplete
          multiple
          filterSelectedOptions
+         size="small"
          value={selectedOptions}
          options={options}
          getOptionLabel={(option: ContentMetaWName) => option.name}

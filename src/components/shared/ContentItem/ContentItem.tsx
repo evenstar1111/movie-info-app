@@ -59,7 +59,7 @@ export default function ContentItem({
    }, [title, name]);
 
    return (
-      <Card classes={{ root: classes.cardRoot }} raised={false}>
+      <Card className={classes.cardRoot} raised={false}>
          <CardActionArea LinkComponent={Link} href={`${detlUrlPrefix}/${id}`}>
             <div className={classes.imageContainer}>
                <Image

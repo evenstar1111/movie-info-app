@@ -140,6 +140,8 @@ export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtc
             </Grid>
             <Grid item xs={12} md={6}>
                <CustomMultiSelect
+                  size="small"
+                  formControlWidth="100%"
                   label="Genres"
                   placeholder="Select Genres"
                   options={genresOptions}

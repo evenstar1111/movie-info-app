@@ -9,11 +9,11 @@ export const useStyles = makeStyles<Params>()((_theme, params) => ({
       width: params.formControlWidth ?? 250,
 
       '& .MuiInputLabel-root': {
-         fontSize: 13,
-         lineHeight: '1.0375em',
+         // fontSize: 13,
+         // lineHeight: '1.0375em',
 
          '&.MuiInputLabel-shrink': {
-            transform: 'translate(14px, -6px) scale(0.85)',
+            // transform: 'translate(14px, -6px) scale(0.85)',
          },
       },
 
@@ -27,7 +27,7 @@ export const useStyles = makeStyles<Params>()((_theme, params) => ({
 
       [`& .MuiSelect-select,
       & .MuiChip-root > .MuiChip-label`]: {
-         fontSize: 14,
+         // fontSize: 14,
       },
 
       '& .MuiChip-root': {

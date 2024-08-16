@@ -20,7 +20,7 @@ export default function FiltersContainer({ children, filtersCount, clearFilters 
 
    return (
       <Box>
-         <Stack py={2.5} direction="row" columnGap={4}>
+         <Stack py={2.5} direction="row" columnGap={2}>
             <Badge badgeContent={filtersCount} color="info">
                <Button size="small" startIcon={<TuneOutlined />} onClick={handleFilterBtnClick}>
                   Filters

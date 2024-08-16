@@ -14,7 +14,7 @@ export type CustomSelectCommonProps<T> = {
    onChange: SelectProps<T>['onChange'];
    renderValue?: SelectProps<T>['renderValue'];
    errorTxt?: string;
-} & Pick<SelectProps, 'displayEmpty' | 'MenuProps' | 'disabled'>;
+} & Pick<SelectProps, 'displayEmpty' | 'MenuProps' | 'disabled' | 'size'>;
 
 export type OptionAsObject<Value = string, Label = string> = {
    value: Value;

@@ -11,6 +11,7 @@ export default function CustomMultiSelect({
    id,
    placeholder,
    value: values,
+   size = 'small',
    onChange,
    options,
    enableSelectAll = true,
@@ -63,6 +64,7 @@ export default function CustomMultiSelect({
       <FormControl className={cx(classes.formControlRoot, formControlRootClass)}>
          <InputLabel id={labelId}>{label}</InputLabel>
          <Select
+            size={size}
             labelId={labelId}
             id={id}
             multiple
