@@ -6,11 +6,14 @@ import { discoverMoviesCl, DiscoverMoviesQParams, MovieListsResponse } from '@/i
 import { useAutocompleteHelpers } from '@/utility';
 import { Container } from '@mui/material';
 import Head from 'next/head';
-import { ReactElement, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
+import { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import Pagination from '../components/pagination';
 import { NextPageWithLayout } from './_app';
 
 const Movies: NextPageWithLayout = () => {
+   const router = useRouter();
+   const fitersAppldFrmQry = useRef<boolean>(false);
    const [moviesRes, setMoviesRes] = useState<MovieListsResponse>();
    const [filters, setFilters] = useState<DiscoverMoviesQParams>({});
    const [prsnAtcOptions, prsnAtcInputHandler] = useAutocompleteHelpers(ContentTypes.Person);
@@ -33,7 +36,28 @@ const Movies: NextPageWithLayout = () => {
    };
 
    useEffect(() => {
+      if (!router.isReady || fitersAppldFrmQry.current) return;
+      setFilters(() => ({ ...router.query }));
+      fitersAppldFrmQry.current = true;
+   }, [router]);
+
+   useEffect(() => {
       getMovies();
+
+      if (router) {
+         router.push(
+            {
+               href: router.pathname,
+               query: {
+                  ...filters,
+               },
+            },
+            undefined,
+            {
+               shallow: true,
+            }
+         );
+      }
 
       async function getMovies() {
          const res = await discoverMoviesCl({
@@ -44,6 +68,7 @@ const Movies: NextPageWithLayout = () => {
             setMoviesRes(res.data);
          }
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [filters]);
 
    return (
