@@ -4,8 +4,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { useMemo } from 'react';
+import Link from 'next/link';
+import { MouseEventHandler, useMemo } from 'react';
 import { Props } from './ContentItem.types';
 import { useStyles } from './styles';
 
@@ -33,7 +33,6 @@ export default function ContentItem({
    },
    detlUrlPrefix,
 }: Props) {
-   const router = useRouter();
    const { classes } = useStyles();
 
    const releaseYear = useMemo(() => {
@@ -59,18 +58,15 @@ export default function ContentItem({
       return titleToUse;
    }, [title, name]);
 
-   const handleActionClick = () => {
+   const handleContentWrapperClick: MouseEventHandler<HTMLDivElement> = (event) => {
+      event.preventDefault();
       if (!title) return;
       navigator.clipboard.writeText(title);
    };
 
-   const handleActionDoubleClick = () => {
-      router.push(`${detlUrlPrefix}/${id}`);
-   };
-
    return (
       <Card className={classes.cardRoot} raised={false}>
-         <CardActionArea onClick={handleActionClick} onDoubleClick={handleActionDoubleClick}>
+         <CardActionArea LinkComponent={Link} href={`${detlUrlPrefix}/${id}`}>
             <div className={classes.imageContainer}>
                <Image
                   height={140}
@@ -79,17 +75,19 @@ export default function ContentItem({
                   alt=""
                />
             </div>
-            <CardContent>
-               <Typography variant="body2">
-                  <Tooltip title={title || name || ''}>
-                     <span>{titleMod}</span>
-                  </Tooltip>{' '}
-                  ({releaseYear})
-               </Typography>
-               <Typography variant="body2" color="text.secondary">
-                  <b>{vote_average}</b> ({vote_count})
-               </Typography>
-            </CardContent>
+            <div onClick={handleContentWrapperClick}>
+               <CardContent>
+                  <Typography variant="body2">
+                     <Tooltip title={title || name || ''}>
+                        <span>{titleMod}</span>
+                     </Tooltip>{' '}
+                     ({releaseYear})
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                     <b>{vote_average}</b> ({vote_count})
+                  </Typography>
+               </CardContent>
+            </div>
          </CardActionArea>
       </Card>
    );
