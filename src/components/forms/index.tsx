@@ -1,4 +1,5 @@
 export { default as MoviesFiltersForm } from './MoviesFiltersForm/MoviesFiltersForm';
+export type { Props as MoviesFiltersFormProps } from './MoviesFiltersForm/MoviesFiltersForm.types';
 
 export { default as SearchFiltersForm } from './SearchFiltersForm/SearchFiltersForm';
 export type { Props as SearchFiltersFormProps } from './SearchFiltersForm/SearchFiltersForm.types';

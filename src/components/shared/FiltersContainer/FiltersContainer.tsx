@@ -1,17 +1,14 @@
 import { BasicDialog } from '@/components/dialogs';
 import { ClearOutlined, TuneOutlined } from '@mui/icons-material';
 import { Badge, Box, Button, Stack } from '@mui/material';
-import { useState } from 'react';
 import { Props } from './FiltersContainer.types';
 
-export default function FiltersContainer({ children, filtersCount, clearFilters }: Props) {
-   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
-
+export default function FiltersContainer({ children, dlgOpen, filtersCount, clearFilters, setDlgOpen }: Props) {
    const openDialog = () => {
-      setDialogIsOpen(true);
+      setDlgOpen(true);
    };
    const closeDialog = () => {
-      setDialogIsOpen(false);
+      setDlgOpen(false);
    };
 
    const handleFilterBtnClick = () => {
@@ -32,7 +29,7 @@ export default function FiltersContainer({ children, filtersCount, clearFilters 
                </Button>
             )}
          </Stack>
-         <BasicDialog open={dialogIsOpen} onClose={closeDialog} title="Apply filters">
+         <BasicDialog open={dlgOpen} onClose={closeDialog} title="Apply filters">
             {children}
          </BasicDialog>
       </Box>

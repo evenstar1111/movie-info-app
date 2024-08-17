@@ -10,7 +10,7 @@ import CustomMultiSelect from '../SelectComponents/CustomMultiSelect/CustomMulti
 import { genreSelectAllValues, genresOptions, sortByOptions } from './constants';
 import { OnAtcValueChangeFn, Props, TFormDataKey } from './MoviesFiltersForm.types';
 
-export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtcProps, prsnAtcProps }: Props) {
+export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcProps, prsnAtcProps }: Props) {
    const defaultsApplied = useRef<boolean>(false);
    const kwDefaultVal = useGetAtcDefaultsFromFilters<TFormDataKey>({
       defaults: defaultFilters,
@@ -64,8 +64,8 @@ export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtc
       });
    };
 
-   const handlFormSubmit: SubmitHandler<DiscoverMoviesQParams> = (data) => {
-      updateFilters(data);
+   const handleFormSubmit: SubmitHandler<DiscoverMoviesQParams> = (data) => {
+      onFormSubmit(data);
    };
 
    const onAtcValueChange: OnAtcValueChangeFn = (dataKey) => (selectedObjs) => {
@@ -124,7 +124,7 @@ export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtc
    }, [defaultFilters, kwAtcProps, prsnAtcProps]);
 
    return (
-      <form onSubmit={handleSubmit(handlFormSubmit)} noValidate>
+      <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
          <Grid container columnSpacing={1} rowSpacing={2.4} mb={2.5}>
             <Grid item xs={12} md={6}>
                <AutocompleteField
