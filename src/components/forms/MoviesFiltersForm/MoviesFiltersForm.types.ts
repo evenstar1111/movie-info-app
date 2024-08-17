@@ -1,4 +1,4 @@
-import { DiscoverMoviesQParams, TMoviesSortByOptionKey, TMoviesSortByOptionValue } from '@/interfaces/api';
+import { DiscoverMoviesQParams } from '@/interfaces/api';
 import { Dispatch, SetStateAction } from 'react';
 import { AutocompleteFieldProps } from '..';
 
@@ -10,8 +10,3 @@ export type Props = {
 };
 
 type AtcProps = Pick<AutocompleteFieldProps, 'handleInputChange' | 'options'>;
-
-export type ContentTypeOption = {
-   label: TMoviesSortByOptionKey;
-   value: TMoviesSortByOptionValue;
-};
