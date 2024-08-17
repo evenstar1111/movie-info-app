@@ -1,6 +1,6 @@
 import { MoviesGenres, TMoviesGenreKey } from '@/constants';
 import { MoviesSortByOptions, TMoviesSortByOptionKey } from '@/interfaces/api';
-import { OptionAsObject } from '../SelectComponents/types';
+import { SelectOptionAsObject } from '@/types';
 import { ContentTypeOption } from './MoviesFiltersForm.types';
 
 export const sortByOptions: ContentTypeOption[] = Object.keys(MoviesSortByOptions).map((item) => {
@@ -12,7 +12,7 @@ export const sortByOptions: ContentTypeOption[] = Object.keys(MoviesSortByOption
    };
 });
 
-export const genresOptions: OptionAsObject[] = Object.keys(MoviesGenres).map((item) => {
+export const genresOptions: SelectOptionAsObject[] = Object.keys(MoviesGenres).map((item) => {
    const genreLabel = item as TMoviesGenreKey;
 
    return {

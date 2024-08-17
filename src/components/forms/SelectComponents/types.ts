@@ -1,3 +1,4 @@
+import { SelectOptionAsObject } from '@/types';
 import { SelectProps } from '@mui/material';
 import { Params } from './styles';
 
@@ -7,7 +8,7 @@ export type CustomSelectCommonProps<T> = {
    id?: string;
    placeholder?: string;
    selectedOptionStyle?: 'text' | 'chip';
-   options: string[] | OptionAsObject[];
+   options: string[] | SelectOptionAsObject[];
    value: T;
    formControlRootClass?: string;
    formControlWidth?: Params['formControlWidth'];
@@ -15,9 +16,3 @@ export type CustomSelectCommonProps<T> = {
    renderValue?: SelectProps<T>['renderValue'];
    errorTxt?: string;
 } & Pick<SelectProps, 'displayEmpty' | 'MenuProps' | 'disabled' | 'size'>;
-
-export type OptionAsObject<Value = string, Label = string> = {
-   value: Value;
-   label: Label;
-   isDisabled?: boolean;
-};

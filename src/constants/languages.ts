@@ -1,4 +1,4 @@
-import { ContentMetaWName } from '@/types/contents/common';
+import { SelectOptionAsObject } from '@/types';
 
 export const Languages = [
    {
@@ -938,7 +938,7 @@ export const Languages = [
    },
 ] as const;
 
-export const languagesAsContentMetaArr = Languages.map<ContentMetaWName>((lang) => ({
-   id: lang.iso_639_1 as any, //FIXME: type mismatch, add global type for Select / similar components, and follow
-   name: lang.english_name,
+export const languagesSelectOptions = Languages.map<SelectOptionAsObject>((lang) => ({
+   value: lang.iso_639_1,
+   label: lang.english_name,
 }));

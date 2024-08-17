@@ -1,6 +1,6 @@
 import { DiscoverMoviesQParams, TMoviesSortByOptionKey, TMoviesSortByOptionValue } from '@/interfaces/api';
 import { Dispatch, SetStateAction } from 'react';
-import { Props as FieldAutocompleteProps } from './FieldAutocomplete/FieldAutocomplete.types';
+import { AutocompleteFieldProps } from '..';
 
 export type Props = {
    defaultFilters: DiscoverMoviesQParams;
@@ -9,7 +9,7 @@ export type Props = {
    prsnAtcProps: AtcProps;
 };
 
-type AtcProps = Pick<FieldAutocompleteProps, 'handleInputChange' | 'options'>;
+type AtcProps = Pick<AutocompleteFieldProps, 'handleInputChange' | 'options'>;
 
 export type ContentTypeOption = {
    label: TMoviesSortByOptionKey;

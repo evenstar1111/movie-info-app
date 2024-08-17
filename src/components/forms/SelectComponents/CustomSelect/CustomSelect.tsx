@@ -1,7 +1,7 @@
+import { SelectOptionAsObject as OptionAsObject } from '@/types';
 import { Chip, FormControl, FormHelperText, InputLabel, ListItemText, MenuItem, Select } from '@mui/material';
 import { CustomSelectMenuProps } from '../defaultPropValues';
 import { useStyles } from '../styles';
-import { OptionAsObject } from '../types';
 import type { Props } from './CustomSelect.types';
 
 export default function CustomSelect({

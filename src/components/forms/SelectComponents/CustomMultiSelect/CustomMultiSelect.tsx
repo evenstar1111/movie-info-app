@@ -1,8 +1,8 @@
+import { SelectOptionAsObject as OptionAsObject } from '@/types';
 import { Checkbox, Chip, FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from '@mui/material';
 import { Fragment, useMemo } from 'react';
 import { CustomSelectMenuProps } from '../defaultPropValues';
 import { useStyles } from '../styles';
-import { OptionAsObject } from '../types';
 import type { Props } from './CustomMultiSelect.types';
 
 export default function CustomMultiSelect({

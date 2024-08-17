@@ -1,23 +1,21 @@
 import { MuiSelect, MuiTextField } from '@/components/mui';
-import { countriesAsContentMetaArr, languagesAsContentMetaArr, ParamValsSprtrs } from '@/constants';
+import { countriesSelectOptions, languagesSelectOptions, ParamValsSprtrs } from '@/constants';
 import { DiscoverMoviesQParams, TMoviesSortByOptionValue } from '@/interfaces/api';
-import { ContentMetaWName } from '@/types/contents/common';
+import { SelectOptionAsObject } from '@/types';
 import { Button, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, SelectProps, Switch } from '@mui/material';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { CustomMultiSelectProps } from '..';
+import { AutocompleteField, AutocompleteFieldProps, CustomMultiSelectProps } from '..';
 import CustomMultiSelect from '../SelectComponents/CustomMultiSelect/CustomMultiSelect';
 import { genreSelectAllValues, genresOptions, sortByOptions } from './constants';
-import FieldAutocomplete from './FieldAutocomplete/FieldAutocomplete';
-import { Props as FieldAutocompleteProps } from './FieldAutocomplete/FieldAutocomplete.types';
 import { Props } from './MoviesFiltersForm.types';
 
 export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtcProps, prsnAtcProps }: Props) {
    const defaultsApplied = useRef<boolean>(false);
-   const [kwDefaultVal, setKWDefaultVal] = useState<ContentMetaWName[]>([]);
-   const [prsnDefaultVal, setPrsnDefaultVal] = useState<ContentMetaWName[]>([]);
-   const [langsDefaultVal, setLangsDefaultVal] = useState<ContentMetaWName[]>([]);
-   const [countriesDefaultVal, setCountriesDefaultVal] = useState<ContentMetaWName[]>([]);
+   const [kwDefaultVal, setKWDefaultVal] = useState<SelectOptionAsObject[]>([]);
+   const [prsnDefaultVal, setPrsnDefaultVal] = useState<SelectOptionAsObject[]>([]);
+   const [langsDefaultVal, setLangsDefaultVal] = useState<SelectOptionAsObject[]>([]);
+   const [countriesDefaultVal, setCountriesDefaultVal] = useState<SelectOptionAsObject[]>([]);
    const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
    const [selectedWotGenres, setSelectedWotGenres] = useState<string[]>([]);
 
@@ -54,23 +52,23 @@ export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtc
       updateFilters(data);
    };
 
-   const onKeywordsUpdate: FieldAutocompleteProps['onValueUpdate'] = (kwOpsSelected) => {
-      const kwIds = kwOpsSelected.map((kw) => kw.id);
+   const onKeywordsUpdate: AutocompleteFieldProps['onValueUpdate'] = (kwOpsSelected) => {
+      const kwIds = kwOpsSelected.map((kw) => kw.value);
       setValue('with_keywords', kwIds.join(ParamValsSprtrs.Or));
    };
 
-   const onPersonsUpdate: FieldAutocompleteProps['onValueUpdate'] = (prsnOpsSelected) => {
-      const prsnIds = prsnOpsSelected.map((prsn) => prsn.id);
+   const onPersonsUpdate: AutocompleteFieldProps['onValueUpdate'] = (prsnOpsSelected) => {
+      const prsnIds = prsnOpsSelected.map((prsn) => prsn.value);
       setValue('with_people', prsnIds.join(ParamValsSprtrs.Or));
    };
 
-   const onLanguagesUpdate: FieldAutocompleteProps['onValueUpdate'] = (langsSelected) => {
-      const langIds = langsSelected.map((lang) => lang.id);
+   const onLanguagesUpdate: AutocompleteFieldProps['onValueUpdate'] = (langsSelected) => {
+      const langIds = langsSelected.map((lang) => lang.value);
       setValue('with_original_language', langIds.join(ParamValsSprtrs.Or));
    };
 
-   const onCountriesUpdate: FieldAutocompleteProps['onValueUpdate'] = (countrySelected) => {
-      const countryIds = countrySelected.map((country) => country.id);
+   const onCountriesUpdate: AutocompleteFieldProps['onValueUpdate'] = (countrySelected) => {
+      const countryIds = countrySelected.map((country) => country.value);
       setValue('with_origin_country', countryIds.join(ParamValsSprtrs.Or));
    };
 
@@ -116,8 +114,8 @@ export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtc
 
       setKWDefaultVal(() => {
          const kwIds = defaultFilters.with_keywords?.split(ParamValsSprtrs.Or) || [];
-         const kwVals = kwIds.reduce<ContentMetaWName[]>((acc, kwId) => {
-            const found = kwAtcProps.options.find((kwObj) => kwObj.id === Number(kwId));
+         const kwVals = kwIds.reduce<SelectOptionAsObject[]>((acc, kwId) => {
+            const found = kwAtcProps.options.find((kwObj) => kwObj.value === kwId);
             if (found) acc.push(found);
             return acc;
          }, []);
@@ -126,8 +124,8 @@ export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtc
 
       setPrsnDefaultVal(() => {
          const prsnIds = defaultFilters.with_people?.split(ParamValsSprtrs.Or) || [];
-         const prsnVals = prsnIds.reduce<ContentMetaWName[]>((acc, prsnId) => {
-            const found = prsnAtcProps.options.find((op) => op.id === Number(prsnId));
+         const prsnVals = prsnIds.reduce<SelectOptionAsObject[]>((acc, prsnId) => {
+            const found = prsnAtcProps.options.find((op) => op.value === prsnId);
             if (found) acc.push(found);
             return acc;
          }, []);
@@ -136,9 +134,8 @@ export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtc
 
       setLangsDefaultVal(() => {
          const langIds = defaultFilters.with_original_language?.split(ParamValsSprtrs.Or) || [];
-         const langVals = langIds.reduce<ContentMetaWName[]>((acc, langId) => {
-            //FIXME: resolve type mismatch
-            const found = languagesAsContentMetaArr.find((op) => op.id === (langId as any));
+         const langVals = langIds.reduce<SelectOptionAsObject[]>((acc, langId) => {
+            const found = languagesSelectOptions.find((op) => op.value === langId);
             if (found) acc.push(found);
             return acc;
          }, []);
@@ -147,9 +144,8 @@ export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtc
 
       setCountriesDefaultVal(() => {
          const countryIds = defaultFilters.with_origin_country?.split(ParamValsSprtrs.Or) || [];
-         const countryVals = countryIds.reduce<ContentMetaWName[]>((acc, countryId) => {
-            //FIXME: resolve type mismatch
-            const found = countriesAsContentMetaArr.find((op) => op.id === (countryId as any));
+         const countryVals = countryIds.reduce<SelectOptionAsObject[]>((acc, countryId) => {
+            const found = countriesSelectOptions.find((op) => op.value === countryId);
             if (found) acc.push(found);
             return acc;
          }, []);
@@ -175,41 +171,41 @@ export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtc
       <form onSubmit={handleSubmit(handlFormSubmit)} noValidate>
          <Grid container columnSpacing={1} rowSpacing={2.4} mb={2.5}>
             <Grid item xs={12} md={6}>
-               <FieldAutocomplete
-                  label="Keywords"
-                  placeholder="Enter Keywords"
+               <AutocompleteField
                   defaultValues={kwDefaultVal}
                   onValueUpdate={onKeywordsUpdate}
-                  handleInputChange={kwAtcProps.handleInputChange}
                   options={kwAtcProps.options}
+                  handleInputChange={kwAtcProps.handleInputChange}
+                  label="Keywords"
+                  placeholder="Enter Keywords"
                />
             </Grid>
             <Grid item xs={12} md={6}>
-               <FieldAutocomplete
-                  label="People"
-                  placeholder="Enter People Names"
+               <AutocompleteField
                   defaultValues={prsnDefaultVal}
                   onValueUpdate={onPersonsUpdate}
-                  handleInputChange={prsnAtcProps.handleInputChange}
                   options={prsnAtcProps.options}
+                  handleInputChange={prsnAtcProps.handleInputChange}
+                  label="People"
+                  placeholder="Enter People Names"
                />
             </Grid>
             <Grid item xs={12} md={6}>
-               <FieldAutocomplete
-                  label="Languages"
-                  placeholder="Enter Languages"
+               <AutocompleteField
                   defaultValues={langsDefaultVal}
                   onValueUpdate={onLanguagesUpdate}
-                  options={languagesAsContentMetaArr}
+                  options={languagesSelectOptions}
+                  label="Languages"
+                  placeholder="Enter Languages"
                />
             </Grid>
             <Grid item xs={12} md={6}>
-               <FieldAutocomplete
-                  label="Countries"
-                  placeholder="Enter Countries"
+               <AutocompleteField
                   defaultValues={countriesDefaultVal}
                   onValueUpdate={onCountriesUpdate}
-                  options={countriesAsContentMetaArr}
+                  options={countriesSelectOptions}
+                  label="Countries"
+                  placeholder="Enter Countries"
                />
             </Grid>
             <Grid item xs={12} md={6}>

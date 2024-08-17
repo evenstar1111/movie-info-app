@@ -7,4 +7,6 @@ export { default as CustomMultiSelect } from './SelectComponents/CustomMultiSele
 export type { Props as CustomMultiSelectProps } from './SelectComponents/CustomMultiSelect/CustomMultiSelect.types';
 export { default as CustomSelect } from './SelectComponents/CustomSelect/CustomSelect';
 export type { Props as CustomSelectProps } from './SelectComponents/CustomSelect/CustomSelect.types';
-export type { OptionAsObject } from './SelectComponents/types';
+
+export { default as AutocompleteField } from './AutocompleteField/AutocompleteField';
+export type { Props as AutocompleteFieldProps } from './AutocompleteField/AutocompleteField.types';
