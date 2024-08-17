@@ -48,13 +48,14 @@ const Movies: NextPageWithLayout = () => {
          ...prevState,
          page,
       }));
-      fetchMovies(
+      await fetchMovies(
          {
             ...filters,
             page,
          },
          true
       );
+      scrollToTop();
    };
 
    const fetchMovies = async function (filterArgs: DiscoverMoviesQParams = filters, pageChange?: boolean) {
@@ -74,6 +75,11 @@ const Movies: NextPageWithLayout = () => {
             total_results: data.total_results,
          });
       }
+   };
+
+   const scrollToTop = () => {
+      document.documentElement.scrollTop = 0; // For most browsers
+      document.body.scrollTop = 0; // For Safari
    };
 
    useEffect(() => {
