@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+   unoptimized: true, //TODO: add .env var
    reactStrictMode: false,
    compress: false,
    compiler: {

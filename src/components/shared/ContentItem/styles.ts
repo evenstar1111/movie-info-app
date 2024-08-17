@@ -6,9 +6,10 @@ export const useStyles = tss.withName('ContentItem').create(({ theme }) => {
          borderRadius: 0,
          boxShadow: 'none',
          maxWidth: '100%',
+         height: '100%',
+         backgroundColor: '#c9c9c93d',
 
          '.MuiCardContent-root': {
-            backgroundColor: '#c9c9c93d',
             paddingTop: theme.spacing(0.5),
 
             '&, &:last-child': {
