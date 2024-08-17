@@ -1,6 +1,7 @@
+const disableImageOptimization = Number(process.env.OPTIMIZE_IMAGES) === 0;
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-   unoptimized: true, //TODO: add .env var
    reactStrictMode: false,
    compress: false,
    compiler: {
@@ -12,6 +13,7 @@ const nextConfig = {
       optimizePackageImports: ['@mui/material', '@mui/icons-material', 'recharts'],
    },
    images: {
+      unoptimized: disableImageOptimization,
       remotePatterns: [
          {
             protocol: 'https',
