@@ -16,14 +16,14 @@ type Args<ValueKey extends string = string> = {
 export default function useGetAtcDefaultsFromFilters<T extends string>({
    defaults,
    valueKey,
-   options,
+   options = [],
    valSeparator = ParamValsSprtrs.Or,
 }: Args<T>) {
    const defaultsApplied = useRef<boolean>(false);
    const [fldDefaultVal, setFldDefaultVal] = useState<SelectOptionAsObject[]>([]);
 
    useEffect(() => {
-      if (defaultsApplied.current || !valueKey || !valSeparator || !defaults || !options.length) {
+      if (defaultsApplied.current || !valueKey || !valSeparator || !defaults) {
          return;
       }
 
