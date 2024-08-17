@@ -10,3 +10,7 @@ export type Props = {
 };
 
 type AtcProps = Pick<AutocompleteFieldProps, 'handleInputChange' | 'options'>;
+
+export type TFormDataKey = keyof DiscoverMoviesQParams;
+
+export type OnAtcValueChangeFn = (key: TFormDataKey) => AutocompleteFieldProps['onValueUpdate'];

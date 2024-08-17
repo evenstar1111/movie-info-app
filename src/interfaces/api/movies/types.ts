@@ -3,7 +3,7 @@ import { TMoviesSortByOptionValue } from '../constants';
 import { CommonDiscoverQParams, ListsApiResponse } from '../shared.types';
 
 export type DiscoverMoviesQParams = CommonDiscoverQParams<TMoviesSortByOptionValue> & {
-   year?: number;
+   year?: string;
    with_cast?: string;
    with_crew?: string;
    with_people?: string;

@@ -1,21 +1,37 @@
 import { MuiSelect, MuiTextField } from '@/components/mui';
 import { countriesSelectOptions, languagesSelectOptions, ParamValsSprtrs } from '@/constants';
 import { DiscoverMoviesQParams, TMoviesSortByOptionValue } from '@/interfaces/api';
-import { SelectOptionAsObject } from '@/types';
+import { useGetAtcDefaultsFromFilters } from '@/utility';
 import { Button, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, SelectProps, Switch } from '@mui/material';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { AutocompleteField, AutocompleteFieldProps, CustomMultiSelectProps } from '..';
+import { AutocompleteField, CustomMultiSelectProps } from '..';
 import CustomMultiSelect from '../SelectComponents/CustomMultiSelect/CustomMultiSelect';
 import { genreSelectAllValues, genresOptions, sortByOptions } from './constants';
-import { Props } from './MoviesFiltersForm.types';
+import { OnAtcValueChangeFn, Props, TFormDataKey } from './MoviesFiltersForm.types';
 
 export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtcProps, prsnAtcProps }: Props) {
    const defaultsApplied = useRef<boolean>(false);
-   const [kwDefaultVal, setKWDefaultVal] = useState<SelectOptionAsObject[]>([]);
-   const [prsnDefaultVal, setPrsnDefaultVal] = useState<SelectOptionAsObject[]>([]);
-   const [langsDefaultVal, setLangsDefaultVal] = useState<SelectOptionAsObject[]>([]);
-   const [countriesDefaultVal, setCountriesDefaultVal] = useState<SelectOptionAsObject[]>([]);
+   const kwDefaultVal = useGetAtcDefaultsFromFilters<TFormDataKey>({
+      defaults: defaultFilters,
+      options: kwAtcProps.options,
+      valueKey: 'with_keywords',
+   });
+   const prsnDefaultVal = useGetAtcDefaultsFromFilters<TFormDataKey>({
+      defaults: defaultFilters,
+      options: prsnAtcProps.options,
+      valueKey: 'with_people',
+   });
+   const langsDefaultVal = useGetAtcDefaultsFromFilters<TFormDataKey>({
+      defaults: defaultFilters,
+      options: languagesSelectOptions,
+      valueKey: 'with_original_language',
+   });
+   const countriesDefaultVal = useGetAtcDefaultsFromFilters<TFormDataKey>({
+      defaults: defaultFilters,
+      options: countriesSelectOptions,
+      valueKey: 'with_origin_country',
+   });
    const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
    const [selectedWotGenres, setSelectedWotGenres] = useState<string[]>([]);
 
@@ -52,56 +68,36 @@ export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtc
       updateFilters(data);
    };
 
-   const onKeywordsUpdate: AutocompleteFieldProps['onValueUpdate'] = (kwOpsSelected) => {
-      const kwIds = kwOpsSelected.map((kw) => kw.value);
-      setValue('with_keywords', kwIds.join(ParamValsSprtrs.Or));
-   };
-
-   const onPersonsUpdate: AutocompleteFieldProps['onValueUpdate'] = (prsnOpsSelected) => {
-      const prsnIds = prsnOpsSelected.map((prsn) => prsn.value);
-      setValue('with_people', prsnIds.join(ParamValsSprtrs.Or));
-   };
-
-   const onLanguagesUpdate: AutocompleteFieldProps['onValueUpdate'] = (langsSelected) => {
-      const langIds = langsSelected.map((lang) => lang.value);
-      setValue('with_original_language', langIds.join(ParamValsSprtrs.Or));
-   };
-
-   const onCountriesUpdate: AutocompleteFieldProps['onValueUpdate'] = (countrySelected) => {
-      const countryIds = countrySelected.map((country) => country.value);
-      setValue('with_origin_country', countryIds.join(ParamValsSprtrs.Or));
+   const onAtcValueChange: OnAtcValueChangeFn = (dataKey) => (selectedObjs) => {
+      const valueArr = selectedObjs.map((obj) => obj.value);
+      setValue(dataKey, valueArr.join(ParamValsSprtrs.Or));
    };
 
    const onGenreSelectChange: CustomMultiSelectProps['onChange'] = (event) => {
-      let value = event.target.value as string[];
-      const lastValue = value[value.length - 1];
-
-      if (lastValue === 'select-all') {
-         value = genreSelectAllValues.slice();
-      }
-
-      if (lastValue === 'select-none') {
-         value = [];
-      }
-
+      const value = getMultiSelectValue(event.target.value, genreSelectAllValues);
       setSelectedGenres(() => value);
       setValue('with_genres', value.join(ParamValsSprtrs.Or));
    };
 
    const onWotGenreSelectChange: CustomMultiSelectProps['onChange'] = (event) => {
-      let value = event.target.value as string[];
-      const lastValue = value[value.length - 1];
+      const value = getMultiSelectValue(event.target.value, genreSelectAllValues);
+      setSelectedWotGenres(() => value);
+      setValue('without_genres', value.join(ParamValsSprtrs.Or));
+   };
+
+   const getMultiSelectValue = (selctdValues: any, allValues: string[]): string[] => {
+      let valuesToReturn = selctdValues as string[];
+      const lastValue = selctdValues[selctdValues.length - 1];
 
       if (lastValue === 'select-all') {
-         value = genreSelectAllValues.slice();
+         valuesToReturn = allValues.slice();
       }
 
       if (lastValue === 'select-none') {
-         value = [];
+         valuesToReturn = [];
       }
 
-      setSelectedWotGenres(() => value);
-      setValue('without_genres', value.join(ParamValsSprtrs.Or));
+      return valuesToReturn;
    };
 
    useEffect(() => {
@@ -110,46 +106,6 @@ export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtc
       Object.keys(defaultFilters).forEach((filterKey) => {
          const keyTyped = filterKey as keyof DiscoverMoviesQParams;
          setValue(keyTyped, defaultFilters[keyTyped]);
-      });
-
-      setKWDefaultVal(() => {
-         const kwIds = defaultFilters.with_keywords?.split(ParamValsSprtrs.Or) || [];
-         const kwVals = kwIds.reduce<SelectOptionAsObject[]>((acc, kwId) => {
-            const found = kwAtcProps.options.find((kwObj) => kwObj.value === kwId);
-            if (found) acc.push(found);
-            return acc;
-         }, []);
-         return kwVals;
-      });
-
-      setPrsnDefaultVal(() => {
-         const prsnIds = defaultFilters.with_people?.split(ParamValsSprtrs.Or) || [];
-         const prsnVals = prsnIds.reduce<SelectOptionAsObject[]>((acc, prsnId) => {
-            const found = prsnAtcProps.options.find((op) => op.value === prsnId);
-            if (found) acc.push(found);
-            return acc;
-         }, []);
-         return prsnVals;
-      });
-
-      setLangsDefaultVal(() => {
-         const langIds = defaultFilters.with_original_language?.split(ParamValsSprtrs.Or) || [];
-         const langVals = langIds.reduce<SelectOptionAsObject[]>((acc, langId) => {
-            const found = languagesSelectOptions.find((op) => op.value === langId);
-            if (found) acc.push(found);
-            return acc;
-         }, []);
-         return langVals;
-      });
-
-      setCountriesDefaultVal(() => {
-         const countryIds = defaultFilters.with_origin_country?.split(ParamValsSprtrs.Or) || [];
-         const countryVals = countryIds.reduce<SelectOptionAsObject[]>((acc, countryId) => {
-            const found = countriesSelectOptions.find((op) => op.value === countryId);
-            if (found) acc.push(found);
-            return acc;
-         }, []);
-         return countryVals;
       });
 
       setSelectedGenres(() => {
@@ -173,7 +129,7 @@ export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtc
             <Grid item xs={12} md={6}>
                <AutocompleteField
                   defaultValues={kwDefaultVal}
-                  onValueUpdate={onKeywordsUpdate}
+                  onValueUpdate={onAtcValueChange('with_keywords')}
                   options={kwAtcProps.options}
                   handleInputChange={kwAtcProps.handleInputChange}
                   label="Keywords"
@@ -183,7 +139,7 @@ export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtc
             <Grid item xs={12} md={6}>
                <AutocompleteField
                   defaultValues={prsnDefaultVal}
-                  onValueUpdate={onPersonsUpdate}
+                  onValueUpdate={onAtcValueChange('with_people')}
                   options={prsnAtcProps.options}
                   handleInputChange={prsnAtcProps.handleInputChange}
                   label="People"
@@ -193,7 +149,7 @@ export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtc
             <Grid item xs={12} md={6}>
                <AutocompleteField
                   defaultValues={langsDefaultVal}
-                  onValueUpdate={onLanguagesUpdate}
+                  onValueUpdate={onAtcValueChange('with_original_language')}
                   options={languagesSelectOptions}
                   label="Languages"
                   placeholder="Enter Languages"
@@ -202,7 +158,7 @@ export default function MoviesFiltersForm({ defaultFilters, updateFilters, kwAtc
             <Grid item xs={12} md={6}>
                <AutocompleteField
                   defaultValues={countriesDefaultVal}
-                  onValueUpdate={onCountriesUpdate}
+                  onValueUpdate={onAtcValueChange('with_origin_country')}
                   options={countriesSelectOptions}
                   label="Countries"
                   placeholder="Enter Countries"

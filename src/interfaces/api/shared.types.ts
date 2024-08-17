@@ -1,6 +1,6 @@
 export type CommonDiscoverQParams<SortBy extends string> = {
    language?: string;
-   page?: number;
+   page?: string;
    sort_by?: SortBy;
    with_genres?: string;
    without_genres?: string;

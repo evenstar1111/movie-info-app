@@ -162,3 +162,4 @@ export const ParamValsSprtrs = {
    Or: '|',
    And: ',',
 } as const;
+export type TParamValsSprtr = (typeof ParamValsSprtrs)[keyof typeof ParamValsSprtrs];
