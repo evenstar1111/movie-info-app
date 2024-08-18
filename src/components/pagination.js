@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Styles from './Pagination.module.css';
 
 export default function Pagination({ movies, handleClick }) {
@@ -6,11 +6,21 @@ export default function Pagination({ movies, handleClick }) {
    const totalPages = movies && movies.total_pages;
    const currentPage = movies && movies.page;
 
-   const goClickHandler = (page) => {
-      if (parseInt(page) < 1 && parseInt(page) > parseInt(page) && parseInt(page) === parseInt(currentPage)) {
+   const isGoBtnDisabled = useMemo(() => {
+      return Number(movies.page) >= Number(movies.total_pages) || !inputValue;
+   }, [movies.page, movies.total_pages, inputValue]);
+
+   const changePage = (page) => {
+      console.log('knock knock', page);
+      const targetPage = parseInt(page);
+      if (targetPage < 1) {
          return;
-      } else {
-         handleClick(page);
+      }
+
+      handleClick(page);
+
+      if (inputValue.length) {
+         setInputValue('');
       }
    };
 
@@ -20,7 +30,7 @@ export default function Pagination({ movies, handleClick }) {
               <div className={Styles.elemsWrapper}>
                  <div>
                     {currentPage > 1 && (
-                       <button className={Styles.button} onClick={() => goClickHandler(currentPage - 1)}>
+                       <button className={Styles.button} onClick={() => changePage(currentPage - 1)}>
                           prev
                        </button>
                     )}
@@ -33,11 +43,16 @@ export default function Pagination({ movies, handleClick }) {
                     aria-label="Example text with two button addons"
                     aria-describedby="button-addon3"
                  />
-                 <button className={Styles.button} type="button" onClick={() => goClickHandler(inputValue)}>
+                 <button
+                    className={Styles.button}
+                    type="button"
+                    onClick={() => changePage(inputValue)}
+                    disabled={isGoBtnDisabled}
+                 >
                     go
                  </button>
                  {currentPage < totalPages && (
-                    <button className={Styles.button} type="button" onClick={() => goClickHandler(currentPage + 1)}>
+                    <button className={Styles.button} type="button" onClick={() => changePage(currentPage + 1)}>
                        next
                     </button>
                  )}
