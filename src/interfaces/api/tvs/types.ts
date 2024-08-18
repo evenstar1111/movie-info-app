@@ -1,5 +1,5 @@
-import { Tv } from '@/types';
-import { CommonDiscoverQParams, ListsApiResponse } from '../shared.types';
+import { ContentListResponse, Tv } from '@/types';
+import { CommonDiscoverQParams } from '../shared.types';
 
 export type DiscoverTvsQParams = CommonDiscoverQParams<TvsSortByOption> & {
    year?: number;
@@ -24,4 +24,4 @@ export enum TvsSortByOption {
    VoteCountDesc = 'vote_count.desc',
 }
 
-export type TvListsResponse = ListsApiResponse<Tv>;
+export type TvListsResponse = ContentListResponse<Tv>;

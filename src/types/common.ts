@@ -3,3 +3,8 @@ export type SelectOptionAsObject<Value = string, Label = string> = {
    label: Label;
    isDisabled?: boolean;
 };
+
+export type ListsFiltersState<Filters> = {
+   isReady: boolean;
+   filters: Filters;
+};

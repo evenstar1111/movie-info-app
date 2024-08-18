@@ -18,3 +18,12 @@ export type ContentMetaWName = {
    id: number;
    name: string;
 };
+
+export type ContentListResponse<Content = any> = ContentListMetrices & {
+   results: Content[];
+};
+export type ContentListMetrices = {
+   page: number;
+   total_pages: number;
+   total_results: number;
+};

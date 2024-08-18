@@ -1,6 +1,6 @@
-import { Movie } from '@/types';
+import { ContentListResponse, Movie } from '@/types';
 import { TMoviesSortByOptionValue } from '../constants';
-import { CommonDiscoverQParams, ListsApiResponse } from '../shared.types';
+import { CommonDiscoverQParams } from '../shared.types';
 
 export type DiscoverMoviesQParams = CommonDiscoverQParams<TMoviesSortByOptionValue> & {
    year?: string;
@@ -13,4 +13,4 @@ export type DiscoverMoviesQParams = CommonDiscoverQParams<TMoviesSortByOptionVal
    // 'primary_release_date.lte'?: string; //dot(.) symbol might be a problem
 };
 
-export type MovieListsResponse = ListsApiResponse<Movie>;
+export type MovieListsResponse = ContentListResponse<Movie>;

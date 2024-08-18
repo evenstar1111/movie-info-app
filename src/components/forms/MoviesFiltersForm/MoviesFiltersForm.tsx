@@ -64,6 +64,14 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
       });
    };
 
+   const includeSensitiveWtchd = watch('include_adult');
+   const includeSensitiveChecked = useMemo(() => {
+      if (typeof includeSensitiveWtchd === 'string') {
+         return includeSensitiveWtchd === 'true';
+      }
+      return includeSensitiveWtchd;
+   }, [includeSensitiveWtchd]);
+
    const handleFormSubmit: SubmitHandler<DiscoverMoviesQParams> = (data) => {
       onFormSubmit(data);
    };
@@ -226,7 +234,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
                   // rules={featureConstraints.ledger?.unlimited}
                   render={({ field }) => (
                      <FormControlLabel
-                        control={<Switch {...field} checked={watch('include_adult')} />}
+                        control={<Switch {...field} checked={includeSensitiveChecked} />}
                         label="Sensitive"
                      />
                   )}

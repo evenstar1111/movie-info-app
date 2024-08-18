@@ -17,10 +17,3 @@ export type CommonSearchQParams = {
    page?: number;
    include_adult?: boolean;
 };
-
-export type ListsApiResponse<Content = any> = {
-   page: number;
-   results: Content[];
-   total_pages: number;
-   total_results: number;
-};
