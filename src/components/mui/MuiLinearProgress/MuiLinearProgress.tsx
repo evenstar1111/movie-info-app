@@ -5,12 +5,12 @@ import { CustomProps } from './MuiLinearProgress.types';
 const MuiLinearProgress = styled(LinearProgress, {
    shouldForwardProp: (prop) => prop !== 'centered',
 })<CustomProps>(({ theme, centered }) => ({
-   height: 5,
-   borderRadius: 1,
+   height: 8,
+   borderRadius: 2,
 
    ...(centered && {
       margin: 'auto',
-      width: '50%',
+      maxWidth: 150,
    }),
 
    [`&.${linearProgressClasses.colorPrimary}`]: {

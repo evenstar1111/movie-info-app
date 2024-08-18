@@ -3,9 +3,9 @@ import { PublicLayout } from '@/components/layouts';
 import { MuiLinearProgress } from '@/components/mui';
 import { ContentList, FiltersContainer } from '@/components/shared';
 import { ContentTypes } from '@/constants';
-import { discoverMoviesCl, DiscoverMoviesQParams } from '@/interfaces/api';
+import { discoverMoviesCl, DiscoverMoviesQParamKey, DiscoverMoviesQParams } from '@/interfaces/api';
 import { ListsFiltersState } from '@/types';
-import { useAutocompleteHelpers, useFetchContentList } from '@/utility';
+import { scrollToTop, useAutocompleteHelpers, useFetchContentList } from '@/utility';
 import { Container } from '@mui/material';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -39,7 +39,10 @@ const Movies: NextPageWithLayout = () => {
    });
 
    const filtersCount = useMemo(() => {
-      const filtersWithValues = Object.values(filtersState.filters).filter((v) => v !== '');
+      const filtersWithValues = Object.keys(filtersState.filters).filter((key) => {
+         const k = key as DiscoverMoviesQParamKey;
+         filtersState.filters[k] !== '' || k !== 'page';
+      });
       return filtersWithValues.length;
    }, [filtersState.filters]);
 
@@ -71,12 +74,6 @@ const Movies: NextPageWithLayout = () => {
          },
       });
       scrollToTop();
-   };
-
-   /* TODO: make it global */
-   const scrollToTop = () => {
-      document.documentElement.scrollTop = 0; // For most browsers
-      document.body.scrollTop = 0; // For Safari
    };
 
    /**

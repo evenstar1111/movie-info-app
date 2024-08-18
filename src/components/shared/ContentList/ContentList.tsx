@@ -19,7 +19,7 @@ export default function ContentList({ contents, type = ContentTypes.Movie }: Pro
    return (
       <Grid container spacing={0.5} pb={5} alignItems="stretch">
          {contents.map((content, index) => (
-            <Grid key={content.id! + index} xs={4} md={3} xl={2} item>
+            <Grid key={index} xs={4} md={3} xl={2} item>
                <ContentItem content={{ ...content }} detlUrlPrefix={routePrefix} />
             </Grid>
          ))}

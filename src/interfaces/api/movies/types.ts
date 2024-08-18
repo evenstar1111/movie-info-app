@@ -12,5 +12,6 @@ export type DiscoverMoviesQParams = CommonDiscoverQParams<TMoviesSortByOptionVal
    // 'primary_release_date.gte'?: string;
    // 'primary_release_date.lte'?: string; //dot(.) symbol might be a problem
 };
+export type DiscoverMoviesQParamKey = keyof DiscoverMoviesQParams;
 
 export type MovieListsResponse = ContentListResponse<Movie>;
