@@ -6,7 +6,7 @@ import { ContentTypes } from '@/constants';
 import { discoverMoviesCl, DiscoverMoviesQParamKey, DiscoverMoviesQParams } from '@/interfaces/api';
 import { ListsFiltersState } from '@/types';
 import { scrollToTop, useAutocompleteHelpers, useFetchContentList } from '@/utility';
-import { Button, Container, Snackbar, Stack } from '@mui/material';
+import { Box, Button, Container, Snackbar, Stack, SxProps, Theme } from '@mui/material';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
@@ -14,6 +14,13 @@ import Pagination from '../components/pagination';
 import { NextPageWithLayout } from './_app';
 
 type FiltersState = ListsFiltersState<DiscoverMoviesQParams>;
+
+const filtersContainerWrpprSx: SxProps<Theme> = (theme) => ({
+   position: 'sticky',
+   top: 0,
+   zIndex: theme.zIndex.appBar,
+   backgroundColor: theme.palette.background.default,
+});
 
 const Movies: NextPageWithLayout = () => {
    const router = useRouter();
@@ -117,7 +124,7 @@ const Movies: NextPageWithLayout = () => {
             <meta name="description" content="Browse movie details and find more on imdb." key="movie-page" />
          </Head>
          <Container maxWidth={false} sx={{ pb: 20 }}>
-            <div onDoubleClick={onFiltersWrpprDblClick}>
+            <Box onDoubleClick={onFiltersWrpprDblClick} sx={filtersContainerWrpprSx}>
                <FiltersContainer
                   dlgOpen={filterDlgOpen}
                   setDlgOpen={setFilterDlgOpen}
@@ -137,7 +144,7 @@ const Movies: NextPageWithLayout = () => {
                      }}
                   />
                </FiltersContainer>
-            </div>
+            </Box>
             <ContentList contents={movies} />
             {!loadOnScroll && !isLastPageActive && (
                <Stack direction="row" justifyContent="center">

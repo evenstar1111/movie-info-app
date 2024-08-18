@@ -17,7 +17,7 @@ export default function FiltersContainer({ children, dlgOpen, filtersCount, clea
 
    return (
       <Box>
-         <Stack py={2.5} direction="row" columnGap={2}>
+         <Stack py={1.25} direction="row" columnGap={2}>
             <Badge badgeContent={filtersCount} color="info">
                <Button size="small" startIcon={<TuneOutlined />} onClick={handleFilterBtnClick}>
                   Filters
