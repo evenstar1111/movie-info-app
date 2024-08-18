@@ -11,7 +11,6 @@ export default function Pagination({ movies, handleClick }) {
    }, [movies.page, movies.total_pages, inputValue]);
 
    const changePage = (page) => {
-      console.log('knock knock', page);
       const targetPage = parseInt(page);
       if (targetPage < 1) {
          return;

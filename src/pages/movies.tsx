@@ -41,7 +41,7 @@ const Movies: NextPageWithLayout = () => {
    const filtersCount = useMemo(() => {
       const filtersWithValues = Object.keys(filtersState.filters).filter((key) => {
          const k = key as DiscoverMoviesQParamKey;
-         filtersState.filters[k] !== '' || k !== 'page';
+         return filtersState.filters[k] !== '' && k !== 'page';
       });
       return filtersWithValues.length;
    }, [filtersState.filters]);
@@ -55,7 +55,10 @@ const Movies: NextPageWithLayout = () => {
 
    const onFiltersFormSubmit: MoviesFiltersFormProps['onFormSubmit'] = (data) => {
       updateFiltersState({
-         filters: { ...data },
+         filters: {
+            ...data,
+            page: '1',
+         },
       });
       setFilterDlgOpen(false);
    };
