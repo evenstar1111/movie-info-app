@@ -122,7 +122,7 @@ const Movies: NextPageWithLayout = () => {
             </FiltersContainer>
             <ContentList contents={movies} />
             {loadingOnScrl && <MuiLinearProgress color="primary" centered />}
-            {!!movies.length && <Pagination movies={moviesMetrices} handleClick={changePage} />}
+            {!!moviesMetrices && <Pagination movies={moviesMetrices} handleClick={changePage} />}
          </Container>
       </>
    );

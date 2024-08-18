@@ -36,6 +36,7 @@ export default function Pagination({ movies, handleClick }) {
                  </div>
                  <input
                     type="text"
+                    className={Styles.inputEl}
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder={`${currentPage}/${totalPages}`}
