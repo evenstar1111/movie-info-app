@@ -6,7 +6,7 @@ import { ContentTypes } from '@/constants';
 import { discoverMoviesCl, DiscoverMoviesQParamKey, DiscoverMoviesQParams } from '@/interfaces/api';
 import { ListsFiltersState } from '@/types';
 import { scrollToTop, useAutocompleteHelpers, useFetchContentList } from '@/utility';
-import { Container } from '@mui/material';
+import { Button, Container, Snackbar, Stack } from '@mui/material';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
@@ -24,6 +24,8 @@ const Movies: NextPageWithLayout = () => {
       filters: {},
    });
    const [filterDlgOpen, setFilterDlgOpen] = useState<boolean>(false);
+   const [loadOnScroll, setLoadOnScroll] = useState<boolean>(false);
+   const [snackbarMsg, setSnackbarMsg] = useState<string>('');
 
    const [prsnAtcOptions, prsnAtcInputHandler] = useAutocompleteHelpers(ContentTypes.Person);
    const [kwAtcOptions, kwAtcInputHandler] = useAutocompleteHelpers('keyword');
@@ -33,7 +35,10 @@ const Movies: NextPageWithLayout = () => {
       metrices: moviesMetrices,
       loading,
       loadingOnScrl,
+      isLastPageActive,
+      loadMore,
    } = useFetchContentList({
+      loadOnScroll,
       filtersState,
       fetchContentFn: discoverMoviesCl,
    });
@@ -79,6 +84,17 @@ const Movies: NextPageWithLayout = () => {
       scrollToTop();
    };
 
+   const onFiltersWrpprDblClick = () => {
+      /* FIXME: consider this as a temp workaround. it should be done thoughtfully. */
+      const enabledOnScroll = loadOnScroll;
+      setLoadOnScroll((prev) => !prev);
+      setSnackbarMsg(enabledOnScroll ? 'Disabled Infinite Scrolling' : 'Enabled Infinite Scrolling');
+   };
+
+   const handleSnackbarClose = () => {
+      setSnackbarMsg(''); // TODO: manage snakbars centrally, setup a nice system.
+   };
+
    /**
     * Update filters from query parameters on page load.
     */
@@ -101,29 +117,46 @@ const Movies: NextPageWithLayout = () => {
             <meta name="description" content="Browse movie details and find more on imdb." key="movie-page" />
          </Head>
          <Container maxWidth={false} sx={{ pb: 20 }}>
-            <FiltersContainer
-               dlgOpen={filterDlgOpen}
-               setDlgOpen={setFilterDlgOpen}
-               clearFilters={clearFilters}
-               filtersCount={filtersCount}
-            >
-               <MoviesFiltersForm
-                  onFormSubmit={onFiltersFormSubmit}
-                  defaultFilters={filtersState.filters}
-                  kwAtcProps={{
-                     handleInputChange: kwAtcInputHandler,
-                     options: kwAtcOptions,
-                  }}
-                  prsnAtcProps={{
-                     handleInputChange: prsnAtcInputHandler,
-                     options: prsnAtcOptions,
-                  }}
-               />
-            </FiltersContainer>
+            <div onDoubleClick={onFiltersWrpprDblClick}>
+               <FiltersContainer
+                  dlgOpen={filterDlgOpen}
+                  setDlgOpen={setFilterDlgOpen}
+                  clearFilters={clearFilters}
+                  filtersCount={filtersCount}
+               >
+                  <MoviesFiltersForm
+                     onFormSubmit={onFiltersFormSubmit}
+                     defaultFilters={filtersState.filters}
+                     kwAtcProps={{
+                        handleInputChange: kwAtcInputHandler,
+                        options: kwAtcOptions,
+                     }}
+                     prsnAtcProps={{
+                        handleInputChange: prsnAtcInputHandler,
+                        options: prsnAtcOptions,
+                     }}
+                  />
+               </FiltersContainer>
+            </div>
             <ContentList contents={movies} />
+            {!loadOnScroll && !isLastPageActive && (
+               <Stack direction="row" justifyContent="center">
+                  <Button onClick={loadMore}>{loading ? 'Loading...' : 'Load More'}</Button>
+               </Stack>
+            )}
             {loadingOnScrl && <MuiLinearProgress color="primary" centered />}
             {!!moviesMetrices && <Pagination movies={moviesMetrices} handleClick={changePage} />}
          </Container>
+         <Snackbar
+            open={!!snackbarMsg}
+            autoHideDuration={1000}
+            onClose={handleSnackbarClose}
+            message={snackbarMsg}
+            anchorOrigin={{
+               horizontal: 'center',
+               vertical: 'top',
+            }}
+         />
       </>
    );
 };

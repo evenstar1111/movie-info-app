@@ -1,11 +1,12 @@
 import { ContentListMetrices, ContentListResponse, ListsFiltersState } from '@/types';
 import { AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { UrlObject } from 'url';
 import { switchAll } from '../loadash-like';
 
 type Args<F extends DefaultFiltersType, C extends DefaultContentType> = {
+   loadOnScroll?: boolean;
    filtersState: ListsFiltersState<F>;
    fetchContentFn: (data: F) => Promise<AxiosResponse<ContentListResponse<C>>>;
 };
@@ -13,6 +14,7 @@ type DefaultFiltersType = Partial<Record<string, string | boolean>>;
 type DefaultContentType = Partial<Record<string, unknown>>;
 
 export default function useFetchContentList<F extends DefaultFiltersType, C extends DefaultContentType>({
+   loadOnScroll = true,
    fetchContentFn,
    filtersState,
 }: Args<F, C>) {
@@ -23,6 +25,10 @@ export default function useFetchContentList<F extends DefaultFiltersType, C exte
    const [loadingOnScrl, setLoadingOnScrl] = useState<boolean>(false);
 
    const { filters, isReady: isFilterReady } = filtersState;
+
+   const isLastPageActive = useMemo(() => {
+      return metrices?.page === metrices?.total_pages;
+   }, [metrices]);
 
    const fetchContents = async function (filterArgs: typeof filtersState.filters = filters, pageChangeEvt?: boolean) {
       setLoading(true);
@@ -47,11 +53,28 @@ export default function useFetchContentList<F extends DefaultFiltersType, C exte
       setLoading(false);
    };
 
+   const loadMore = useCallback(
+      async function () {
+         if (!metrices || isLastPageActive) return;
+
+         const { page, total_pages } = metrices;
+
+         if (page < total_pages) {
+            await fetchContents({
+               ...filters,
+               page: `${page + 1}`,
+            });
+         }
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [metrices, isLastPageActive, filters]
+   );
+
    /**
     * Load contents on scroll.
     */
    useEffect(() => {
-      if (!window || !document || !metrices) return;
+      if (!loadOnScroll || !window || !document || !metrices) return;
 
       const { page, total_pages } = metrices;
 
@@ -82,7 +105,7 @@ export default function useFetchContentList<F extends DefaultFiltersType, C exte
          window.removeEventListener('scroll', handleScroll);
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [metrices?.page, metrices?.total_pages, filters]);
+   }, [metrices?.page, metrices?.total_pages, filters, loadOnScroll]);
 
    /**
     * Load contents on filters value change.
@@ -112,5 +135,7 @@ export default function useFetchContentList<F extends DefaultFiltersType, C exte
       metrices,
       loading,
       loadingOnScrl,
+      isLastPageActive,
+      loadMore,
    };
 }
