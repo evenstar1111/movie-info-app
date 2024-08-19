@@ -163,3 +163,5 @@ export const ParamValsSprtrs = {
    And: ',',
 } as const;
 export type TParamValsSprtr = (typeof ParamValsSprtrs)[keyof typeof ParamValsSprtrs];
+
+export const TMDBDateFormat = 'YYYY-MM-DD'; //TODO: consider moving it to sep. folder.

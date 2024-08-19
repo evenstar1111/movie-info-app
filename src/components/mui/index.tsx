@@ -8,3 +8,5 @@ export { default as MuiMenu } from './MuiMenu/MuiMenu';
 export { default as MuiMenuItem } from './MuiMenuItem/MuiMenuItem';
 
 export { default as MuiLinearProgress } from './MuiLinearProgress/MuiLinearProgress';
+
+export { default as MuiDatePicker } from './MuiDatePicker/MuiDatePicker';

@@ -9,8 +9,8 @@ export type DiscoverMoviesQParams = CommonDiscoverQParams<TMoviesSortByOptionVal
    with_people?: string;
    include_video?: boolean;
    primary_release_year?: string;
-   // 'primary_release_date.gte'?: string;
-   // 'primary_release_date.lte'?: string; //dot(.) symbol might be a problem
+   'primary_release_date.gte'?: string;
+   'primary_release_date.lte'?: string; //dot(.) symbol might be a problem
 };
 export type DiscoverMoviesQParamKey = keyof DiscoverMoviesQParams;
 

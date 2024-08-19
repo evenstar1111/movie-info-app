@@ -11,3 +11,6 @@ export type { Props as CustomSelectProps } from './SelectComponents/CustomSelect
 
 export { default as AutocompleteField } from './AutocompleteField/AutocompleteField';
 export type { Props as AutocompleteFieldProps } from './AutocompleteField/AutocompleteField.types';
+
+export { default as DatePickerFld } from './DatePickerFld/DatePickerFld';
+export type { Props as DatePickerFldProps } from './DatePickerFld/DatePickerFld.types';

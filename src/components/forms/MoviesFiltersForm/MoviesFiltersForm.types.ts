@@ -1,5 +1,5 @@
 import { DiscoverMoviesQParams } from '@/interfaces/api';
-import { AutocompleteFieldProps } from '..';
+import { AutocompleteFieldProps, DatePickerFldProps } from '..';
 
 export type Props = {
    defaultFilters: DiscoverMoviesQParams;
@@ -10,6 +10,13 @@ export type Props = {
 
 type AtcProps = Pick<AutocompleteFieldProps, 'handleInputChange' | 'options'>;
 
-export type TFormDataKey = keyof DiscoverMoviesQParams;
+export type MoviesFormData = DiscoverMoviesQParams & {
+   primary_release_date_gte?: string;
+   primary_release_date_lte?: string;
+};
+
+export type TFormDataKey = keyof MoviesFormData;
 
 export type OnAtcValueChangeFn = (key: TFormDataKey) => AutocompleteFieldProps['onValueUpdate'];
+
+export type DtPickerChangeHandlerFn = (key: TFormDataKey) => DatePickerFldProps['onDateChange'];

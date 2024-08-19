@@ -1,14 +1,20 @@
 import { MuiSelect, MuiTextField } from '@/components/mui';
-import { countriesSelectOptions, languagesSelectOptions, ParamValsSprtrs } from '@/constants';
+import { countriesSelectOptions, languagesSelectOptions, ParamValsSprtrs, TMDBDateFormat } from '@/constants';
 import { DiscoverMoviesQParams, TMoviesSortByOptionValue } from '@/interfaces/api';
 import { useGetAtcDefaultsFromFilters } from '@/utility';
 import { Button, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, SelectProps, Switch } from '@mui/material';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { AutocompleteField, CustomMultiSelectProps } from '..';
+import { AutocompleteField, CustomMultiSelectProps, DatePickerFld } from '..';
 import CustomMultiSelect from '../SelectComponents/CustomMultiSelect/CustomMultiSelect';
 import { genreSelectAllValues, genresOptions, sortByOptions } from './constants';
-import { OnAtcValueChangeFn, Props, TFormDataKey } from './MoviesFiltersForm.types';
+import {
+   DtPickerChangeHandlerFn,
+   MoviesFormData,
+   OnAtcValueChangeFn,
+   Props,
+   TFormDataKey,
+} from './MoviesFiltersForm.types';
 
 export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcProps, prsnAtcProps }: Props) {
    const defaultsApplied = useRef<boolean>(false);
@@ -42,7 +48,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
       control,
       watch,
       setValue,
-   } = useForm<DiscoverMoviesQParams>({
+   } = useForm<MoviesFormData>({
       defaultValues: {
          with_keywords: '',
          without_keywords: '',
@@ -72,8 +78,24 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
       return includeSensitiveWtchd;
    }, [includeSensitiveWtchd]);
 
-   const handleFormSubmit: SubmitHandler<DiscoverMoviesQParams> = (data) => {
-      onFormSubmit(data);
+   const releaseDtGteWtchd = watch('primary_release_date_gte');
+
+   const releaseDtLteWtchd = watch('primary_release_date_lte');
+
+   const dtPickerChangeHandler: DtPickerChangeHandlerFn = (key) => (dateObj) => {
+      let dateStr = '';
+      if (dateObj) dateStr = dateObj.format(TMDBDateFormat);
+      setValue(key, dateStr);
+   };
+
+   const handleFormSubmit: SubmitHandler<MoviesFormData> = (data) => {
+      const { primary_release_date_gte, primary_release_date_lte, ...restData } = data;
+
+      onFormSubmit({
+         ...restData,
+         'primary_release_date.gte': primary_release_date_gte,
+         'primary_release_date.lte': primary_release_date_lte,
+      });
    };
 
    const onAtcValueChange: OnAtcValueChangeFn = (dataKey) => (selectedObjs) => {
@@ -112,8 +134,12 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
       if (defaultsApplied.current) return;
 
       Object.keys(defaultFilters).forEach((filterKey) => {
-         const keyTyped = filterKey as keyof DiscoverMoviesQParams;
-         setValue(keyTyped, defaultFilters[keyTyped]);
+         let dfKey = filterKey as keyof DiscoverMoviesQParams;
+         let keyTyped = filterKey as TFormDataKey;
+
+         if (dfKey === 'primary_release_date.gte') keyTyped = 'primary_release_date_gte';
+         if (dfKey === 'primary_release_date.lte') keyTyped = 'primary_release_date_lte';
+         setValue(keyTyped, defaultFilters[dfKey]);
       });
 
       setSelectedGenres(() => {
@@ -225,6 +251,20 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
                      max: 2099,
                   }}
                   {...register('primary_release_year')}
+               />
+            </Grid>
+            <Grid item xs={12} md={6}>
+               <DatePickerFld
+                  label="Date Greater Than"
+                  dateStr={releaseDtGteWtchd}
+                  onDateChange={dtPickerChangeHandler('primary_release_date_gte')}
+               />
+            </Grid>
+            <Grid item xs={12} md={6}>
+               <DatePickerFld
+                  label="Date Less Than"
+                  dateStr={releaseDtLteWtchd}
+                  onDateChange={dtPickerChangeHandler('primary_release_date_lte')}
                />
             </Grid>
             <Grid item xs={12} md={6}>

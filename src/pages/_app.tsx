@@ -1,6 +1,8 @@
 import theme from '@/theme/theme';
 import { AppCacheProvider } from '@mui/material-nextjs/v14-pagesRouter';
 import { ThemeProvider } from '@mui/material/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import { ReactElement, ReactNode } from 'react';
@@ -20,7 +22,11 @@ export default function App(props: AppPropsWithLayout) {
 
    return (
       <AppCacheProvider {...props}>
-         <ThemeProvider theme={theme}>{getLayout(<Component {...pageProps} />)}</ThemeProvider>
+         <ThemeProvider theme={theme}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+               {getLayout(<Component {...pageProps} />)}
+            </LocalizationProvider>
+         </ThemeProvider>
       </AppCacheProvider>
    );
 }
