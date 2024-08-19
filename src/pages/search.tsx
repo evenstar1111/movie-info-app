@@ -1,6 +1,5 @@
 import { SearchFiltersForm, SearchFiltersFormProps } from '@/components/forms';
 import { PublicLayout } from '@/components/layouts';
-import Pagination from '@/components/pagination';
 import { ContentList } from '@/components/shared';
 import { ContentTypes, TContentTypeWPageVal } from '@/constants';
 import { searchCl, SearchResponse, SearchTvOrMovieQParams } from '@/interfaces/api';
@@ -79,7 +78,7 @@ const Search: NextPageWithLayout = () => {
          {!loading && (
             <Container maxWidth={false}>
                <ContentList contents={searchRes?.results} type={filters.type as TContentTypeWPageVal} />
-               <Pagination movies={searchRes} handleClick={changePage} />
+               {/* <Pagination movies={searchRes} handleClick={changePage} /> */}
             </Container>
          )}
       </>
