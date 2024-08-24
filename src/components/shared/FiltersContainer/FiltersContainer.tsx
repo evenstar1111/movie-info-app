@@ -1,6 +1,6 @@
 import { BasicDialog } from '@/components/dialogs';
 import { ClearOutlined, TuneOutlined } from '@mui/icons-material';
-import { Badge, Box, Button, Stack } from '@mui/material';
+import { Badge, Button, Stack } from '@mui/material';
 import { Props } from './FiltersContainer.types';
 
 export default function FiltersContainer({ children, dlgOpen, filtersCount, clearFilters, setDlgOpen }: Props) {
@@ -16,7 +16,7 @@ export default function FiltersContainer({ children, dlgOpen, filtersCount, clea
    };
 
    return (
-      <Box>
+      <>
          <Stack py={1.25} direction="row" columnGap={2}>
             <Badge badgeContent={filtersCount} color="info">
                <Button size="small" startIcon={<TuneOutlined />} onClick={handleFilterBtnClick}>
@@ -32,6 +32,6 @@ export default function FiltersContainer({ children, dlgOpen, filtersCount, clea
          <BasicDialog open={dlgOpen} onClose={closeDialog} title="Apply filters">
             {children}
          </BasicDialog>
-      </Box>
+      </>
    );
 }

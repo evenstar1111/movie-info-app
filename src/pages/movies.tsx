@@ -9,7 +9,7 @@ import { scrollToTop, useAutocompleteHelpers, useFetchContentList } from '@/util
 import { Box, Button, Container, Snackbar, Stack, SxProps, Theme } from '@mui/material';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
+import { MouseEventHandler, ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import Pagination from '../components/pagination';
 import { NextPageWithLayout } from './_app';
 
@@ -91,8 +91,11 @@ const Movies: NextPageWithLayout = () => {
       scrollToTop();
    };
 
-   const onFiltersWrpprDblClick = () => {
+   const onFiltersWrpprDblClick: MouseEventHandler<HTMLDivElement> = (event) => {
       /* FIXME: consider this as a temp workaround. it should be done thoughtfully. */
+      const notPermitted = !event.currentTarget.contains(event.target as Node);
+      if (notPermitted) return;
+
       const enabledOnScroll = loadOnScroll;
       setLoadOnScroll((prev) => !prev);
       setSnackbarMsg(enabledOnScroll ? 'Disabled Infinite Scrolling' : 'Enabled Infinite Scrolling');
