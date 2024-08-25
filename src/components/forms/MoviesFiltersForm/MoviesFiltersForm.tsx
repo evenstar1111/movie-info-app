@@ -1,7 +1,7 @@
-import { MuiSelect, MuiTextField } from '@/components/mui';
+import { MuiSelect } from '@/components/mui';
 import { countriesSelectOptions, languagesSelectOptions, ParamValsSprtrs, TMDBDateFormat } from '@/constants';
 import { DiscoverMoviesQParams, TMoviesSortByOptionValue } from '@/interfaces/api';
-import { useGetAtcDefaultsFromFilters } from '@/utility';
+import { useDateStrToDayJs, useGetAtcDefaultsFromFilters } from '@/utility';
 import { Button, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, SelectProps, Switch } from '@mui/material';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -59,6 +59,10 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
       },
    });
 
+   const releaseDtGteState = useDateStrToDayJs(watch('primary_release_date_gte'));
+   const releaseDtLteState = useDateStrToDayJs(watch('primary_release_date_lte'));
+   const releaseYearState = useDateStrToDayJs(watch('primary_release_year'));
+
    const sortByWatched = watch('sort_by');
 
    const sortByValue = useMemo(() => sortByWatched, [sortByWatched]);
@@ -78,10 +82,6 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
       return includeSensitiveWtchd;
    }, [includeSensitiveWtchd]);
 
-   const releaseDtGteWtchd = watch('primary_release_date_gte');
-
-   const releaseDtLteWtchd = watch('primary_release_date_lte');
-
    const dtPickerChangeHandler: DtPickerChangeHandlerFn = (key) => (dateObj) => {
       let dateStr = '';
       if (dateObj) dateStr = dateObj.format(TMDBDateFormat);
@@ -90,11 +90,12 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
 
    const handleFormSubmit: SubmitHandler<MoviesFormData> = (data) => {
       const { primary_release_date_gte, primary_release_date_lte, ...restData } = data;
+      const hasRlsYr = restData.primary_release_year;
 
       onFormSubmit({
          ...restData,
-         'primary_release_date.gte': primary_release_date_gte,
-         'primary_release_date.lte': primary_release_date_lte,
+         'primary_release_date.gte': hasRlsYr ? '' : primary_release_date_gte,
+         'primary_release_date.lte': hasRlsYr ? '' : primary_release_date_lte,
       });
    };
 
@@ -240,31 +241,29 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
                </FormControl>
             </Grid>
             <Grid item xs={12} md={6}>
-               <MuiTextField
+               <DatePickerFld
                   label="Release Year"
-                  placeholder="Release Year"
-                  type="number"
-                  size="small"
-                  variant="outlined"
-                  inputProps={{
-                     min: 2000,
-                     max: 2099,
-                  }}
-                  {...register('primary_release_year')}
+                  date={releaseYearState}
+                  views={['year']}
+                  onDateChange={dtPickerChangeHandler('primary_release_year')}
                />
             </Grid>
             <Grid item xs={12} md={6}>
                <DatePickerFld
                   label="Date Greater Than"
-                  dateStr={releaseDtGteWtchd}
+                  date={releaseDtGteState}
+                  maxDate={releaseDtLteState || undefined}
                   onDateChange={dtPickerChangeHandler('primary_release_date_gte')}
+                  disabled={!!releaseYearState}
                />
             </Grid>
             <Grid item xs={12} md={6}>
                <DatePickerFld
                   label="Date Less Than"
-                  dateStr={releaseDtLteWtchd}
+                  date={releaseDtLteState}
+                  minDate={releaseDtGteState || undefined}
                   onDateChange={dtPickerChangeHandler('primary_release_date_lte')}
+                  disabled={!!releaseYearState}
                />
             </Grid>
             <Grid item xs={12} md={6}>
