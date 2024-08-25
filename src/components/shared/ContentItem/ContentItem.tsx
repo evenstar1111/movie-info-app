@@ -9,6 +9,8 @@ import { MouseEventHandler, useMemo } from 'react';
 import { Props } from './ContentItem.types';
 import { useStyles } from './styles';
 
+const placeholderImgUrl = '/images/no-image.jpg'; //TODO: consider storing it either in config or in constants
+
 export default function ContentItem({
    content: {
       poster_path,
@@ -58,6 +60,10 @@ export default function ContentItem({
       return titleToUse;
    }, [title, name]);
 
+   const posterUrl = useMemo(() => {
+      return poster_path ? `${tmdbConfig.imageBaseUrl}/${poster_path}` : undefined;
+   }, [poster_path]);
+
    const handleContentWrapperClick: MouseEventHandler<HTMLDivElement> = (event) => {
       event.preventDefault();
       if (!title) return;
@@ -67,13 +73,14 @@ export default function ContentItem({
    return (
       <Card className={classes.cardRoot} raised={false}>
          <CardActionArea LinkComponent={Link} href={`${detlUrlPrefix}/${id}`}>
-            <div className={classes.imageContainer}>
-               <Image
-                  height={140}
-                  width={100}
-                  src={!!poster_path ? `${tmdbConfig.imageBaseUrl}/${poster_path}` : '/images/no-image.jpg'}
-                  alt=""
-               />
+            <div
+               className={classes.imageContainer}
+               style={{
+                  background: posterUrl && `url(${posterUrl}), rgba(0, 0, 0, 0.5)`,
+                  backgroundBlendMode: posterUrl && 'overlay',
+               }}
+            >
+               <Image height={140} width={100} src={posterUrl || placeholderImgUrl} alt="" />
             </div>
             <div onClick={handleContentWrapperClick}>
                <CardContent>
