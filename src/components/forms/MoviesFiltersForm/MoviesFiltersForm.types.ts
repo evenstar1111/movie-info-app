@@ -13,6 +13,7 @@ type AtcProps = Pick<AutocompleteFieldProps, 'handleInputChange' | 'options'>;
 export type MoviesFormData = DiscoverMoviesQParams & {
    primary_release_date_gte?: string;
    primary_release_date_lte?: string;
+   vote_count_gte?: string;
 };
 
 export type TFormDataKey = keyof MoviesFormData;

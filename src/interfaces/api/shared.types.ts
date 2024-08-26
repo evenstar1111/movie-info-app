@@ -9,6 +9,7 @@ export type CommonDiscoverQParams<SortBy extends string> = {
    include_adult?: boolean;
    with_origin_country?: string;
    with_original_language?: string;
+   'vote_count.gte'?: string;
 };
 
 export type CommonSearchQParams = {

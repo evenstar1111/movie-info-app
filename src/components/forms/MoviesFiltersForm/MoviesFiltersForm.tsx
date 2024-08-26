@@ -1,7 +1,7 @@
 import { countriesSelectOptions, languagesSelectOptions, ParamValsSprtrs, TMDBDateFormat } from '@/constants';
 import { DiscoverMoviesQParams } from '@/interfaces/api';
 import { useDateStrToDayJs, useGetAtcDefaultsFromFilters } from '@/utility';
-import { Button, FormControlLabel, Grid, Switch } from '@mui/material';
+import { Button, FormControlLabel, Grid, Switch, TextField } from '@mui/material';
 import { useEffect, useMemo, useRef } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { AutocompleteField, DatePickerFld } from '..';
@@ -88,11 +88,12 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
    };
 
    const handleFormSubmit: SubmitHandler<MoviesFormData> = (data) => {
-      const { primary_release_date_gte, primary_release_date_lte, ...restData } = data;
+      const { vote_count_gte, primary_release_date_gte, primary_release_date_lte, ...restData } = data;
       const hasRlsYr = restData.primary_release_year;
 
       onFormSubmit({
          ...restData,
+         'vote_count.gte': vote_count_gte,
          'primary_release_date.gte': hasRlsYr ? '' : primary_release_date_gte,
          'primary_release_date.lte': hasRlsYr ? '' : primary_release_date_lte,
       });
@@ -120,6 +121,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
 
          if (dfKey === 'primary_release_date.gte') keyTyped = 'primary_release_date_gte';
          if (dfKey === 'primary_release_date.lte') keyTyped = 'primary_release_date_lte';
+         if (dfKey === 'vote_count.gte') keyTyped = 'vote_count_gte';
          setValue(keyTyped, defaultFilters[dfKey]);
       });
 
@@ -130,7 +132,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
 
    return (
       <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-         <Grid container columnSpacing={1} rowSpacing={2.4} mb={2.5}>
+         <Grid container columnSpacing={1.3} rowSpacing={2.4} mb={2.5}>
             <Grid item xs={12} md={6}>
                <AutocompleteField
                   multiple
@@ -225,6 +227,16 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
                   minDate={releaseDtGteState || undefined}
                   onDateChange={dtPickerChangeHandler('primary_release_date_lte')}
                   disabled={!!releaseYearState}
+               />
+            </Grid>
+            <Grid item xs={12} md={6}>
+               <TextField
+                  label="Votes Greater Than"
+                  placeholder="Votes Greater Than"
+                  size="small"
+                  type="number"
+                  fullWidth
+                  {...register('vote_count_gte')}
                />
             </Grid>
             <Grid item xs={12} md={6}>
