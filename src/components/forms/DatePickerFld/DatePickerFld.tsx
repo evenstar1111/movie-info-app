@@ -25,6 +25,12 @@ export default function DatePickerFld({
          maxDate={maxDate}
          minDate={minDate}
          disabled={disabled}
+         slotProps={{
+            /* TODO: accpt this from props, use defaults */
+            textField: {
+               size: 'small',
+            },
+         }}
       />
    );
 }

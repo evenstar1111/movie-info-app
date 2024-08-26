@@ -61,7 +61,7 @@ export default function ContentItem({
    }, [title, name]);
 
    const posterUrl = useMemo(() => {
-      return poster_path ? `${tmdbConfig.imageBaseUrl}/${poster_path}` : undefined;
+      return poster_path ? `${tmdbConfig.imageBaseUrl}/${poster_path}` : placeholderImgUrl;
    }, [poster_path]);
 
    const handleContentWrapperClick: MouseEventHandler<HTMLDivElement> = (event) => {
@@ -73,14 +73,8 @@ export default function ContentItem({
    return (
       <Card className={classes.cardRoot} raised={false}>
          <CardActionArea LinkComponent={Link} href={`${detlUrlPrefix}/${id}`}>
-            <div
-               className={classes.imageContainer}
-               style={{
-                  background: posterUrl && `url(${posterUrl}), rgba(0, 0, 0, 0.5)`,
-                  backgroundBlendMode: posterUrl && 'overlay',
-               }}
-            >
-               <Image height={140} width={100} src={posterUrl || placeholderImgUrl} alt="" />
+            <div className={classes.imageContainer}>
+               <Image height={140} width={100} src={posterUrl} alt="" />
             </div>
             <div onClick={handleContentWrapperClick}>
                <CardContent>
