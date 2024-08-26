@@ -53,8 +53,11 @@ const Movies: NextPageWithLayout = () => {
    const filtersCount = useMemo(() => {
       const filtersWithValues = Object.keys(filtersState.filters).filter((key) => {
          const k = key as DiscoverMoviesQParamKey;
-         return filtersState.filters[k] !== '' && k !== 'page';
+         const currFilter = filtersState.filters[k];
+         const hasValue = currFilter !== '' && currFilter !== undefined && currFilter !== null;
+         return hasValue && k !== 'page';
       });
+
       return filtersWithValues.length;
    }, [filtersState.filters]);
 
