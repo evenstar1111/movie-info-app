@@ -1,13 +1,11 @@
-import { MuiSelect } from '@/components/mui';
 import { countriesSelectOptions, languagesSelectOptions, ParamValsSprtrs, TMDBDateFormat } from '@/constants';
-import { DiscoverMoviesQParams, TMoviesSortByOptionValue } from '@/interfaces/api';
+import { DiscoverMoviesQParams } from '@/interfaces/api';
 import { useDateStrToDayJs, useGetAtcDefaultsFromFilters } from '@/utility';
-import { Button, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, SelectProps, Switch } from '@mui/material';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Button, FormControlLabel, Grid, Switch } from '@mui/material';
+import { useEffect, useMemo, useRef } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { AutocompleteField, CustomMultiSelectProps, DatePickerFld } from '..';
-import CustomMultiSelect from '../SelectComponents/CustomMultiSelect/CustomMultiSelect';
-import { genreSelectAllValues, genresOptions, sortByOptions } from './constants';
+import { AutocompleteField, DatePickerFld } from '..';
+import { genresOptions, sortByOptions } from './constants';
 import {
    DtPickerChangeHandlerFn,
    MoviesFormData,
@@ -38,8 +36,21 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
       options: countriesSelectOptions,
       valueKey: 'with_origin_country',
    });
-   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-   const [selectedWotGenres, setSelectedWotGenres] = useState<string[]>([]);
+   const genresDefaultVal = useGetAtcDefaultsFromFilters<TFormDataKey>({
+      defaults: defaultFilters,
+      options: genresOptions,
+      valueKey: 'with_genres',
+   });
+   const woutGenresDefaultVal = useGetAtcDefaultsFromFilters<TFormDataKey>({
+      defaults: defaultFilters,
+      options: genresOptions,
+      valueKey: 'without_genres',
+   });
+   const sortByDefaultVal = useGetAtcDefaultsFromFilters<TFormDataKey>({
+      defaults: defaultFilters,
+      options: sortByOptions,
+      valueKey: 'sort_by',
+   });
 
    const {
       handleSubmit,
@@ -54,7 +65,6 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
          without_keywords: '',
          with_cast: '',
          with_people: '',
-         sort_by: 'popularity.desc',
          include_adult: false,
       },
    });
@@ -62,17 +72,6 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
    const releaseDtGteState = useDateStrToDayJs(watch('primary_release_date_gte'));
    const releaseDtLteState = useDateStrToDayJs(watch('primary_release_date_lte'));
    const releaseYearState = useDateStrToDayJs(watch('primary_release_year'));
-
-   const sortByWatched = watch('sort_by');
-
-   const sortByValue = useMemo(() => sortByWatched, [sortByWatched]);
-
-   const handleSortBySelectChange: SelectProps['onChange'] = (event) => {
-      const value = event.target.value as TMoviesSortByOptionValue;
-      setValue('sort_by', value, {
-         shouldValidate: isSubmitted,
-      });
-   };
 
    const includeSensitiveWtchd = watch('include_adult');
    const includeSensitiveChecked = useMemo(() => {
@@ -100,35 +99,16 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
    };
 
    const onAtcValueChange: OnAtcValueChangeFn = (dataKey) => (selectedObjs) => {
-      const valueArr = selectedObjs.map((obj) => obj.value);
-      setValue(dataKey, valueArr.join(ParamValsSprtrs.Or));
-   };
+      let valueAsStr = '';
 
-   const onGenreSelectChange: CustomMultiSelectProps['onChange'] = (event) => {
-      const value = getMultiSelectValue(event.target.value, genreSelectAllValues);
-      setSelectedGenres(() => value);
-      setValue('with_genres', value.join(ParamValsSprtrs.Or));
-   };
-
-   const onWotGenreSelectChange: CustomMultiSelectProps['onChange'] = (event) => {
-      const value = getMultiSelectValue(event.target.value, genreSelectAllValues);
-      setSelectedWotGenres(() => value);
-      setValue('without_genres', value.join(ParamValsSprtrs.Or));
-   };
-
-   const getMultiSelectValue = (selctdValues: any, allValues: string[]): string[] => {
-      let valuesToReturn = selctdValues as string[];
-      const lastValue = selctdValues[selctdValues.length - 1];
-
-      if (lastValue === 'select-all') {
-         valuesToReturn = allValues.slice();
+      if (Array.isArray(selectedObjs)) {
+         const valueArr = selectedObjs.map((obj) => obj.value);
+         valueAsStr = valueArr.join(ParamValsSprtrs.Or);
+      } else {
+         valueAsStr = selectedObjs.value;
       }
 
-      if (lastValue === 'select-none') {
-         valuesToReturn = [];
-      }
-
-      return valuesToReturn;
+      setValue(dataKey, valueAsStr);
    };
 
    useEffect(() => {
@@ -143,16 +123,6 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
          setValue(keyTyped, defaultFilters[dfKey]);
       });
 
-      setSelectedGenres(() => {
-         const genreIds = defaultFilters.with_genres?.split(ParamValsSprtrs.Or) || [];
-         return genreIds;
-      });
-
-      setSelectedWotGenres(() => {
-         const genreIds = defaultFilters.without_genres?.split(ParamValsSprtrs.Or) || [];
-         return genreIds;
-      });
-
       defaultsApplied.current = true;
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -163,6 +133,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
          <Grid container columnSpacing={1} rowSpacing={2.4} mb={2.5}>
             <Grid item xs={12} md={6}>
                <AutocompleteField
+                  multiple
                   defaultValues={kwDefaultVal}
                   onValueUpdate={onAtcValueChange('with_keywords')}
                   options={kwAtcProps.options}
@@ -173,6 +144,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
             </Grid>
             <Grid item xs={12} md={6}>
                <AutocompleteField
+                  multiple
                   defaultValues={prsnDefaultVal}
                   onValueUpdate={onAtcValueChange('with_people')}
                   options={prsnAtcProps.options}
@@ -183,6 +155,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
             </Grid>
             <Grid item xs={12} md={6}>
                <AutocompleteField
+                  multiple
                   defaultValues={langsDefaultVal}
                   onValueUpdate={onAtcValueChange('with_original_language')}
                   options={languagesSelectOptions}
@@ -192,6 +165,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
             </Grid>
             <Grid item xs={12} md={6}>
                <AutocompleteField
+                  multiple
                   defaultValues={countriesDefaultVal}
                   onValueUpdate={onAtcValueChange('with_origin_country')}
                   options={countriesSelectOptions}
@@ -200,45 +174,32 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
                />
             </Grid>
             <Grid item xs={12} md={6}>
-               <CustomMultiSelect
-                  size="small"
-                  formControlWidth="100%"
+               <AutocompleteField
+                  multiple
+                  defaultValues={genresDefaultVal}
+                  onValueUpdate={onAtcValueChange('with_genres')}
+                  options={genresOptions}
                   label="Genres"
                   placeholder="Select Genres"
-                  options={genresOptions}
-                  value={selectedGenres}
-                  onChange={onGenreSelectChange}
                />
             </Grid>
             <Grid item xs={12} md={6}>
-               <CustomMultiSelect
-                  size="small"
-                  formControlWidth="100%"
+               <AutocompleteField
+                  multiple
+                  defaultValues={woutGenresDefaultVal}
+                  onValueUpdate={onAtcValueChange('without_genres')}
+                  options={genresOptions}
                   label="Exclude Genres"
                   placeholder="Exclude Genres"
-                  options={genresOptions}
-                  value={selectedWotGenres}
-                  onChange={onWotGenreSelectChange}
                />
             </Grid>
             <Grid item xs={12} md={6}>
-               <FormControl fullWidth>
-                  <InputLabel id="content-type">Sort by</InputLabel>
-                  <MuiSelect
-                     size="small"
-                     labelId="content-type"
-                     id="content-type"
-                     label="Sort by"
-                     value={sortByValue}
-                     onChange={handleSortBySelectChange}
-                  >
-                     {sortByOptions.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                           {option.label}
-                        </MenuItem>
-                     ))}
-                  </MuiSelect>
-               </FormControl>
+               <AutocompleteField
+                  defaultValues={sortByDefaultVal[0] || null}
+                  onValueUpdate={onAtcValueChange('sort_by')}
+                  options={sortByOptions}
+                  label="Sort by"
+               />
             </Grid>
             <Grid item xs={12} md={6}>
                <DatePickerFld

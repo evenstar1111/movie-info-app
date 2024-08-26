@@ -1,7 +1,7 @@
 import { SelectOptionAsObject } from '@/types/common';
 import { Autocomplete, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Props } from './AutocompleteField.types';
+import { ATCValue, Props } from './AutocompleteField.types';
 
 export default function AutocompleteField({
    options,
@@ -10,8 +10,9 @@ export default function AutocompleteField({
    handleInputChange,
    label = 'Label',
    placeholder = 'Placeholder',
+   multiple = false,
 }: Props) {
-   const [selectedOptions, setSelectedOptions] = useState<SelectOptionAsObject[]>([]);
+   const [selectedOptions, setSelectedOptions] = useState<ATCValue>([]);
 
    useEffect(() => {
       setSelectedOptions(defaultValues);
@@ -19,16 +20,23 @@ export default function AutocompleteField({
 
    return (
       <Autocomplete
-         multiple
-         filterSelectedOptions
+         multiple={multiple}
+         filterSelectedOptions={multiple}
          size="small"
          value={selectedOptions}
          options={options}
-         getOptionLabel={(option: SelectOptionAsObject) => option.label}
+         getOptionLabel={(option: SelectOptionAsObject) => {
+            /**
+             * FIXME: option value is initially empty arr ([])
+             * when, multiple = false
+             * */
+            if (Array.isArray(option)) return '';
+            return option.label;
+         }}
          getOptionKey={(option: SelectOptionAsObject) => option.value}
          onChange={(event, value) => {
-            setSelectedOptions(value);
-            onValueUpdate(value);
+            setSelectedOptions(value as ATCValue);
+            onValueUpdate(value as ATCValue);
          }}
          onInputChange={handleInputChange}
          renderInput={(params) => <TextField {...params} label={label} placeholder={placeholder} variant="outlined" />}
