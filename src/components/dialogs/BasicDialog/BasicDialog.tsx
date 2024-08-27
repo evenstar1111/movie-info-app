@@ -1,15 +1,24 @@
 import { MuiDialog } from '@/components/mui';
 import { Close } from '@mui/icons-material';
-import { DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
+import { DialogActions, DialogContent, DialogTitle, IconButton, Theme, useMediaQuery } from '@mui/material';
 import { Props } from './BasicDialog.types';
 
-export default function BasicDialog({ children, open, title = 'Modal title', actions, onClose }: Props) {
+export default function BasicDialog({
+   children,
+   open,
+   title = 'Modal title',
+   actions,
+   onClose,
+   dialogProps = {},
+}: Props) {
+   const szDownSm = useMediaQuery<Theme>((theme) => theme.breakpoints.down('sm'));
+
    if (!open) {
       return null;
    }
 
    return (
-      <MuiDialog open={open} onClose={onClose} maxWidth="sm">
+      <MuiDialog open={open} onClose={onClose} maxWidth="sm" fullScreen={szDownSm} {...dialogProps}>
          <DialogTitle>{title}</DialogTitle>
          <IconButton
             aria-label="close"

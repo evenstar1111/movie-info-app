@@ -133,7 +133,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
    return (
       <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
          <Grid container columnSpacing={1.3} rowSpacing={2.4} mb={2.5}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={6} sm={6}>
                <AutocompleteField
                   multiple
                   defaultValues={kwDefaultVal}
@@ -144,7 +144,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
                   placeholder="Enter Keywords"
                />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={6} sm={6}>
                <AutocompleteField
                   multiple
                   defaultValues={prsnDefaultVal}
@@ -155,7 +155,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
                   placeholder="Enter People Names"
                />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={6} sm={6}>
                <AutocompleteField
                   multiple
                   defaultValues={langsDefaultVal}
@@ -165,7 +165,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
                   placeholder="Enter Languages"
                />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={6} sm={6}>
                <AutocompleteField
                   multiple
                   defaultValues={countriesDefaultVal}
@@ -175,7 +175,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
                   placeholder="Enter Countries"
                />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={6} sm={6}>
                <AutocompleteField
                   multiple
                   defaultValues={genresDefaultVal}
@@ -185,7 +185,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
                   placeholder="Select Genres"
                />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={6} sm={6}>
                <AutocompleteField
                   multiple
                   defaultValues={woutGenresDefaultVal}
@@ -195,7 +195,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
                   placeholder="Exclude Genres"
                />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={6} sm={6}>
                <AutocompleteField
                   defaultValues={sortByDefaultVal[0] || null}
                   onValueUpdate={onAtcValueChange('sort_by')}
@@ -203,7 +203,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
                   label="Sort by"
                />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={6} sm={6}>
                <DatePickerFld
                   label="Release Year"
                   date={releaseYearState}
@@ -211,7 +211,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
                   onDateChange={dtPickerChangeHandler('primary_release_year')}
                />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={6} sm={6}>
                <DatePickerFld
                   label="Date Greater Than"
                   date={releaseDtGteState}
@@ -220,7 +220,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
                   disabled={!!releaseYearState}
                />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={6} sm={6}>
                <DatePickerFld
                   label="Date Less Than"
                   date={releaseDtLteState}
@@ -229,7 +229,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
                   disabled={!!releaseYearState}
                />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={6} sm={6}>
                <TextField
                   label="Votes Greater Than"
                   placeholder="Votes Greater Than"
@@ -239,7 +239,7 @@ export default function MoviesFiltersForm({ defaultFilters, onFormSubmit, kwAtcP
                   {...register('vote_count_gte')}
                />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={6} sm={6}>
                <Controller
                   name="include_adult"
                   control={control}

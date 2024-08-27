@@ -1,7 +1,7 @@
 import { Select } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-const MuiSelect = styled(Select)(({ theme }) => {
+const MuiSelect = styled(Select)(({}) => {
    return {
       width: '100%',
       '& .MuiSelect-root': {
