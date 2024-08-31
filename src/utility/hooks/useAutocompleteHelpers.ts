@@ -26,7 +26,7 @@ export default function useAutocompleteHelpers(type: SearchTvOrMovieQParams['typ
             const filtered = opsInResTransformed.filter((op) => !prevOptions.find((pOp) => pOp.value === op.value));
             return copied.concat(filtered);
          });
-      }, 500),
+      }, 900),
       []
    );
 

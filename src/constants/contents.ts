@@ -157,6 +157,7 @@ export const TvsGenres = {
       name: 'Western',
    },
 } as const;
+export type TTvsGenreKey = keyof typeof TvsGenres;
 
 export const ParamValsSprtrs = {
    Or: '|',

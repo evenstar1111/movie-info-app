@@ -1,27 +1,12 @@
 import { ContentListResponse, Tv } from '@/types';
+import { TTvsSortByOptionValue } from '../constants';
 import { CommonDiscoverQParams } from '../shared.types';
 
-export type DiscoverTvsQParams = CommonDiscoverQParams<TvsSortByOption> & {
-   year?: number;
-   with_cast?: string;
-   with_crew?: string;
-   with_people?: string;
-   include_video?: boolean;
+export type DiscoverTvsQParams = CommonDiscoverQParams<TTvsSortByOptionValue> & {
+   first_air_date_year?: string;
+   'first_air_date.gte'?: string;
+   'first_air_date.lte'?: string;
 };
-
-export enum TvsSortByOption {
-   FirstAirDateAsc = 'first_air_date.asc',
-   FirstAirDateDesc = 'first_air_date.desc',
-   NameAsc = 'name.asc',
-   NameDesc = 'name.desc',
-   OriginalNameAsc = 'original_name.asc',
-   OriginalNameDesc = 'original_name.desc',
-   PopularityAsc = 'popularity.asc',
-   PopularityDesc = 'popularity.desc',
-   VoteAverageAsc = 'vote_average.asc',
-   VoteAverageDesc = 'vote_average.desc',
-   VoteCountAsc = 'vote_count.asc',
-   VoteCountDesc = 'vote_count.desc',
-}
+export type DiscoverTvsQParamsKey = keyof DiscoverTvsQParams;
 
 export type TvListsResponse = ContentListResponse<Tv>;
